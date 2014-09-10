@@ -36,7 +36,7 @@ The administration panel will be accessible at [http://acme.tld/admin](http://ac
 ## Installation #
 
   1. Download the '[core](https://github.com/Antidot-be/sydney-core/archive/master.zip)', unzip it and put its content in `/srv/www/sydney/core/`. 
-  2. You will have to create a webinstance. You can download a sample webinstance [here](https://github.com/Antidot-be/SydneyCMS-sample-instance) (with the installer). Once you have download the sample webinstance you will have to place its content in `/srv/www/sydney/webinstances/acme/`
+  2. You will have to create a webinstance. You can download a sample webinstance [here](https://github.com/Antidot-be/sydney-sample-instance) (with the installer). Once you have download the sample webinstance you will have to place its content in `/srv/www/sydney/webinstances/acme/`
 
 The 'core' folder is the kernel for all your (future) websites. It will contains all global functionalities and administration ...  
 The 'webinstances' folder contains all your website's projects. You can put from 1 to infinite websites there.
@@ -166,7 +166,7 @@ Sydney is now ready to be used!
 *Don't pay attention if you have already install Sydney!*  
 
 You will need to get all the data to insert in the DB.  
-Those datas are locate in "install" directory in the [sample instance](https://github.com//Antidot-be/SydneyCMS-sample-instance)
+Those datas are locate in "install" directory in the [sample instance](https://github.com//Antidot-be/sydney-sample-instance)
 
 ##### Generate DB structure #####
 
