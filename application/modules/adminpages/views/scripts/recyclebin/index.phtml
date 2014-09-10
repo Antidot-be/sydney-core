@@ -1,0 +1,15 @@
+<?php
+/**
+ * index_index view
+ * @package Adminpages
+ * @subpackage View
+ */
+?>
+<?php echo $this->helpBox('/adminhelp/index/index/section/pagestructure'); ?>
+
+
+<?php
+if (is_array($this->structureArray)) {
+    echo $this->RecyclebinEditor($this->structureArray);
+}
+?>

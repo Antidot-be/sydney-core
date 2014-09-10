@@ -1,0 +1,170 @@
+<script>
+    $(function () {
+        // users form ajax setup
+        var action = $('#users').attr('action');
+        if (action.length <= 0) {
+            action = '/adminpeople/services/processuser/format/json';
+        }
+        $('#users').formvalidator({'url': action, 'callbackfunc': function (j) {
+            if (j.ResultSet.errors.length == 0 && j.ResultSet.entry.id != null) {
+                $('#users #id').val(j.ResultSet.entry.id);
+                $('#adcompanybuts').show();
+                $('#containerAvatar').show();
+                adtopostcompany = { 'users_id': $('#users #id').val() };
+                <?php if ($this->r->module != 'publicms' && $this->r->controller != 'profile') { ?>
+                location.href = '/adminpeople/index/editindex/id/' + j.ResultSet.entry.id;
+                <?php } ?>
+            }
+        } });
+
+        // adcompanybuts
+        if ($('#users #id').val() == "") $('#adcompanybuts').hide();
+
+        // launch uploader
+        $("#fileUploadBox-adminpeople").fileUpload({'numberOfFiles': 1, 'calledBy': 'adminpeople', 'peopleId': '<?php echo $this->id ?>'});
+
+        // AVATAR events
+        // add
+        $('#avatar-add, a.avatar').click(function (event) {
+            event.preventDefault()
+            $('#box-upload').fadeIn();
+            var uploader = $('#uploader').pluploadQueue();
+            uploader.refresh();
+            //$('#browseButton').click();
+        });
+
+        // remove
+        $('#avatar-remove').click(function (event) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to remove your avatar ?')) {
+                $('#avatar').attr('src', '<?php echo Sydney_Tools::getUrlDefaultAvatar(); ?>');
+                $.getJSON('/adminpeople/services/removeavatar/format/json', {'userid': '<?php echo $this->id; ?>'}, function (data) {
+                    $("#ajaxbox").msgbox({'message': data.ResultSet.message, 'showtime': data.ResultSet.showtime, 'modal': data.ResultSet.modal});
+
+                    //if (data.ResultSet.status == 1) {
+                    $('#avatar-add img').attr('src', '<?php echo Sydney_Tools::getRootUrlCdn(); ?>/sydneyassets/images/ui/bigbutton/icon_add.png');
+                    $('#avatar-remove').fadeOut();
+                    //}
+
+                });
+            }
+        });
+
+        // cancel action
+        $('#fileCancel').click(function (event) {
+            $('#box-upload').fadeOut();
+            return false;
+        });
+
+        // pick server file
+        $('#browseServerButton').click(function (event) {
+            $('#box-upload').fadeOut();
+
+            $('#dialogServerFile').load(
+                "/adminfiles/index/index/", {
+                    'embed': 'yes',
+                    'context': 'pageeditor',
+                    'filter': 1,
+                    'mode': 'thumb'
+                },
+                function (e, a) {
+                    // Setup Cancel and Save buttons
+                    $("p.buttons a[href='save']").click(function (e) {
+
+                        $('.itemselected').each(function () {
+                            var elid = $(this).attr('href');
+
+                            $.getJSON('/adminpeople/services/changeavatar/format/json', {'userid': '<?php echo $this->id; ?>', 'avatarid': elid}, function (data) {
+                                $("#ajaxbox").msgbox({'message': data.ResultSet.message, 'showtime': data.ResultSet.showtime, 'modal': data.ResultSet.modal});
+
+                                //if (data.ResultSet.status == 1) {
+                                $('#avatar-add img').attr('src', '<?php echo Sydney_Tools::getRootUrlCdn(); ?>/sydneyassets/images/ui/bigbutton/icon_swap.png');
+                                $('#avatar-remove').fadeIn();
+                                $('#avatar').attr('src', '/adminfiles/file/thumb/id/' + elid + '/ts/1/fn/' + elid + '.png');
+                                $('#dialogServerFile').fadeOut();
+                                //}
+
+                            });
+                        });
+
+                        return false;
+                    });
+                    $("p.buttons a[href='save-draft']").hide();
+                    $("p.buttons a[href='cancel']").click(function (e) {
+                        $('#dialogServerFile').fadeOut();
+                        return false;
+                    });
+                }
+            );
+            $('#dialogServerFile').fadeIn();
+
+            return false;
+        });
+
+    });
+
+</script>
+
+<div class="contentEditor">
+    <div id="dialogServerFile" class="editor files edefiles floatWin"
+         style="display:none;">
+        <form>
+            <ul class="action-list"></ul>
+        </form>
+    </div>
+</div>
+
+<?php if ($this->r->module != 'publicms' && $this->r->controller != 'profile') { ?>
+    <div id="containerAvatar" style="<?php if ($this->id <= 0) {
+        echo 'display:none;';
+    } ?>">
+        <h2><?= Sydney_Tools_Localization::_('User\'s avatar') ?></h2>
+        <fieldset id="dashboardAvatar">
+            <a class="avatar"
+               href="/adminpeople/index/editindex/id/<?php echo $this->id; ?>">
+                <img id="avatar" width="64" height="64"
+                     src="<?php echo $myavatar = Sydney_Tools::getUrlAvatar($this->avatar); ?>"/>
+            </a>
+
+            <a id="avatar-add" class="button" href="#"><img
+                    src="<?php echo Sydney_Tools::getRootUrlCdn(); ?>/sydneyassets/images/ui/bigbutton/icon_<?php echo(($myavatar != Sydney_Tools::getUrlDefaultAvatar()) ? 'swap' : 'add'); ?>.png"></a>
+            &nbsp;&nbsp;&nbsp;
+            <a id="avatar-remove" class="button warning" href="#"
+               style="<?php echo(($myavatar == Sydney_Tools::getUrlDefaultAvatar()) ? 'display:none;' : ''); ?>"><img
+                    src="<?php echo Sydney_Tools::getRootUrlCdn(); ?>/sydneyassets/images/ui/bigbutton/icon_remove.png"></a>
+
+            <div id="box-upload"
+                 style="display: none; position: relative; margin-top: 65px;">
+                <div style="padding: 8px 8px 20px 8px;">
+                    Upload a
+                    file<?php if ($this->r->module != 'publicms' && $this->r->controller != 'profile') { ?>,
+                        <a class="bigbutton" id="browseServerButton"
+                           href="javascript:return false;"
+                           style="display: inline; float: none;"><?= Sydney_Tools_Localization::_('Browse the server') ?></a>
+                    <?php } ?>
+                    or <a id="fileCancel"
+                          href="javascript: return false;"><?= Sydney_Tools_Localization::_('Cancel') ?></a>
+                </div>
+                <?php
+                // browseButton
+                echo $this->partial('index/upload.phtml', 'adminfiles', array(
+                    'source'   => 'adminpeople',
+                    'peopleid' => $this->id,
+                    'request'  => $this->r
+                ));
+                ?>
+            </div>
+        </fieldset>
+    </div>
+<?php } ?>
+
+<h2 class="formTitle"><?php
+    if ($this->id) {
+        echo Sydney_Tools::_("User's detail");
+    } else {
+        echo Sydney_Tools::_("Create account");
+    }
+    ?></h2>
+<fieldset>
+    <?php echo $this->usersForm; ?>
+</fieldset>

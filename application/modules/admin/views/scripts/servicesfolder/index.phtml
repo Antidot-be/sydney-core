@@ -1,0 +1,42 @@
+/admin/servicesfolder/index/
+
+<script>
+
+    $(function () {
+
+        $('#folderreldiv').foldermanager({
+            'title': 'Categories',
+            'cortable': 'agdevents_agdfolders',
+            'labeltable': 'agdfolders',
+            'datatable': 'agdevents',
+            'dialog': true
+        });
+
+        $('#agdfolderdiv').foldermanager({
+            'title': 'Resources',
+            'cortable': 'agdevents_agdressources',
+            'labeltable': 'agdressources',
+            'datatable': 'agdevents',
+            'parentrelation': false,
+            'dialog': true
+        });
+
+        $('#agdpeepdiv').foldermanager({
+            'title': 'User',
+            'cortable': 'agdevents_users',
+            'labeltable': 'users',
+            'datatable': 'agdevents',
+            'dialog': true,
+            'canadditem': false,
+            'parentrelation': false,
+            'labelfield': 2
+        });
+
+    });
+
+</script>
+
+<div id="folderreldiv"></div>
+<div id="agdfolderdiv"></div>
+<div id="agdpeepdiv"></div>
+

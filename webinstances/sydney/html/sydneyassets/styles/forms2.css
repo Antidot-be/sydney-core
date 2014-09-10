@@ -1,0 +1,134 @@
+
+.zend_form h1 {
+	font-size: 18px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+.zend_form .field input {
+	width: 200px;
+}
+.zend_form .field select {
+	display: inline;
+}
+.zend_form .field input[type=radio] , .zend_form .field input[type=checkbox] {
+	width: 20px;
+}
+.zend_form .formcol1 {
+	display: inline-block;
+	width: 250px;
+	height: 30px;
+}
+.zend_form .formcol2 {
+	display: inline;
+	height: 30px;
+}
+.zend_form .formcol2 br {
+	display: none;
+}
+
+.zend_form .formelement {
+	position: relative;
+}
+
+.zend_form .displayform {
+}
+
+.zend_form .displayfield {
+	background: none repeat scroll 0 0 transparent !important;
+    clear: both;
+    border: 0 none !important;
+    position: relative;
+}
+
+div.field  {
+	position: relative;
+    padding: 30px;
+    margin: 30px;
+   	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+    background: #F8F8F8;
+    border: 1px solid #D0D0D0;
+}
+#loadingLayer
+{
+	display: none;
+	position: fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	overflow: hidden;
+	z-index: 999;
+	background: #FFF;
+	opacity: .5;
+	filter: alpha(opacity = 50);
+}
+.butButton
+{
+	display: inline;
+	padding: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin: 5px;
+	font-size: 1.3em;
+	background: #666;
+	color: #FFF;
+	font-weight: bold;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border-top: 1px solid #888;
+	border-left: 1px solid #999;
+	border-right: 1px solid #333;
+	border-bottom: 1px solid #555;
+	cursor: pointer;
+	text-decoration: none;
+}
+.butButton:hover
+{
+	background: #888;
+}
+.zend_form .formelementerror
+{
+	background:#FFDDDD;
+	color: #FF0000;
+}
+#formERcontainer
+{
+	display: none;
+	background: #FFDDDD;
+	color: #FF0000;
+	max-width: 250px;
+    padding: 7px;
+    text-align: center;
+    font-size: 0.8em;
+    border: 1px solid #FF0000;
+    z-index: 998;
+}
+
+.advancedStepFormCurrent {
+    color: black;
+    font-size: 1.6em !important;
+    padding: 5px;
+}
+
+.advancedStepForm {
+	text-align: center;
+}
+
+.advancedStepForm li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+	font-size: 1.2em;
+}
+
+
+
+.advancedStepForm a {
+}
+
+#advfRequired {
+	text-align: right;
+}

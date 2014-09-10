@@ -1,0 +1,12 @@
+<?php
+$m = array(
+    'index'        => 'Dashboard',
+    'safinstances' => 'Webinstances',
+    'usersgroups'  => 'Groups',
+    'users'        => 'Users',
+    'safmodules'   => 'Modules'
+);
+?>
+<div id="sidebar">
+    <?php echo $this->SideTabs($m, 'index', $this->cdn, $this->moduleName, $this->controllerName, $this->actionName); ?>
+</div>

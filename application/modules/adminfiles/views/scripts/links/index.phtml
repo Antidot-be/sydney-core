@@ -1,0 +1,16 @@
+<?php if (count($this->links) > 0) { ?>
+    <ul id="adminFilesLinksIndex" class="subBox fieldValueList">
+    <?php foreach ($this->links as $container => $content) : ?>
+        <li>
+            <label><?php echo $this->layout()->translate->_($container); ?></label>
+
+            <p><?php foreach ($content as $contentype => $link) : ?>
+                    <?php foreach ($link as $linkid => $linkdetail) : ?>
+                        <a href="<?php echo $linkdetail['link']; ?>"
+                           style="text-decoration:none;"><?php echo $linkdetail['label']; ?></a> &nbsp;&nbsp;&nbsp;(<?php echo $contentype; ?>)
+                        <br/>
+                    <?php endforeach; ?>
+                <?php endforeach; ?></p>
+        </li>
+    <?php endforeach; ?>
+    </ul><?php } ?>

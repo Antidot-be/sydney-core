@@ -1,0 +1,94 @@
+<script>
+    $(function () {
+        $('.detcontent .showcntl').click(function (e) {
+            e.preventDefault();
+            var par = $(this).parent().parent();
+            $('.cnttxt', par).toggle();
+        });
+    });
+    function sugg(t) {
+        $('#searchinput').val(t);
+        $('#viewcontent').load('/adminpages/index/search/sydneylayout/no/', {'q': t});
+    }
+</script>
+<style>
+    .subBox {
+        margin: 5px;
+    }
+
+    .showcntl {
+        color: #1455AA;
+        cursor: pointer;
+        display: inline;
+        padding-left: 35px;
+        font-size: 80%;
+    }
+
+    .cnttxt {
+        padding: 10px;
+        font-size: 80%;
+    }
+
+</style>
+<h2>
+    <img
+        src="<?php echo $this->cdn; ?>/sydneyassets/images/admin/pico-search.png"/>
+    <?= Sydney_Tools_Localization::_('Search results') ?>
+</h2>
+<p>
+    <?= Sydney_Tools_Localization::_('Here are the search result coming from data found in pages content and draft content.') ?>
+</p>
+<div class="searchResults">
+    <?php
+
+    if (count($this->sr) == 0) {
+        ?>
+        <div class="subBox">
+            <center>
+                <br>
+                <b><?= Sydney_Tools_Localization::_('Nothing found ... sorry ...') ?></b>
+                <br>
+                <?= Sydney_Tools_Localization::_('It might be a spelling problem ?') ?>
+                <br>
+                <?= Sydney_Tools_Localization::_('Here are some suggestions for you...') ?>
+                <br>
+                <?php echo $this->spellingSuggestions($this->q); ?>
+                <br>
+            </center>
+        </div>
+    <?php
+    } else {
+        $structure = new Pagstructure();
+        foreach ($this->sr as $l) {
+            ?>
+
+            <div class="subBox">
+                <div class="detcontent">
+                    <div class="srtitle">
+                        <a href="/adminpages/pages/edit/id/<?php echo $l['id']; ?>">
+                            <?php echo $this->textHighLigher($this->breadcrumPubGeneric($structure->getBreadCrumData($this->safinstances_id, $l['id']), ' &gt; ', 1, false), $this->q); ?>
+                        </a>
+
+                        <div
+                            class="dynatree-title-detail"> <?= Sydney_Tools_Localization::_('Page status:') ?> <?php echo $l['pstatus']; ?> <?php if ($l['dstatus'] != '') {
+                                echo ' - ' . $l['dstatus'] . ' element ';
+                            } ?></div>
+                        <div
+                            class="showcntl"><?= Sydney_Tools_Localization::_('Show/hide content...') ?></div>
+                    </div>
+                    <div class="cnttxt" style="display:none;">
+                        <?php
+                        if ($l['content'] != '' && $l['content'] != null) {
+                            echo $this->textHighLigher($l['content'], $this->q);
+                        } else if ($l['content_draft'] != '' && $l['content_draft'] != null) {
+                            echo $this->textHighLigher($l['content_draft'], $this->q);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        <?php
+        }
+    } ?>
+</div>
+

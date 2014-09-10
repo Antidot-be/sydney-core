@@ -1,0 +1,88 @@
+<?php
+$u = $this->user[0];
+$m = array('user' => array());
+foreach ($u as $k => $v) {
+    if (preg_match("/_/", $k)) {
+        $e = preg_split("/_/", $k);
+        if (!isset($m[($e[0])])) {
+            $m[($e[0])] = array();
+        }
+        $m[($e[0])][($e[1])] = $v;
+    } else {
+        $m['user'][$k] = $v;
+    }
+}
+$tohide = array('id', 'active', 'languages');
+$t = $this->translate;
+$ttr = array(
+    'user'        => 'User info',
+    'usersgroups' => 'Group'
+);
+/**
+ * Filters the value
+ * @param string $v
+ */
+function filterValue($v)
+{
+    switch ($v) {
+        case '0000-00-00 00:00:00':
+            $tr = '-';
+            break;
+        case '0':
+            $tr = '-';
+            break;
+        default:
+            $tr = $v;
+    }
+    // format date
+    if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $tr)) {
+        $tr = Sydney_Tools::getDate($tr);
+    } // format email
+    else if (preg_match('/^[A-z0-9 .-_]{1,70}@[A-z0-9 .-_]{1,70}\.[A-z]{2,3}$/', $tr)) {
+        $tr = '<a href="mailto:' . $tr . '">' . $tr . '</a>';
+    } // format URL
+    else if (preg_match('/^(http:\/\/|https:\/\/){0,1}[A-z0-9.-]{1,70}\.[A-z]{2,3}$/', $tr)) {
+        $tr = '<a href="http://' . $tr . '" target="_blank">' . $tr . '</a>';
+    }
+
+    return $tr;
+}
+
+?>
+<style>
+    .myzetab {
+        padding: 20px;
+    }
+
+    .mytdstyle {
+        border-bottom: dotted 1px #666;
+        padding-left: 40px;
+        padding-right: 40px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+</style>
+<?php foreach ($m as $k => $v) { ?>
+    <h2><?php echo $t->_($ttr[$k]); ?></h2>
+    <table class="subBox fieldValueList myzetab" width="100%">
+        <?php foreach ($v as $kk => $vv) {
+            if (!in_array($kk, $tohide)) {
+                if ($vv != '') {
+                    ?>
+                    <tr>
+                        <td class="mytdstyle"><b><?php echo $t->_($kk); ?></b>
+                        </td>
+                        <td class="mytdstyle"><?php echo filterValue($vv); ?></td>
+                    </tr>
+                <?php
+                }
+            }
+        } ?>
+    </table>
+<?php } ?>
+<p class="buttons clearfix">
+    <a class="button"
+       href="/adminpeople/index/editindex/id/<?php echo $this->id; ?>">Edit
+        profile</a>
+</p>
+

@@ -1,0 +1,1373 @@
+/*
+    This file contains all the css rules for the editor
+    Inline and in admin
+*/
+
+
+.hidden {
+    display: none;
+}
+
+#sydney_editor .contentEditor{
+    padding: 1px 0;
+    margin-top: -2px;
+}
+
+#sydney_editor .placeholder{
+    background: transparent;
+}
+
+#sydney_editor .tip{
+    margin: 0 16px;
+    margin-bottom: 27px;
+    padding-left: 18px;
+    font-style: italic;
+}
+
+#sydney_editor .tip .arrow{
+    position: absolute;
+    margin-left: -28px;
+    margin-top: 20px;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li,
+.placeholder_zone > .sydney_editor_li{
+    position: relative;
+    list-style: none;
+    margin: 2px 0px;
+    background: white;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li.editing,
+.placeholder_zone > .sydney_editor_li.editing {
+    background-color: #ffea91;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li .content,
+.placeholder_zone > .sydney_editor_li .content {
+    min-height: 26px;
+    position: relative;
+    z-index: 50;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li .actions,
+.placeholder_zone > .sydney_editor_li .actions {
+    visibility: hidden;
+    position: absolute;
+    width: auto;
+    right: 5px;
+    text-align: right;
+    margin-top: 4px;
+    padding-bottom: 3px;
+    float: right;
+    background-color: white;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 100;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li:hover .actions,
+.placeholder_zone > .sydney_editor_li:hover .actions {
+    visibility: visible;
+}
+#sydney_editor .sydney_editor_li[type=h1] .actions{ margin-top: 7px;}
+
+#sydney_editor .sydney_editor_li[type=h1] .move{ margin-top: 4px;}
+
+#sydney_editor .contentEditor[enabled=true] > .sydney_editor_li:hover .actions {display: block;}
+#sydney_editor .contentEditor > .sydney_editor_li.sorting .actions,
+#sydney_editor .contentEditor > .sydney_editor_li.editing .actions{display: none !important;}
+
+#sydney_editor .contentEditor > .sydney_editor_li .actions > * {
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li .actions .sydney_editor_label {
+    font-size: 9px;
+    color: #626253;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li .actions .sydney_editor_label.labelEditAction {
+    cursor: text;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li .move {
+    display: none;
+    margin-left: -36px;
+    position: absolute;
+    z-index: 300;
+    height: 100%;
+    padding: 4px 7px 4px 4px;
+}
+
+#sydney_editor .contentEditor[enabled=true] > .sydney_editor_li:hover .move {display: block;}
+#sydney_editor .contentEditor > .sydney_editor_li.sorting .move{display: block !important;}
+#sydney_editor .contentEditor > .sydney_editor_li.editing .move{display: none !important;}
+
+#sydney_editor .contentEditor > .sydney_editor_li .move .sydney_editor_a {
+    background: white ;
+    border-radius: 6px 0 0 6px;
+    display: block;
+    overflow: hidden;
+    padding: 5px;
+}
+#sydney_editor .contentEditor > .sydney_editor_li .move .button:hover {
+    border: none;
+}
+#sydney_editor .contentEditor > .sydney_editor_li .move .button{
+    border: none;
+}
+
+#sydney_editor .contentEditor > .sydney_editor_li .move .sydney_editor_a .sydney_editor_span{
+    display: block;
+    width: 22px;
+    border-radius: 4px;
+    height: 21px;
+    background: #0860CC url(/sydneyassets/images/ui/button/icon_order.png) no-repeat center center;
+    text-indent: -3000px;
+    cursor: move;
+}
+
+/*#sydney_editor .contentEditor .editing .editor .action-list .sydney_editor_h2 {*/
+    /*background-color: #edf3ff;*/
+    /*border: 1px solid black;*/
+    /*border-radius: 5px;*/
+    /*cursor: pointer;*/
+    /*padding: 4px;*/
+    /*width: 280px;*/
+/*}*/
+
+li.addContentStatic{
+    margin: 15px 16px;
+    color: rgba(255,255,255, 0.75);
+    background-color: #1455aa;
+    padding: 4px 10px 5px;
+    float: left;
+    clear: both;
+    margin-left: 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#sydney_editor li.addContentStatic .sydney_editor_a{
+    color: white;
+}
+
+#sydney_editor li.addContentStatic .sydney_editor_a:hover{
+    color: white;
+}
+
+#sydney_editor .addContent {
+    margin: 2px 0;
+    padding: 5px 16px;
+    padding-left: 28px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #ffea91;
+    position: relative;
+}
+
+#sydney_editor .addContent .sydney_editor_a,
+#sydney_editor .addContentStatic .sydney_editor_a{
+    font-weight: bold;
+}
+
+#sydney_editor .addContent .close {
+    position: absolute;
+    display: block;
+    left: 0;
+    margin-left: -26px;
+    padding: 4px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    min-height: 22px;
+    line-height: normal;
+    font-weight: normal;
+    background-color: #ffea91;
+    top: 0;
+}
+
+
+#sydney_editor .addHere {
+    background: transparent;
+    height: 5px;
+    font-size: 11px;
+    z-index: 120;
+    position:relative;
+}
+
+#sydney_editor .addHere .ghost {
+    display: block;
+    position: absolute;
+    width: 50px;
+    height: 8px;
+    left: 4px;
+}
+
+#sydney_editor .addHere .sydney_editor_a {
+    display: none;
+    position: absolute;
+    height: 16px;
+    margin-top: -23px;
+    left: -23px;
+    line-height: 15px;
+    padding: 6px;
+    color: White;
+    text-decoration: none;
+    border-radius: 4px;
+    background: none repeat scroll 0 0 #999;
+}
+
+#sydney_editor .contentEditor[enabled=true] .addHere:hover {
+    display: block;
+    background: #cecece; /* Old browsers */
+    background: -moz-linear-gradient(left,  #999 1%, #fff9f9 95%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(1%,#999), color-stop(95%,#fff9f9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #999 1%,#fff9f9 95%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #999 1%,#fff9f9 95%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #999 1%,#fff9f9 95%); /* IE10+ */
+    background: linear-gradient(to right,  #999 1%,#fff9f9 95%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', endColorstr='#fff9f9',GradientType=1 ); /* IE6-9 */
+}
+#sydney_editor .contentEditor[enabled=true] .addHere:hover .sydney_editor_a {
+    display: block;
+}
+
+#sydney_editor .addHere .sydney_editor_a:active {
+    background-position: left -47px;
+}
+
+
+#sydney_editor .content .file {
+    margin: 6px 0;
+    overflow: auto;
+}
+
+#sydney_editor .content .file .sydney_editor_a.thumbnail {
+    margin-right: 10px;
+    float: left;
+}
+
+#sydney_editor .content .file .sydney_editor_a.thumbnail .sydney_editor_img {
+    border: 2px solid #1455aa;
+    vertical-align: top;
+    margin: 4px 0;
+}
+
+#sydney_editor .content .file .sydney_editor_label{
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: normal;
+    margin-bottom: 7px;
+}
+
+#sydney_editor .content .file p.buttons{
+    margin-bottom: 7px;
+}
+
+#sydney_editor .sydney_editor_li .wrapper{
+    overflow: auto;
+    margin-bottom: 15px !important;
+}
+
+#sydney_editor .sydney_editor_li .apptitle{
+    margin: 16px 0 16px 0;
+}
+
+#sydney_editor .sydney_editor_li .apptitle .icon{
+    position: absolute;
+    margin-right: 10px;
+}
+
+#sydney_editor .sydney_editor_li .apptitle .icon .sydney_editor_img{
+    vertical-align: top;
+}
+
+#sydney_editor .sydney_editor_li .apptitle .sydney_editor_h2{
+    font-size: 16px;
+    margin: 0;
+    padding: 7px 8px 9px 56px;
+}
+
+/* @group Styling */
+
+#sydney_editor .content strong,
+#sydney_editor .content b{
+    font-weight: bold;
+}
+
+#sydney_editor .content em,
+#sydney_editor .content i{
+    font-style: italic;
+}
+
+#sydney_editor .content ins{
+    text-decoration: underline;
+}
+
+#sydney_editor .content del{
+    text-decoration: line-through;
+}
+
+#sydney_editor .content cite{
+    font-style: italic;
+}
+
+#sydney_editor .content sup{
+    vertical-align: super;
+    font-size: 55%;
+    line-height: 0;
+}
+
+#sydney_editor .content sub{
+    vertical-align: sub;
+    font-size: 55%;
+    line-height: 0;
+}
+
+#sydney_editor .sydney_editor_li[type=h1] .content .sydney_editor_h1,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h1,
+#sydney_editor .sydney_editor_li[type=h1] .editor input[type=text]{
+    font-size: 22px;
+    font-weight: bold !important;
+    line-height: normal;
+}
+
+#sydney_editor .sydney_editor_li[type=h2] .content .sydney_editor_h2,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h2,
+#sydney_editor .sydney_editor_li[type=h2] .editor input[type=text]{
+    font-size: 18px;
+    font-weight: bold !important;
+    line-height: normal;
+}
+
+#sydney_editor .sydney_editor_li[type=h3] .content .sydney_editor_h3,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h3,
+#sydney_editor .sydney_editor_li[type=h3] .editor input[type=text]{
+    font-size: 16px;
+    font-weight: normal;
+    line-height: normal;
+}
+
+#sydney_editor .sydney_editor_li[type=h4] .content .sydney_editor_h4,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h4,
+#sydney_editor .sydney_editor_li[type=h4] .editor input[type=text]{
+    font-size: 13px;
+    line-height: normal;
+}
+
+#sydney_editor .sydney_editor_li[type=h1] .content .sydney_editor_h1,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h1,
+#sydney_editor .sydney_editor_li[type=h2] .content .sydney_editor_h2,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h2,
+#sydney_editor .sydney_editor_li[type=h3] .content .sydney_editor_h3,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h3,
+#sydney_editor .sydney_editor_li[type=h4] .content .sydney_editor_h4,
+#sydney_editor .sydney_editor_li[editclass=snippet] .content .sydney_editor_h4,
+#sydney_editor .contentsydney_editor_p{
+    margin: 6px 0;
+}
+
+#sydney_editor .content .sydney_editor_ul,
+#sydney_editor .content ol {
+    margin: 0;
+}
+
+#sydney_editor .content .sydney_editor_ul .sydney_editor_li {
+    list-style: disc;
+    margin: 0 0 0px 40px;
+    padding-bottom: 5px;
+}
+
+#sydney_editor .content ol .sydney_editor_li {
+    margin: 0 0 0px 40px;
+    padding-bottom: 5px;
+    list-style-type: decimal;
+}
+
+/* @end */
+
+#sydney_editor .editor{
+}
+
+#sydney_editor .editorsydney_editor_p{
+    margin: 10px 0;
+}
+
+#sydney_editor .sydney_editor_li[type=h1] .editor input[type=text],
+#sydney_editor .sydney_editor_li[type=h2] .editor input[type=text],
+#sydney_editor .sydney_editor_li[type=h3] .editor input[type=text],
+#sydney_editor .sydney_editor_li[type=h4] .editor input[type=text]{
+    width: 588px;
+    margin-top: 6px;
+}
+
+#sydney_editor .editor.heading .sydney_editor_p input {
+    margin: 4px;
+}
+
+#sydney_editor .sydney_editor_li[editclass=heading] .editor p.radiogroup{
+    font-size: 11px;
+    line-height: normal;
+    margin-bottom: 15px;
+    margin-top: -5px;
+    padding-right: 5px;
+    overflow: hidden;
+}
+
+#sydney_editor .editor.heading .sydney_editor_p input{
+margin : 4px;
+}
+#sydney_editor .sydney_editor_li[editclass=heading] .editor p.radiogroup .sydney_editor_label{
+    float: left;
+    margin-right: 5px;
+}
+
+#sydney_editor .sydney_editor_li[editclass=heading] .editor p.radiogroup .sydney_editor_input{
+    vertical-align: bottom;
+}
+
+#sydney_editor .sydney_editor_li[editclass=text] .editor .texteditor{
+    margin-top: 16px;
+}
+
+#sydney_editor .sydney_editor_li .editor .title{
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(50,50,50,0.7);
+    margin: 16px 0 10px 0;
+}
+
+#sydney_editor .sydney_editor_li .editor .title .count{
+    font-weight: normal;
+}
+
+#sydney_editor .sydney_editor_li .editor .title .spinner{
+    float: right;
+}
+
+
+
+#sydney_editor .sydney_editor_li .editor .apptitle .load-smartquery{
+    float: right;
+    color: rgba(50,50,50,0.7);
+    font-size: 11px;
+    line-height: normal;
+    margin-top: 15px;
+}
+
+#sydney_editor .sydney_editor_li .editor .application-list{
+    overflow: auto;
+    margin: 10px 0 16px;
+}
+
+#sydney_editor .sydney_editor_li .editor .application-list > a.apptitle{
+    float: left;
+    width: 183px;
+    text-decoration: none;
+    margin: 3px 3px 0 0;
+    padding: 5px 5px 7px 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 2px solid #CCC;
+    background-color: White;
+}
+
+#sydney_editor .sydney_editor_li .editor .application-list > a.apptitle:hover{
+    border-color: #1455aa;
+}
+
+#sydney_editor .sydney_editor_li .editor .application-list > .sydney_editor_a .sydney_editor_h2{
+    font-size: 14px;
+}
+
+#sydney_editor .sydney_editor_li .editor .action-list{
+    margin: 10px 0 16px;
+    overflow: auto;
+}
+
+#sydney_editor .sydney_editor_li .editor .action-list .sydney_editor_li{
+    float: left;
+    text-decoration: none;
+    margin: 3px 3px 0 0;
+    padding: 8px 8px 9px 8px;
+    padding-left: 30px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 2px solid #CCC;
+    background: url(/sydneyassets/images/ui/actionlist/arrow.png) no-repeat 8px center;
+    background-color: White;
+    cursor: pointer;
+    list-style: none;
+}
+
+#sydney_editor .sydney_editor_li .editor .action-list .sydney_editor_li:hover{
+    border-color: #1455aa;
+}
+
+#sydney_editor .sydney_editor_li .editor .action-list .sydney_editor_a{
+    text-decoration: none;
+}
+
+#sydney_editor .sydney_editor_li .editor .action-list .sydney_editor_li > *{
+    margin: 0;
+}
+
+#sydney_editor .editor .list-left{
+    float: left;
+    width: 350px;
+    margin-top: -15px;
+}
+
+#sydney_editor .editor .list-right{
+    float: left;
+    width: 235px;
+    margin-left: 15px;
+    margin-top: -15px;
+}
+
+#sydney_editor .editor .list-right .table-inset{
+    height: 213px;
+    max-height: 213px;
+}
+
+#sydney_editor .editor .list-right .table-ui{
+    min-height: 350px;
+}
+
+#sydney_editor .editor .list-right table.ui-table tbody td:last-child{
+    text-align: right;
+    padding-right: 7px;
+    white-space: nowrap;
+}
+
+#sydney_editor .editor p.buttons{
+    overflow: auto;
+    margin-bottom: 15px;
+    margin-left: 6px;
+    padding-top: 6px;
+
+}
+
+#sydney_editor .editor p.buttons .sydney_editor_a{
+    margin-right: 3px;
+}
+
+
+/* @end */
+
+
+
+/* Items status
+===============*/
+
+#sydney_editor .contentEditor > .draft {
+    background-image:url("/sydneyassets/images/ui/contenteditor/corner-draft.png") !important;
+    background-position:left bottom !important;
+    background-repeat:no-repeat !important;
+}
+
+.lastUpdatedContent {
+    font-size: 85%;
+    padding: 7px;
+    line-height: 11px;
+    z-index: 10;
+
+}
+
+.lastUpdatedContent td{
+    padding-right: 5px !important;
+}
+
+
+
+
+
+.buttons .button{
+    float: left;
+    margin-right: 0.5em;
+}
+
+.button{
+    font:13px/20px "lucida grande", "segoe ui", "lucida sans unicode", "trebuchet ms", "helvetica neue", helvetica, arial, verdana, sans-serif;
+    font-size: 9px;
+    border: 1px solid #1455aa;
+    line-height: normal;
+    text-align: center;
+    text-decoration: none;
+    margin: 0;
+    margin-left: 4px;
+    padding: 4px 9px 5px 9px;
+    background: #1455aa;
+    white-space:nowrap;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.button .sydney_editor_img{
+    margin-right: 1px;
+    margin-left: -4px;
+    vertical-align: -2px;
+}
+
+.button:link,
+.button:visited{
+    color: white;
+}
+
+.button:hover{
+    border: 1px solid #163a7a;
+}
+
+.button:active{
+    background-image: url(/sydneyassets/images/ui/button/background_active.png);
+}
+
+
+.button:first-child{
+    margin-left: 0;
+}
+
+.button:last-child{
+    margin-right: 0;
+}
+
+.button.cristal:link,
+.button.cristal:visited{
+    font-weight: bold;
+    background: transparent;
+    color: #1455aa;
+}
+.button.cristal:hover{
+    color: #102956;
+}
+
+.button.muted,
+.button.muted:link,
+.button.muted:visited{
+    background-color: #666;
+    border: 1px solid #666;
+}
+.button.muted:hover{
+    border: 1px solid #444;
+}
+
+.button.warning:link,
+.button.warning:visited{
+    background-color: #dd2222;
+    border: 1px solid #dd2222;
+}
+.button.warning:hover{
+    border: 1px solid #b81d1d;
+}
+
+.button.icononly{
+    width: 22px;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+
+.button.icononly .sydney_editor_img{
+    margin-right: 0px;
+    margin-left: 0px;
+    vertical-align: -2px;
+}
+
+.button.publish:link, .button.publish:visited {
+    background-color:#009933;
+    border:1px solid #009933;
+}
+
+.button.unpublish:link, .button.unpublish:visited {
+    background-color:#DD2222;
+    border:1px solid #DD2222;
+}
+
+.button.publish, .button.publishdiv {
+    background-color:#009933;
+    border:1px solid #009933;
+    color:white;
+    cursor: pointer;
+}
+
+.button.unpublish, .button.unpublishdiv {
+    background-color:#DD2222;
+    border:1px solid #DD2222;
+    color:white;
+    cursor: pointer;
+}
+.offlinediv {
+    border: 2px solid #6699ff;
+}
+
+/* Content tabs */
+.tabs .sydney_editor_ul
+{
+    font: normal 14px arial, sans, sans-serif;
+    list-style-type: none;
+    margin: 0;
+    padding-left:0;
+    padding-right:0;
+    padding-bottom: 26px;
+}
+
+.tabs .sydney_editor_ul .sydney_editor_li
+{
+    border-left: medium solid silver;
+    border-right: 1px solid silver;
+    border-top: 1px solid silver;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: inline;
+    float: left;
+    height: 24px;
+    margin: 1px 0 0;
+    min-width: 80px;
+    padding: 0;
+    text-align: center;
+}
+
+.tabs .sydney_editor_ul .sydney_editor_li.selected
+{
+    background-color: #fff;
+}
+
+
+.tabs .sydney_editor_ul .sydney_editor_li .sydney_editor_a
+{
+    float: left;
+    color: #666;
+    text-decoration: none;
+    padding: 4px;
+    text-align:center;
+    min-width:80px;
+}
+
+.tabs .sydney_editor_ul .sydney_editor_li .sydney_editor_a.selected
+{
+    color: #000;
+    font-weight:bold;
+    background-color: #fff;
+}
+
+.tabs .sydney_editor_ul .sydney_editor_li .sydney_editor_a:hover
+{
+    color: #000;
+    font-weight:bold;
+}
+
+.tabs .draft {
+}
+
+.tabs .active {
+    background: white;
+}
+
+.tabs .notactive {
+    background: #E8E1E1;
+}
+/* END Content tabs */
+
+.ui-widget-overlay {
+    background: none;
+    background-color: #000;
+    opacity: 0.5;
+}
+
+
+
+/* Zones managing */
+.zone{
+    min-height:150px;
+    margin: 15px 0;
+    padding:0px;
+}
+.zone .zone_name{
+    color: white;
+    padding:8px;
+    font-size: 16px;
+    text-align: center;
+    background: silver;
+    width: 200px;
+    font-weight: bold;
+    -webkit-border-radius: 5px 5px 0 0;
+    border-radius: 3px 3px 0 0;
+}
+.zone .placeholder_zone{
+    min-height:100px;
+    padding: 3px 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 3px 3px;
+}
+
+.add_first{
+    display: inline-block;
+    padding: 0 7px 4px;
+    margin: 0 0 0 10px;
+    border: 1px solid white;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.previewLayout{
+    overflow: hidden;
+    position: relative;
+}
+
+.sydney_editor_li div.mainbox{
+    float: none;
+}
+
+.clearfix2:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix2 {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix2 {
+    display: block;
+}
+
+* html .clearfix2 {
+    height: 1%;
+}
+
+#sydney_editor .sydney_editor_li .editor .action-list .sydney_editor_li .sydney_editor_h2 {
+    font-size: 14px;
+    width: 200px;
+}
+#sydney_editor .sydney_editor_li .editor .action-list .sydney_editor_li > * {
+    margin: 0;
+}
+
+#sydney_editor .sydney_editor_h2 {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 15px 0;
+    color: #333;
+}
+#sydney_editor .sydney_editor_h2 .subheading {
+    color: #777;
+    display: block;
+    font-size: 9px;
+    font-weight: normal;
+    line-height: 1.2;
+}
+
+
+/* --------- Règles pour les news --------*/
+
+
+.listviewbs,
+#sydney_editor .listviewbs{
+    background-image: url(/sydneyassets/images/ui/toolbar/list.png);
+}
+
+        /* TOOLBAR*/
+
+.sydney_editor_toolbar{
+    padding: 7px 10px;
+    margin: 0;
+    background-color: #e8e8e8;
+    font-size: 11px;
+    line-height: 22px;
+    overflow: auto;
+}
+
+.sydney_editor_toolbar form {
+    margin-bottom: 15px;
+}
+
+.sydney_editor_toolbar form > div {
+    float: left;
+    margin-right: 25px;
+}
+
+.sydney_editor_toolbar label {
+    color: #777;
+    float: left;
+    font-size: 11px;
+    margin-right: 8px;
+}
+
+.sydney_editor_toolbar .buttons {
+    float: left;
+}
+
+.sydney_editor_toolbar .buttons .sydney_editor_a {
+    background-color: #e8e8e8;
+    background-repeat: no-repeat;
+    display: block;
+    float: left;
+    height: 20px;
+    text-indent: -3000px;
+    width: 26px;
+}
+
+.sydney_editor_toolbar .buttons .sydney_editor_a.active {
+    background-position: 0 100%;
+    cursor: default;
+}
+.sydney_editor_toolbar .buttons .sydney_editor_a:first-child {
+    border: 1px solid #777;
+}
+
+
+.sydney_editor_toolbar #sortBy2, .sydney_editor_toolbar #sortBy1 {
+    font-size: 9px;
+}
+.sydney_editor_toolbar select {
+    float: left;
+    margin-top: 4px;
+    max-width: 135px;
+}
+
+.sydney_editor_toolbar .ui-toolbar-smartquery-toggle {
+    background: url(/sydneyassets/images/ui/toolbar/smartquery_off.png) no-repeat scroll 1px 1px rgba(0, 0, 0, 0);
+    display: block;
+    float: left;
+    height: 18px;
+    margin-top: 2px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 18px;
+}
+
+        /*File editor */
+.sydney_editor_toolbar form {
+    margin-bottom: 15px;
+}
+.sydney_editor_toolbar .buttons a.active {
+    background-position: 0 100%;
+    cursor: default;
+}
+.sydney_editor_toolbar .buttons a {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #e8e8e8;
+    background-position: left top;
+    background-repeat: no-repeat;
+    border-color: #777 #777 #777 -moz-use-text-color;
+    border-image: none;
+    border-style: solid solid solid none;
+    border-width: 1px 1px 1px 0;
+    display: block;
+    float: left;
+    height: 20px;
+    text-indent: -3000px;
+    width: 26px;
+}
+
+#sydney_editor .editor .flatlistmenu .polinlinkflat {
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#sydney_editor .editor .flatlistmenu li {
+    display: inline;
+    float: left;
+}
+
+#filesBrowse ul.sydney_editor_paging {
+    margin-top: 8px;
+}
+#filesBrowse ul.filesGallery {
+    overflow: auto;
+    padding: 0 8px 0 16px;
+}
+#filesBrowse ul.filesGallery li, #filesBrowse ul.filesGallery img {
+    width: 110px;
+}
+#filesBrowse ul.filesGallery li {
+    background: none repeat scroll 0 0 #fff;
+    border: 2px solid White;
+    border-radius: 5px;
+    float: left;
+    height: 160px;
+    line-height: 12px;
+    margin: 0 10px 10px 0;
+    padding: 9px 7px 15px;
+    text-align: center;
+}
+#filesBrowse ul.filesGallery li:hover {
+    border: 2px solid #416582;
+}
+#filesBrowse ul.filesGallery div.icon {
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 110px;
+    width: 110px;
+}
+#filesBrowse ul.filesGallery a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+}
+
+        /* Black Bubble Popup which appear on file hover */
+
+.jquerybubblepopup {
+    background-color: transparent;
+    border: 0 none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    width: auto;
+    z-index: 900;
+}
+.jquerybubblepopup table {
+    background-color: transparent;
+    border: 0 none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    empty-cells: show;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+.jquerybubblepopup tbody {
+    background-color: transparent;
+    border: 0 none;
+    display: table-row-group;
+    vertical-align: middle;
+}
+.jquerybubblepopup td {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+caption, th, td {
+    font-weight: normal;
+    text-align: left;
+}
+.jquerybubblepopup-top-left, .jquerybubblepopup-top-right, .jquerybubblepopup-bottom-left, .jquerybubblepopup-bottom-right {
+    background-repeat: no-repeat;
+    height: 21px;
+    overflow: hidden;
+    width: 21px;
+}
+.jquerybubblepopup-top-middle, .jquerybubblepopup-bottom-middle {
+    background-repeat: repeat-x;
+    overflow: hidden;
+}
+.jquerybubblepopup-top-left, .jquerybubblepopup-top-right, .jquerybubblepopup-bottom-left, .jquerybubblepopup-bottom-right {
+    background-repeat: no-repeat;
+    height: 21px;
+    overflow: hidden;
+    width: 21px;
+}
+
+.jquerybubblepopup-middle-left, .jquerybubblepopup-middle-right {
+    background-repeat: repeat-y;
+    overflow: hidden;
+}
+.jquerybubblepopup-all-black .jquerybubblepopup-innerHtml {
+    background-color: #000000;
+}
+
+
+        /* PAGINATION (PAGING) */
+.sydney_editor_paging > #pagination > li a,
+.sydney_editor_paging > #pagination-header > li a,
+.sydney_editor_paging > #pagination-footer > li a {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.sydney_editor_paging > #pagination > li input,
+.sydney_editor_paging > #pagination-header > li input,
+.sydney_editor_paging > #pagination-footer > li input {
+    border: 2px solid #999;
+    padding-bottom: 7px;
+    text-align: center;
+    width: 35px;
+}
+
+.sydney_editor_paging * {
+    display: inline;
+}
+a {
+    color: #1455aa;
+}
+.sydney_editor_paging ul li:first-child:before {
+    content: "<< ";
+}
+.sydney_editor_paging ul li + li:after {
+    content: " >>";
+}
+
+.sydney_editor_paging ul li + li {
+    float: right;
+    margin-right: -8px;
+}
+
+.sydney_editor_paging ul li:first-child {
+    float: left;
+    margin-left: -8px;
+}
+.sydney_editor_paging {
+    font-size: 11px;
+    line-height: 1.2;
+    margin: 15px 19px 9px;
+    padding-top: 4px;
+    text-align: center;
+    padding-bottom: 16px;
+}
+
+#sydney_editor ol,
+#sydney_editor ul {
+    list-style: none outside none;
+}
+.sydney_editor_paging ul .sydney_editor_li {
+    display: block;
+    padding-top: 8px;
+}
+#sydney_editor .tree {
+    background: none repeat scroll 0 0 white;
+    margin: 4px 0;
+}
+#sydney_editor element.style {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: default;
+}
+
+#sendmailsForm li.row,
+#sydney_editor #sendmailsForm li.row {
+    background-color: #eee;
+    border-radius: 8px;
+    margin: 1px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.tree .row,
+#sydney_editor .tree .row {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 8px 16px;
+    position: relative;
+}
+
+#sendmailsForm li.row table,
+#sydney_editor #sendmailsForm li.row table {
+    width: 100%;
+}
+
+table,
+#sydney_editor table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#sendmailsForm li.row td,
+#sydney_editor #sendmailsForm li.row td {
+    text-align: left;
+    vertical-align: top;
+}
+
+#sendmailsForm li.row td.dates,
+#sydney_editor #sendmailsForm li.row td.dates {
+    width: 10%;
+}
+
+#sendmailsForm li.row td.newslabel,
+#sydney_editor #sendmailsForm li.row td.newslabel {
+    width: 30%;
+}
+
+.shortdee,
+#sydney_editor .shortdee {
+    font-size: 80%;
+    padding-left: 10px;
+}
+
+#sendmailsForm li.row td.author,
+#sydney_editor #sendmailsForm li.row td.author {
+    width: 20%;
+}
+
+#sendmailsForm .tree .status,
+#sydney_editor #sendmailsForm .tree .status {
+    border-radius: 3px;
+    color: #fff;
+    font-size: 0.6em;
+    margin: 5px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.tree span.status,
+#sydney_editor .tree span.status {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    z-index: 40;
+}
+
+#sendmailsForm .tree .status.published,
+#sydney_editor #sendmailsForm .tree .status.published {
+    background-color: green;
+}
+
+#sendmailsForm .tree .status.draft,
+#sydney_editor #sendmailsForm .tree .status.draft {
+    background-color: red;
+}
+
+#sendmailsForm li.row.selectedmail,
+#sydney_editor #sendmailsForm li.row.selectedmail
+{
+    background-color: #CCC;
+}
+
+    /* CSS rules fora News categories */
+
+#sydney_editor .gentreeli {
+    background: none repeat scroll 0 0 #ffffff;
+}
+
+#sydney_editor ul.dynatree-container {
+    background-color: white;
+    border: 1px dotted gray;
+    font-family: tahoma,arial,helvetica;
+    font-size: 10pt;
+    overflow: auto;
+    padding: 3px;
+    white-space: nowrap;
+}
+
+#sydney_editor span.dynatree-node {
+    border-bottom: 1px dotted silver;
+    display: block;
+    margin-bottom: 3px;
+    padding-bottom: 6px;
+    width: 100%;
+}
+
+#sydney_editor span.dynatree-expander {
+    background-image: url(/sydneyassets/images/dynatree/skin/bullet_expand_on.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+}
+
+#sydney_editor span.dynatree-checkbox {
+    background-image: url(/sydneyassets/images/dynatree/skin/cbUnchecked.gif);
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    margin-left: 3px;
+    width: 13px;
+}
+
+#sydney_editor span.dynatree-node a {
+    display: inline-block;
+    padding-left: 3px;
+    padding-right: 3px;
+    position: relative;
+    z-index: 1;
+}
+
+
+
+/* Display options CSS */
+
+#sydney_editor .news_listitem h2{
+    font-size: 14px;
+    list-style: none;
+    color: #3C3B37;
+}
+#sydney_editor .news_listitem h2:hover{
+    font-size: 14px;
+    list-style: none;
+    color: #C4C4C4;
+}
+
+#sydney_editor .draft .content{
+    margin-bottom : 45px;
+}
+
+#sydney_editor div.options{
+    font-size: 10px;
+    background: none repeat scroll 0 0 #cccccc;
+    display: block;
+    position: absolute;
+    height: 20px;
+    width:100px;
+    z-index: 10000;
+
+    border-bottom: 1px solid black;
+    border-radius: 0 0 10px 10px;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+    box-shadow: 5px 5px 5px #888;
+    top: -1px;
+}
+
+#sydney_editor div.options h1 {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 5px;
+    border-radius: 0 0 10px 10px;
+    margin: 0;
+}
+
+div.options a.bigbutton {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+div.displayOptions {
+    padding: 5px 15px 15px 15px;
+}
+
+div.displayOptions th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.bigbutton, .buttonsbox input[type="submit"], input[type="button"] {
+    background: none repeat-x scroll left center #1455aa;
+    border: 1px solid #1455aa;
+    border-radius: 4px;
+    color: white !important;
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 0 10px 10px 0;
+    padding: 9px 15px 10px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 Black;
+}

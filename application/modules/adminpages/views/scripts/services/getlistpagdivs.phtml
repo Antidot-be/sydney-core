@@ -1,0 +1,20 @@
+<ul>
+    <li class="liTitle">Link to a specific object?</li>
+    <?php
+    if (count($this->listContents) > 0) {
+        foreach ($this->listContents as $content) {
+            echo '<li id="', $content['code'], '-', $content['pagdivs_id'], '">';
+
+            if (empty($content['label'])) {
+                echo $content['code'], '-', $content['pagdivs_id'];
+            } else {
+                echo $content['label'];
+            }
+
+            echo '</li>';
+        }
+    } else {
+        echo 'No objects found!';
+    }
+    ?>
+</ul>

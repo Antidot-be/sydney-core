@@ -1,0 +1,24 @@
+<?php
+function listrecursor(&$el)
+{
+    print '<ul>';
+    foreach ($el as $l) {
+        print '<li>';
+        if ($l['isnode'] > 0) {
+            print $l['label'];
+        } else {
+            print '<a href="' . $l['id'] . '">' . $l['label'] . '</a>' . "\n";
+        }
+        if (isset($l['children']) && count($l['children']) > 0) {
+            listrecursor($l['children']);
+        }
+        print '</li>';
+    }
+    print '</ul>';
+}
+
+listrecursor($this->list);
+
+//print_r( $this->list );
+?>
+

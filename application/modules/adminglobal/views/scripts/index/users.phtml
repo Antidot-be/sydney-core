@@ -1,0 +1,8 @@
+<br>
+<?php
+echo $this->DataTable('Users', array(
+    'hidefields'   => 'phone,cell,email,active,safinstances_id,subscribedate,unsubscribedate,modifieddate,ip,creatoridentity,avatar,password',
+    'editurl'      => '/adminpeople/index/edit/',
+    'editablecols' => 'login,fname,lname,mdname,valid'
+));
+?>

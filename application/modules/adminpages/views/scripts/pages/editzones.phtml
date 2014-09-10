@@ -1,0 +1,206 @@
+<?php
+$isDeveloper = $this->isDeveloper;
+$pagstructure_id = $this->pagstructure_id;
+
+echo $this->helpBox('/adminhelp/index/index/section/pageedit');
+
+
+// Pr�traitement ici
+$contentZones = array();
+$contentWithoutZones = array();
+foreach ($this->contentDivs as $div) {
+    $coresp = new PagstructurePagdivs();
+    $params = array('editLabel' => $div['label']);
+    $isDeletable = true;
+    $isDraft = false;
+    $workflowEnabled = $div['workflowEnabled'];
+    $isEditable = $div['isEditable'];
+    $accessRightsEnabled = $div['accessRightsEnabled'];
+    $msgNotEditable = $div['msgNotEditable'];
+    $isShared = $coresp->isDivShared($div['pagdivs_id'], $div['pagstructure_id']);
+    if ($isShared) {
+        $sharedinids = Zend_Json::encode($coresp->getIDsOfStructureWhereShared($div['pagdivs_id']));
+    }
+    if ($sharedinids == '') {
+        $sharedinids = "[" . $pagstructure_id . "]";
+    }
+
+    if (!empty($div['content_draft'])) {
+        $isDraft = true;
+        if (!empty($div['content'])) {
+            $isDeletable = false;
+        }
+        if ($div['params_draft'] != '') {
+            eval('$params =' . $div['params_draft'] . ';');
+        }
+        $content = $div['content_draft'];
+        $params['addClass'] = 'draft';
+    } else {
+        if ($div['params'] != '') {
+            eval('$params =' . $div['params'] . ';');
+        }
+        $params['addClass'] = '';
+        $content = $div['content'];
+    }
+
+
+    if ($isShared) {
+        $params['addClass'] .= ' isShared';
+    }
+    if ($div['online']) {
+        $params['addClass'] .= ' onlinediv';
+    } else {
+        $params['addClass'] .= ' offlinediv';
+    }
+    if ($div['accessRightsFiltered']) {
+        $params['addClass'] .= ' accessRightsFilteredDiv';
+    }
+
+    ?>
+
+    <?php
+    $tabs = '';
+    if ($isDraft) { // tab only when draft content
+        $tabs = '
+			<div class="tabs" id="tabs-' . $div['pagdivs_id'] . '">
+			    <ul>
+			        <li id="draft-' . $div['pagdivs_id'] . '" class="draft active"><a href="' . $div['pagdivs_id'] . '">Draft</a></li>
+			        <li id="published-' . $div['pagdivs_id'] . '" class="published notactive"><a href="' . $div['pagdivs_id'] . '">Actual content</a></li>
+			    </ul>
+			</div>';
+    }
+
+    $paramsEditorAction = array(
+        'dbid'  => $div['pagdivs_id'],
+        'label' => ($div['label'] ? $div['label'] : $div['code'] . '-' . $div['pagdivs_id'])
+    );
+
+    $contentToDisplay = $this->{$div['helper']}(
+        $tabs . $this->EditorActions(
+            $isDeletable,
+            $isDraft,
+            $div['online'],
+            $workflowEnabled,
+            $isEditable,
+            $accessRightsEnabled,
+            $msgNotEditable,
+            $paramsEditorAction,
+            $isShared),
+        $content,
+        $div['pagdivs_id'],
+        $div['order'],
+        $params,
+        $this->moduleName,
+        $pagstructure_id,
+        $sharedinids
+    );
+
+    if (!empty($div['zone']) && $this->layout->zoneExists($div['zone'])) {
+        $nameZone = $div['zone'];
+        $contentZones[$nameZone][] = $contentToDisplay;
+    } else {
+        $contentWithoutZones[] = $contentToDisplay;
+    }
+
+}
+?>
+<script>
+
+    var pagstructureid = <?php echo $this->pagid; ?>;
+    var emodule = "<?php echo $this->emodule; ?>";
+
+    $(document).ready(function () {
+        $(this).Antidot_Contenttabs();
+    });
+</script>
+<style>
+    .accessRightsFilteredDiv {
+        border: 2px solid orange;
+    }
+
+    .isShared {
+        border: 2px solid #008800;
+    }
+</style>
+<div id="sharedialog"></div>
+<div id="savebutton">
+    <input class="button bigwbutton" type="button" value="Save order"/>
+</div>
+<div class="ceUILibrary" style="display: none;">
+    <div class="addContent">
+        <p class="items">
+            <?php echo $this->EditorAddContentBar(); ?>
+        </p>
+
+        <p class="close"><a class="button" href="#">Close</a></p>
+    </div>
+    <div class="addHere">
+        <span class="ghost"></span>
+        <a href="#" onclick="return false;">Add here</a>
+    </div>
+    <li class="blankitem">
+        <?php echo $this->EditorActions(); ?>
+        <div class="content"></div>
+    </li>
+    <?php
+    // print the result of the helpers
+    $tyDB = new Pagdivtypes();
+    foreach ($tyDB->fetchAll('online = 1') as $e) {
+        if (($e->developeronly == 1 && $isDeveloper) || $e->developeronly == 0) {
+            $hlpr = $e->helperadmin;
+            // echo '<!-- Helper '.$e->label.' -->'."\n";
+            echo $this->$hlpr();
+        }
+    }
+    ?>
+</div>
+
+
+<!-- DEPLACER DANS UN FICHIER CSS !!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!
+-->
+
+<div style="width: 100%">
+    <h2>Manage zones</h2>
+    <h4>Drag'n'drop content on zones you want</h4>
+    <?php
+    foreach ($this->zones as $zone):
+        ?>
+        <div class="zone <?php echo $zone; ?>" id="<?php echo $zone; ?>">
+            <div class="zone_name"
+                 style="background: <?php echo $zone->getColor(); ?>">
+                <?php echo $zone; ?>
+                <span class="add_first">+</span>
+            </div>
+            <ul class="placeholder_zone contentEditor"
+                style="background: <?php echo $zone->getColor(); ?>">
+                <?php
+                if (isset($contentZones[$zone->getName()])) {
+                    foreach ($contentZones[$zone->getName()] as $content) {
+                        echo $content;
+                    }
+                }
+                ?>
+            </ul>
+        </div>
+    <?php
+    endforeach;
+    ?>
+</div>
+
+<ul id="pageContent" class="contentEditor"
+    pagstructureid="<?= $pagstructure_id ?>">
+
+    <?php foreach ($contentWithoutZones as $content) {
+        echo $content;
+    }
+    ?>
+
+</ul>
+
+<div class="contentEditor">
+    <p class="addContentStatic">
+        <?php echo $this->EditorAddContentBar(); ?>
+    </p>
+</div>
+

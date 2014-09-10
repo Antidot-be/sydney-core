@@ -1,0 +1,69 @@
+<div id="sidebar">
+
+
+    <div id="sidebarSaveOrCancel" class="actions clearfix"
+         style="display:none;">
+        <a id="sidebarButtonSaveOrder" class="bigbutton btnGreen" href="#">Save
+            order</a> or <a href="/adminpages">Cancel</a>
+    </div>
+    <div id="sidebarButtonNewPage" class="actions clearfix">
+        <a class="bigbutton" href="/adminpages/index/create/"><img
+                src="<?php echo $this->cdn; ?>/sydneyassets/images/ui/bigbutton/icon_add.png"/>New
+            Page</a>
+    </div>
+
+    <!-- START - Content languages -->
+    <?php if (Sydney_Tools_Localization::isMultiLanguageContentActive()) { ?>
+        <div class="pod">
+            <h2><?php echo Sydney_Tools_Localization::_('Current content language'); ?></h2>
+            <img
+                src="<?php echo $this->cdn; ?>/sydneyassets/images/lock-blank.png"
+                class="flag flag-<?= Sydney_Tools_Localization::getCurrentContentLanguage() ?>"
+                alt="<?= Sydney_Tools_Localization::getCurrentContentLanguage() ?>"/>
+        </div>
+
+        <div class="pod">
+            <h2><?php echo Sydney_Tools_Localization::_('Other content languages'); ?></h2>
+            <?php
+            $contentLanguages = Sydney_Tools_Localization::getContentLanguages();
+            foreach ($contentLanguages as $language) {
+                if ($language !== Sydney_Tools_Localization::getCurrentContentLanguage()) {
+                    ?>
+                    <a href="<?= Sydney_Tools_Paths::getRootUrl() . '/' . $this->moduleName . '?clang=' . $language ?>"><img
+                            src="<?php echo $this->cdn; ?>/sydneyassets/images/lock-blank.png"
+                            class="flag flag-<?= $language ?>"
+                            alt="<?= $language ?>"/></a>
+                <?php
+                }
+            }
+            ?>
+        </div>
+    <?php } ?>
+    <!-- END - Content languages -->
+
+    <div class="pod"><h2>Recycle Bin</h2>
+
+        <div jq-trigger="deletenode" jq-load="/adminpages/recyclebin/sidebar">
+            <?php
+            echo $this->action('sidebar', 'recyclebin', 'adminpages');
+            ?>
+        </div>
+    </div>
+    <hr/>
+    <div class="pod"><h2>Recent activity</h2>
+
+        <div jq-trigger="deletenode unpublishpage publishpage"
+             jq-load="/adminsidebars/safactivitylog/pages">
+            <?php
+            echo $this->action('pages', 'safactivitylog', 'adminsidebars');
+            ?>
+        </div>
+    </div>
+
+    <!--
+	<div class="pod"><h2>Search Index</h2>
+		<a id="adminsidebarsSearchIndex" class="button" href="/adminpages/lucene/build/format/json">Build Lucène index</a>
+		<img id="adminsidebarsLoading" style="display:none;width:50px;" src="<?php echo Sydney_Tools::getRootUrlCdn() . '/sydneyassets/images/ui/search/ajax-loader.gif'; ?>" />
+	</div>		
+	 -->
+</div>

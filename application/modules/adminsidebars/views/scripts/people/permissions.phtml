@@ -1,0 +1,46 @@
+<?php
+$s = $this->actionName;
+$id = $this->id;
+
+$ss = array(
+    'profile'     => array(
+        array('<strong>', '</strong>'),
+        array('', ''),
+        array('', ''),
+        array('', '')
+    ),
+    'editindex'   => array(
+        array('', ''),
+        array('<strong>', '</strong>'),
+        array('', ''),
+        array('', '')
+    ),
+    'permissions' => array(
+        array('', ''),
+        array('', ''),
+        array('', ''),
+        array('<strong>', '</strong>')
+    ),
+);
+?>
+<div id="sidebar">
+    <div class="actions clearfix">
+        <a href="/adminpeople/index/index/" class="bigbutton muted"> Back to all
+            Users </a>
+    </div>
+
+    <?php if (isset($this->id) && $this->id > 0) {
+        ?>
+        <ul id="localnav" class="clearfix">
+            <li><?php echo $ss[$s][0][0]; ?><a
+                    href="/adminpeople/index/profile/id/<?php echo $id; ?>">Profile</a><?php echo $ss[$s][0][1]; ?>
+            </li>
+            <li><?php echo $ss[$s][1][0]; ?><a
+                    href="/adminpeople/index/editindex/id/<?php echo $id; ?>">Edit</a><?php echo $ss[$s][1][1]; ?>
+            </li>
+            <li><?php echo $ss[$s][3][0]; ?><a
+                    href="/adminpeople/index/permissions/id/<?php echo $id; ?>">Permissions</a><?php echo $ss[$s][3][1]; ?>
+            </li>
+        </ul>
+    <?php } ?>
+</div>

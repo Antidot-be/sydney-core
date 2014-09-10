@@ -1,0 +1,353 @@
+<?php
+//echo $this->docType('XHTML1_STRICT');
+
+if (isset($this->layout()->avmodules[($this->layout()->currentModule)])) $mdn = $this->layout()->currentModule;
+else $mdn = 'default';
+$pprops = $this->layout()->avmodules[$mdn];
+
+
+$trans = $this->layout()->translate;
+
+echo '<'.'?'.'xml version="1.0" encoding="utf-8"'.'?'.'>'."\n\n";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="content-type"
+		        content="application/xhtml+xml; charset=utf-8"/>
+		<?php echo $this->headTitle(); ?>
+		<script type="text/javascript">
+			var sydneyadmin=true;
+			var current_instance = <?php echo $this->safinstances_id; ?>;
+			var applicationLanguage	= "<?php echo $settingsNms->ApplicationLanguage; ?>";
+			var _ENV = "<?= Sydney_Tools_Sydneyglobals::getConf('general')->env ?>";
+		</script>
+		<?php echo $this->headStyle(); ?>
+		<?php echo $this->headScript(); ?>
+		<?php echo $this->headLink(); ?>
+		
+		<style>
+			.filelistscroll	{
+				/*height: 390px;
+				height: 590px;*/
+				/* border: 1px solid #C5C5C5; */
+				height: 360px;
+				overflow:auto;
+				/* background:#C5C5C5;*/
+				/* padding:5px; */
+			}
+			#filesBrowse ul.filesGallery {
+				height: 360px;
+				overflow:auto;
+				padding:0 2px 0 4px;
+			}
+			#sitemap {
+				height: 450px;
+				overflow:auto;				
+			}
+			
+			.tree label {
+				height: 15px;
+				width:450px;
+			}
+			
+			.tree span.status {
+				background: none;
+			}
+			
+			#nodeContentObjects {
+			    background: none repeat scroll 0 0 #A1A1A1;
+			    overflow-y: auto;
+			    padding: 5px;
+			    z-index:100;			    
+			    display: none;
+			    
+			    height: 200px;
+			    max-height: 250px;			    
+			    width: 200px;
+			    max-width: 250px;
+
+				position: fixed;
+			    top: 77px;
+			    right: 0;
+			    
+				border: solid black 1px;
+			    border-right: 0;
+			    
+			    -moz-border-radius: 10px 0 0 10px;
+			    border-radius: 10px 0 0 10px;
+				
+				-moz-box-shadow: 5px 5px 5px black;
+				-webkit-box-shadow: 5px 5px 5px black;
+				box-shadow: 5px 5px 5px black;
+			    
+			}
+			
+			#nodeContentObjects ul {
+				display: block
+			}
+			
+			#nodeContentObjects li {
+				cursor: pointer;
+				text-decoration: underline;
+				font-size: 12px;
+			}
+			
+			#nodeContentObjects li.liSelected {
+				background: #CCCCCC;
+			}			
+			
+			#nodeContentObjects li.liTitle {
+				cursor: default;
+				font-weight: bold;
+				font-size: 13px;
+				text-decoration: none;
+			}				
+			
+		</style>
+		
+		<script>
+		$(document).ready(function() {
+                    var alreadyLoadedDisplayFiles = false;
+                    var selectedPageNode = 0;
+                    var selectedPageNodeObject = '';
+
+                    <?php if ($this->ckeditor_context == "image") {?>
+                    $('#sortBy2').val(1).change();
+                    <?php } else {	?>
+                    $(".dynatree-node").unbind('click')
+                                       .unbind('mouseover')
+                                       .unbind('mouseout');
+
+		    // Initialize the tree in the onload event
+		    $("#viewcontent").dynatree({
+
+			autoCollapse: false,
+                        persist: false,
+	    		selectMode: 1,
+			    
+	    		onActivate: function(node) {
+
+				// remove selection from all nodes
+		        	$(".dynatree-node").removeClass('itemselected');
+
+		        	// select current node
+				node.data.addClass	= 'itemselected';
+		        	selectedPageNode 	= node.data.key;
+
+		        	// render
+		        	node.render(true);
+
+					// display object's node
+		        	$('#nodeContentObjects').fadeOut('slow',function () {
+			        	$('#nodeContentObjects').html('Loading...Please wait...');
+			        	$.get('/adminpages/services/getlistpagdivs/?dbid='+node.data.key, function(data) {
+			        		selectedPageNodeObject = '';
+			        		$('#nodeContentObjects').html(data);
+			        		if ($('#nodeContentObjects').is(':hidden')) {
+			        			$('#nodeContentObjects').show("slide", { direction: "right" }, 1000);
+			        		}
+
+			        		$('#nodeContentObjects li').not('.liTitle').click(function() {
+				        		if ($(this).hasClass('liSelected')) {
+				        			$('#nodeContentObjects li').removeClass('liSelected');
+				        			selectedPageNodeObject = '';	
+				        		} else {
+				        			$('#nodeContentObjects li').removeClass('liSelected');
+				        			$(this).addClass('liSelected');
+				        			selectedPageNodeObject = $(this).attr('id');						        		
+				        		}
+			        		});
+			        	});
+			        });
+
+			        return true;
+		        },
+		        onDeactivate: function(node) {
+		        	node.data.addClass	= '';
+		        },
+	    	    onExpand: null,
+	    	    dnd: null     
+		    });
+		    <?php } ?>		
+
+			$('#sitemap div.row').hover(function() {
+				$(this).addClass('itemselected');
+				
+			},function () {
+				$(this).removeClass('itemselected');
+			});
+
+			$('#sitemap a').click(function() {
+				return false;				
+			});			
+
+			$('#sitemap div.row').click(function() {
+				if ($(this).hasClass('appear')) {
+					$(this).removeClass('appear');
+					selectedPageNode = 0;
+				} else {
+					$('#sitemap div.row').removeClass('appear');
+					$(this).addClass('appear');
+					
+					var target_url 		= $('label > a',this).get(0).pathname;
+					selectedPageNode 	= target_url.substr(target_url.lastIndexOf("/")+1);
+				}
+			});
+
+			$('.button:contains("Save")').click(function () {
+				if("ckeditor-structure" == "<?php echo $this->ckeditor_context; ?>") {
+					var url = '/publicms/index/view/page/'+selectedPageNode;
+
+					if (selectedPageNodeObject.length > 0) {
+						url = url + '#' + selectedPageNodeObject; 
+					}
+							
+					window.opener.CKEDITOR.tools.callFunction(<?php echo (int)$this->CKEditorFuncNum; ?>,url);
+					window.close();
+				}
+				return false;	
+			  });			
+
+			$('#structure').click(function () {
+				window.location = '/adminpages/index/select/context/ckeditor-structure/?embed=yes&context=ckeditor&filter=0&CKEditor=editor1&CKEditorFuncNum=<?php echo (int)$this->CKEditorFuncNum; ?>&langCode=en';				
+			});
+
+			$('#files').click(function () {
+				window.location = '/adminfiles/index/index/?embed=yes&context=ckeditor&filter=0&CKEditor=editor1&CKEditorFuncNum=<?php echo (int)$this->CKEditorFuncNum; ?>&langCode=en';				
+			});
+			
+
+			$('.button:contains("Save")').ajaxComplete(function(event,request, settings) {
+				  if (!alreadyLoadedDisplayFiles && settings.url == '/adminfiles/services/displayfiles') {
+					  alreadyLoadedDisplayFiles = true;
+					  $('.button:contains("Save")').click(function () {
+							if ($('.bselect.itemselected').length == 1) {
+								var target_url = $('a.itemselected.bselect')[0].href;
+								var id = target_url.substr(target_url.lastIndexOf("/")+1);
+								
+								// send to CKEditor
+								<?php if ($this->ckeditor_context == "image") {?>
+								var url = '/publicms/file/showimg/dw/400/id/'+id+'/fn/'+id+'.png';
+								<?php } else { ?>
+								var url = '/FILE-'+id;
+								<?php } ?> 
+								window.opener.CKEDITOR.tools.callFunction(<?php echo (int)$this->CKEditorFuncNum; ?>,url);
+								window.close();
+							} else {
+								alert("Please select only 1 file !");
+							}
+					});					  
+				  }
+			});
+
+			
+			$('.button:contains("Save")').click(function () {
+				if("ckeditor-structure" == "<?php echo $this->ckeditor_context; ?>") {
+					var url = '/page-'+selectedPageNode+'.html';
+					if (selectedPageNodeObject.length > 0) {
+						url = url + '#' + selectedPageNodeObject; 
+					}
+					window.opener.CKEDITOR.tools.callFunction(<?php echo (int)$this->CKEditorFuncNum; ?>,url);
+					window.close();
+				}
+				return false;
+			  });
+			$('.button:contains("Cancel")').click(function () {
+				window.close();
+				return false;
+			  });
+		});
+		</script>		
+		
+	</head>
+<body id="<?php echo $pprops[4]; ?>">
+<div id="nodeContentObjects"></div>
+	<hr />
+
+	<?php if ($this->ckeditor_context != "image") {?>
+	<ul id="nav">
+	<?php 
+		if("ckeditor-structure" == $this->ckeditor_context) {
+			echo '<li><strong><a id="structure" href="#">Pages</a></strong></li><li><a id="files" href="#">Files</a></li>';				
+		} else {
+			echo '<li><a id="structure" href="#">Pages</a></li><li><strong><a id="files" href="#">Files</a></strong></li>';	
+		}			
+	?>
+	</ul>
+	<?php } ?>
+	
+	<div id="main" class="clearfix">
+
+
+		<div id="sectionbar" class="clearfix" style="padding:5px;width:100%;min-height:15px;">
+			<p class="buttons">
+				<a class="button" href="save">Save</a>
+				<a class="button muted" href="cancel">Cancel</a>				
+			</p>			
+		</div>
+
+		<hr />
+
+		<div id="content" style="width:100%;max-height:450px;overflow-y:auto;">
+			<div id="ajaxbox"></div>
+		<?php if (isset($this->layout()->langswitch) && $this->layout()->langswitch && 1==2) : ?>
+			<div id="langswitch">
+				<div>
+					<a href="#">FR</a>
+					<label>Lang:</label>
+					<ul>
+					<li><strong><a href="#">Français</a></strong></li>
+					<li><a href="#">English</a></li>
+					<li><a href="#">Nederlands</a></li>
+					<li><a href="#">Español</a></li>
+					<li><a href="#">日本語</a></li>
+					</ul>
+				</div>
+			</div>
+			<?php endif; ?>
+
+		<?php if (isset($this->layout()->help) && $this->layout()->help) : ?>
+			<div class="helpbox">
+				<h2>Nullam justo nisl, ultrices eget</h2>
+
+				<p>
+					<strong>Pellentesque pretium augue eu leo. Etiam congue arcu lacinia lacus:</strong>
+				</p>
+				<ul>
+            	<li>Learn more: <a href="#">Watch a video demo</a></li>
+					<li><a href="#">Browse the help</a></li>
+            	<li><a href="#">Read tips</a> from users</li>
+				</ul>
+				<p class="buttons"><a id="helpboxhide" class="button muted" href="#">Hide this message</a></p>
+			</div>
+		<?php endif; ?>
+
+		<div id="viewcontent">
+		<?php echo $this->layout()->content; ?>
+		</div>
+		</div>
+	</div>
+	
+	
+
+<?php
+if (1==2) {
+?>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7612707-11");
+pageTracker._setDomainName("none");
+pageTracker._setAllowLinker(true);
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<?php
+}
+?>
+
+</body>
+</html>

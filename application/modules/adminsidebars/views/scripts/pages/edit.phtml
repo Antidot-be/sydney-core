@@ -1,0 +1,158 @@
+<div id="sidebar">
+
+
+    <div class="actions clearfix">
+        <a href="/adminpages/" class="bigbutton muted" style="font-size:90%;">
+            Back to Structure Editor</a>
+    </div>
+
+    <ul id="localnav" class="clearfix">
+        <li><strong><a
+                    href="/adminpages/pages/edit/id/<?php echo $this->pagid; ?>">Edit</a></strong>
+        </li>
+        <li>
+            <a href="/adminpages/index/editproperties/id/<?php echo $this->pagid; ?>">Properties</a>
+        </li>
+        <li>
+            <a href="/adminpages/index/editadvancedproperties/id/<?php echo $this->pagid; ?>">Advanced</a>
+        </li>
+    </ul>
+
+    <hr/>
+
+    <!-- START - Content languages -->
+    <?php if (Sydney_Tools_Localization::isMultiLanguageContentActive()) { ?>
+        <div class="pod">
+            <h2><?php echo Sydney_Tools_Localization::_('Current content language'); ?></h2>
+            <img
+                src="<?php echo $this->cdn; ?>/sydneyassets/images/lock-blank.png"
+                class="flag flag-<?= Sydney_Tools_Localization::getCurrentContentLanguage() ?>"
+                alt="<?= Sydney_Tools_Localization::getCurrentContentLanguage() ?>"/>
+        </div>
+
+        <div class="pod">
+            <h2><?php echo Sydney_Tools_Localization::_('Other languages'); ?></h2>
+            <?php
+            $contentLanguages = Sydney_Tools_Localization::getContentLanguages();
+            foreach ($contentLanguages as $language) {
+                if ($language !== Sydney_Tools_Localization::getCurrentContentLanguage()) {
+                    ?>
+                    <a href="<?= Sydney_Tools_Paths::getRootUrl() . '/' . $this->moduleName . '/pages/edit/id/' . $this->pagid . '?clang=' . $language ?>"><img
+                            src="<?php echo $this->cdn; ?>/sydneyassets/images/lock-blank.png"
+                            class="flag flag-<?= $language ?>"
+                            alt="<?= $language ?>"/></a>
+                <?php
+                }
+            }
+            ?>
+        </div>
+    <?php } ?>
+    <!-- END - Content languages -->
+
+    <?php
+    $moduleObj = new Safmodules();
+    if ($moduleObj->isModuleActivatedForInstance('adminmailinglist')) {
+        ?>
+        <div id="sitemap" class="pod">
+            <h2>Mailinglist</h2>
+
+            <p>
+                <?php
+                echo '<a href="/adminmailinglist/index/editmlsmailings/padid/' . $this->node->id . '" id="btn_mailinglist_' . $this->node->id . '" dbid="' . $this->node->id . '" class="button">Send this page as mailinglist</a>';
+                ?>
+            </p>
+        </div>
+    <?php
+    }
+    ?>
+
+    <div id="sitemap" class="pod">
+        <h2>Manage</h2>
+
+        <p>
+            URL of this page: <br/><?php
+            $label = (!empty($this->node->url)) ? $this->node->url : $this->node->label;
+            $url = $this->sydneyUrl($this->node->id, $label); ?>
+            <a href="<?php echo $url; ?>"
+               target="_blank"><?php echo $url; ?></a>
+        </p>
+
+        <p>
+            <?php
+            if ($this->node->status == 'published') {
+                echo '<a id="btn_publish_' . $this->node->id . '" dbid="' . $this->node->id . '" class="button unpublish">Unpublish</a>';
+            } else {
+                echo '<a id="btn_publish_' . $this->node->id . '" dbid="' . $this->node->id . '" class="button publish">Publish</a>';
+            }
+            ?>
+        </p>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.display-activity').click(function () {
+                var $this = $(this),
+                    imgSrc = $this.children('img').attr('src');
+                if (/arrow_down\.png/.test(imgSrc)) {
+                    imgSrc = imgSrc.replace('_down', '_up');
+                }
+                else {
+                    imgSrc = imgSrc.replace('_up', '_down');
+                }
+                $this.children('img').attr('src', imgSrc);
+                $this.next('div').slideToggle();
+            });
+
+        });
+    </script>
+
+    <div class="pod"><h2 class="display-activity" style="cursor:pointer">Recent
+            activity <img
+                src="<?= $this->cdn; ?>/sydneyassets/images/ui/advancedoptions/arrow_down.png">
+        </h2>
+
+        <div style="display:none"
+             jq-trigger="savediv deletediv unpublishpage publishpage"
+             jq-load="/adminsidebars/safactivitylog/contentpages/pagid/<?php echo $this->pagid; ?>">
+            <?php
+            echo $this->action('contentpages', 'safactivitylog', 'adminsidebars');
+            ?>
+        </div>
+    </div>
+
+    <?php if (!empty($this->zones)): ?>
+
+        <script type="text/javascript">
+            $(function () {
+
+                var zoneBox = $('.zones_managing'),
+                    sideBarPosBottom = $('#sidebar').outerHeight(true) + $('#sidebar').offset().top;
+
+                $(window).scroll(function () {
+
+                    // On calcule la collision entre le syst�me de visualisation de zone et le bas de la sidebar
+                    if (zoneBox.offset().top < sideBarPosBottom) {
+                        zoneBox.removeClass('onscroll');
+                    }
+
+                    if ($(window).scrollTop() > 480) {
+                        zoneBox.addClass('onscroll');
+                    }
+                })
+            });
+        </script>
+        <div class="zones_managing pod">
+            <h2>Zones</h2>
+            <ul>
+                <?php foreach ($this->zones as $zone): ?>
+                    <li><span class="color"
+                              style="background:<?= $zone->getColor(); ?>"></span><a
+                            href="#<?= $zone; ?>"><?= $zone; ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php if (!empty($this->preview)): ?>
+                <?= $this->preview; ?>
+            <?php endif; ?>
+        </div>
+    <?php endif; // end !empty($this->zones) ?>
+</div>

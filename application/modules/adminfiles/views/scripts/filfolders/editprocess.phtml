@@ -1,0 +1,17 @@
+<script>
+    var okman =<?php if ($this->jsdisp) {print 'true';
+} else {print 'false';
+} ?>;
+    var label = '<?php echo $this->label; ?>';
+    var id = '<?php echo $this->id; ?>';
+    $(function () {
+        if (okman === true) {
+            $('#flyingeditor').fadeOut();
+            var dt = $('#propopener' + id);
+            $(dt[0]).text(label);
+        }
+    });
+</script>
+<center>
+    <h2><?php echo $this->msg; ?></h2>
+</center>

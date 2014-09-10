@@ -1,0 +1,25 @@
+<?php function ttooTbl($vv)
+{
+    ?>
+    <table>
+        <?php foreach ($vv as $k => $v) { ?>
+            <tr>
+                <th>
+                    <?php print $k; ?>
+                </th>
+                <td>
+                    <?php
+                    if (is_array($v)) {
+                        ttooTbl($v);
+                    } else {
+                        print $v;
+                    }
+                    ?>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+<?php } ?>
+<?php
+ttooTbl($this);
+?>

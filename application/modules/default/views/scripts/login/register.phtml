@@ -1,0 +1,16 @@
+<?php
+$errors = $this->form->getDescription();
+if ($errors) {
+    ?>
+    <div id="effortErrors" class="topError" style="display: block;">
+        <ul>
+            <li><?php echo $errors; ?></li>
+        </ul>
+    </div>
+<?php
+}
+?>
+<div id="flContent">
+    <?php echo $this->error2; ?>
+    <?php echo $this->form; ?>
+</div>

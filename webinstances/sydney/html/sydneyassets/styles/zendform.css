@@ -1,0 +1,49 @@
+
+dl.zend dt, dd { 
+		min-height: 30px; 
+}
+dl.zend_form dt {
+	display: inline-block;
+	width: 150px;
+	float: left;
+	clear: left;
+	text-align: left;
+}
+dt > label{
+	color: #333333;
+	font:"lucida grande","segoe ui","lucida sans unicode","trebuchet ms","helvetica neue",helvetica,arial,verdana,sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
+dl.zend_form dt label.required { font-weight: 600; }
+dl.zend_form dd {
+	clear: right;
+	padding-left: 150px;
+}
+
+dl.zend_form dd ul.errors {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+dl.zend_form dd ul.errors li {
+	float: left;
+	margin: 0 0.15em;
+	font-size: 12px;
+	color: #666666;
+}
+#id-label { display: none;  }
+#id-element { display: none; }
+dl.zend_form textarea {
+	height: 120px;
+	width: 300px;
+}
+div.errors {
+	font-size: 10px;
+}
+input.errors  {
+	font-size:13px;
+}
+
+

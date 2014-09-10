@@ -1,0 +1,159 @@
+<?php
+if (!isset($this->vmode)) {
+    $this->vmode = 'thumb';
+}
+if (isset($this->files)) {
+    $files = $this->files;
+} else {
+    $files = array();
+}
+if (isset($this->nbpages)) {
+    $nbpages = $this->nbpages;
+} else {
+    $nbpages = 0;
+}
+?>
+<script> var gblnumpages = <?php echo $nbpages; ?>; </script>
+
+<?php if ($this->vmode == 'thumb') { ?>
+    <ul xmlns="http://www.w3.org/1999/xhtml" class="filesGallery">
+        <?php if (count($files) <= 0) { ?>
+            <li><?= Sydney_Tools_Localization::_('No file here... sorry') ?></li>
+        <?php
+        } else {
+            foreach ($files as $f) {
+                // print '<xmp>'; print_r( $f ); print '</xmp>';
+                if ($f['filetype'] == 'file') {
+                    ?>
+                    <li fileprops="<?php echo addslashes($f['filename'] . '<br>Created: ' . $f['date'] . '<br>' . $f['info']); ?>">
+                        <a href="<?php echo $f['id']; ?>"
+                           class="bselect typefile">
+                            <div class="icon"
+                                 style="background-image: url(<?php echo $f['url']; ?>);">
+                                <img alt=""
+                                     src="<?php echo $this->cdn; ?>/sydneyassets/images/tagged-<?php echo $f['istagged']; ?>.png"/>
+                            </div>
+                            <strong
+                                class="fileName"><?php echo $f['name']; ?></strong><br/>
+                            <span
+                                class="uploadInfos"><?php echo $f['info']; ?></span>
+                        </a>
+                    </li>
+                <?php } else if ($f['filetype'] == 'folder' || $f['filetype'] == 'folderback') { ?>
+                    <li>
+                        <a href="<?php echo $f['id']; ?>"
+                           class="bselect typefolder"
+                           style="text-decoration:none;">
+                            <div class="icon"
+                                 style="background-image: url(<?php echo $this->cdn; ?>/sydneyassets/images/icons/<?php if ($f['filetype'] == 'folderback') {
+                                     echo 'folder_blue_back.png';
+                                 } else {
+                                     echo 'folder_blue.png';
+                                 } ?>);">
+                                <img alt=""
+                                     src="<?php echo $this->cdn; ?>/sydneyassets/images/tagged-<?php echo $f['istagged']; ?>.png"/>
+                            </div>
+                            <strong class="fileName"
+                                    style="text-decoration:none;color:#555;font-weight:normal;font-size:.8em;"><?php echo $f['name']; ?></strong><br/>
+                            <span class="uploadInfos"
+                                  style="text-decoration:none;color:#555;font-weight:normal;font-size:.8em;"><?php echo $f['info']; ?></span>
+                        </a>
+                    </li>
+                <?php
+                }
+            }
+        }
+        ?>
+    </ul>
+<?php } ?>
+
+<?php if ($this->vmode == 'list') { ?>
+    <table class="ui-table row-pointer" summary="">
+        <thead>
+        <tr>
+            <th scope="col"/>
+            <th scope="col"><a
+                    href="#"><?= Sydney_Tools_Localization::_('Name') ?></a>
+            </th>
+            <th scope="col"><a
+                    href="#"><?= Sydney_Tools_Localization::_('Info') ?></a>
+            </th>
+            <th scope="col"><a
+                    href="#"><?= Sydney_Tools_Localization::_('Uploaded') ?></a>
+            </th>
+            <th scope="col"/>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        if (count($files) <= 0) {
+            ?>
+            <tr class="">
+                <td class="thumb">-</td>
+                <td>
+                    <h2><?= Sydney_Tools_Localization::_('No files here...') ?></a></h2>
+                </td>
+                <td>-</td>
+                <td>-</td>
+                <td class="actions"></td>
+            </tr>
+        <?php
+        } else {
+            foreach ($files as $f) {
+
+                if ($f['filetype'] == 'file') {
+                    ?>
+                    <tr class="trselect">
+                        <td class="thumb"><a class="bedit typefile"
+                                             href="<?php echo $f['id']; ?>"><img
+                                    src="<?php echo $f['url']; ?>" alt=""/></a>
+                        </td>
+                        <td><h2><a class="bselect typefile"
+                                   href="<?php echo $f['id']; ?>"><?php echo $f['fullname']; ?></a>
+                            </h2></td>
+                        <td><?php echo Sydney_Medias_Utils::valHumanFilter('general.filesize', $f['fweight']); ?>
+                            - <?php echo $f['info']; ?></td>
+                        <td><?php echo $f['date']; ?></td>
+                        <td class="actions">
+                            <a class="button bedit typefile"
+                               href="<?php echo $f['id']; ?>">Edit</a>
+                            <a class="button warning bdelete typefile"
+                               href="<?php echo $f['id']; ?>">Delete</a>
+                        </td>
+                    </tr>
+                <?php
+                } else if ($f['filetype'] == 'folder' || $f['filetype'] == 'folderback') {
+                    ?>
+                    <tr class="">
+                        <td class="thumb"><a class="bselect typefolder"
+                                             href="<?php echo $f['id']; ?>"><img
+                                    src="<?php echo $this->cdn; ?>/sydneyassets/images/icons/<?php if ($f['filetype'] == 'folderback') {
+                                        echo 'folder_blue_back-32.png';
+                                    } else {
+                                        echo 'folder_blue-32.png';
+                                    } ?>"
+                                    alt=""/></a></td>
+                        <td><h2><a class="bselect typefolder"
+                                   href="<?php echo $f['id']; ?>"><?php echo $f['fullname']; ?></a>
+                            </h2></td>
+                        <td><?php echo $f['info']; ?></td>
+                        <td><?php echo $f['date']; ?></td>
+                        <td class="actions">
+                            <?php if ($f['filetype'] == 'folder') { ?>
+                                <a class="button brename typefolder"
+                                   href="<?php echo $f['id']; ?>"
+                                   oldname="<?php echo $f['fullname']; ?>">Rename</a>
+                                <a class="button warning bdelete typefolder"
+                                   href="<?php echo $f['id']; ?>">Delete</a>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                <?php
+                }
+            }
+        }
+        ?>
+        </tbody>
+    </table>
+<?php } ?>
+<div class="filepropdialog"></div>

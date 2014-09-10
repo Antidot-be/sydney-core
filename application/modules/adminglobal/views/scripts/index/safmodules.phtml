@@ -1,0 +1,25 @@
+<br>
+<?php
+
+echo $this->DataTable('Safmodules', array(
+    'hidefields'   => 'usersgroups_id,description,image,longdesc,safinstancestype_id,filfolders_id',
+    'editablecols' => 'label,name,showintab,istechnical,prefix,order,isalwaysactive,isapplication'
+));
+?>
+<div class="filepropdialog"></div>
+
+
+<h2>Database vs real Modules</h2>
+<ol>
+    <li>
+        <?php echo implode('</li><li>', $this->comp1); ?>
+    </li>
+</ol>
+
+
+<h2>Real Modules vs Database</h2>
+<ol>
+    <li>
+        <?php echo implode('</li><li>', $this->comp2); ?>
+    </li>
+</ol>

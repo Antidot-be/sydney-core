@@ -1,0 +1,50 @@
+#publicmsSearchIndex input[type=text] {
+	width: 80%;
+}
+
+#publicmsSearchIndexPaginationControl {
+	text-align: center;
+}
+
+#publicmsSearchIndexResultCore {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+#publicmsSearchIndexResultCore ul {
+	margin-left: 0;
+	padding-left: 0;
+	padding-bottom: 10px;
+}
+
+#publicmsSearchIndexResultCore li {
+	list-style: none;
+}
+
+#publicmsSearchIndexResultCore > li {
+	padding: 5px 5px 5px 15px;
+}
+
+.publicmsSearchIndexTitle > a {
+	font-size: 150%;
+}
+
+.publicmsSearchIndexTitle:hover {
+	background: #CDE9FF;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	-moz-box-shadow: 4px 4px 15px #888;
+	box-shadow: 4px 4px 15px #888;	
+}
+
+.publicmsSearchIndexContent{
+	font-size: 100%;
+}
+
+#publicmsSearchIndexLoading {
+	height: 25px;
+}
+
+#publicmsSearchIndexLoading > img {
+	display: none;
+}

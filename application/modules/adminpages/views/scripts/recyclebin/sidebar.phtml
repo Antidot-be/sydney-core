@@ -1,0 +1,7 @@
+<?php
+if ($this->countDeletedNodes > 0) {
+    echo $this->view->sidebar = 'Contains <a href="/adminpages/recyclebin">' . $this->countDeletedNodes . ' node(s)</a> deleted';
+} else {
+    echo $this->view->sidebar = 'Empty !';
+}
+?>

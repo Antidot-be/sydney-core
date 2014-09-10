@@ -1,0 +1,13 @@
+<?php
+
+$mailcontent = Sydney_Tools::_('contentMailSubscribe');
+$mailcontent = str_replace('[LOGIN]', $this->data['login'], $mailcontent);
+$mailcontent = str_replace('[MDP]', $this->data['password'], $mailcontent);
+$mailcontent = str_replace('[FNAME]', $this->data['fname'], $mailcontent);
+$mailcontent = str_replace('[LNAME]', $this->data['lname'], $mailcontent);
+$mailcontent = str_replace('[SITE_TITLE]', $this->data['site_title'], $mailcontent);
+$mailcontent = str_replace('[LINK_CONFIRMATION]', $this->data['link_confirmation'], $mailcontent);
+
+echo $mailcontent;
+
+?>

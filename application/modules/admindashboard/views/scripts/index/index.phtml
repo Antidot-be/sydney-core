@@ -1,0 +1,14 @@
+<div class="sydney_editor_toolbar">
+    <form>
+        <label><?= Sydney_Tools_Localization::_('Display activity of') ?></label>
+        <select id="selectDashboardListActivities">
+            <option><?= Sydney_Tools_Localization::_('Everybody') ?></option>
+            <option>--------</option>
+            <?php
+            foreach ($this->activities['user'] as $user => $activityListId) {
+                echo '<option value="' . $this->activities['datas'][$activityListId]->users_id . '">' . $user . '</option>';
+            }
+            ?>
+        </select>
+    </form>
+</div>

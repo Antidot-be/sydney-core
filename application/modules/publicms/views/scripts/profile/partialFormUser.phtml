@@ -1,0 +1,96 @@
+<script type="text/javascript">
+    <!--
+    $(document).ready(function () {
+        var action = $('#users').attr('action');
+        if (action.length <= 0) {
+            action = '/adminpeople/services/processuser/format/json';
+        }
+        $('#users').formvalidator({'url': action, 'callbackfunc': function (j) {
+            if (j.ResultSet.errors.length == 0 && j.ResultSet.entry.id != null) {
+                $('#users #id').val(j.ResultSet.entry.id);
+                $('#adcompanybuts').show();
+                $('#containerAvatar').show();
+                adtopostcompany = { 'users_id': $('#users #id').val() };
+            }
+        } });
+    });
+    //-->
+</script>
+<style>
+    #modalBackground {
+        background: none repeat scroll 0 0 #000000;
+        height: 100%;
+        left: 0;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 9999;
+    }
+
+    #ajaxbox {
+        background: none repeat scroll 0 0 #FEEFB3 !important;
+        border: solid #9F6000 1px;
+        border-radius: 5px 5px 5px 5px;
+        color: #9F6000;
+        display: none;
+        line-height: 12px;
+        margin: 10px;
+        padding: 10px;
+        position: fixed;
+        text-align: center;
+        top: 20px;
+        width: 584px;
+        z-index: 999;
+    }
+
+    .ajaxbox-stack {
+        background: none repeat scroll 0 0 #FEEFB3 !important;
+        border: solid #9F6000 1px;
+        border-radius: 5px 5px 5px 5px;
+        color: #9F6000;
+        display: none;
+        line-height: 12px;
+        margin: 10px;
+        padding: 10px;
+        position: fixed;
+        text-align: center;
+        top: 20px;
+        width: 584px;
+        z-index: 999;
+    }
+
+    .button {
+        background: url("/sydneyassets/images/ui/button/background.png") repeat-x scroll left center #1455AA;
+        border: 1px solid #1455AA;
+        border-radius: 4px 4px 4px 4px;
+        font: 9px "lucida grande", "segoe ui", "lucida sans unicode", "trebuchet ms", "helvetica neue", helvetica, arial, verdana, sans-serif;
+        margin: 0 0 0 4px;
+        padding: 4px 9px 5px;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .button.warning:link, .button.warning:visited {
+        background-color: #DD2222;
+        border: 1px solid #DD2222;
+    }
+
+    div.errors {
+        font-size: 10px;
+    }
+
+    div.errors {
+        color: #DD2222;
+    }
+
+    #content fieldset {
+        background: none repeat scroll 0 0 #F8F8F8;
+        border: 1px solid #D0D0D0;
+        border-radius: 10px 10px 10px 10px;
+        margin: 20px 16px;
+        padding: 5px 15px;
+    }
+</style>

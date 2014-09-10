@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Phing based build.xml
+     creation date: 2012-11-13 - fabrice
+     usage and syntax: see http://www.phing.info/docs/guide/stable/
+     first version inspired from :
+     http://blog.pascal-martin.fr/post/integration-continue-jenkins-projet-php
+     -->
+
+<project name="mp" default="build" basedir=".">
+    <property name="source" value="./" />
+
+    <target name="build-full"
+            description="Full task for continuous integration, need some hours to run"
+            depends="build,qa-heavy"
+            />
+
+    <!-- build simple, avec cleaning et info sur le code, etc -->
+    <target name="build"
+            description="Lightweight task for continuous integration, to be run after each commit"
+            depends="clean,qa-light,qa-heavy"
+            />
+
+    <!-- build pour le test unitaire -->
+    <target name="build-test"
+            description="Lancement des tests unitaires"
+            depends="clean,phpunit"
+            />
+
+
+    <target name="build-pdepend"
+            description="Lightweight task for continuous integration, to be run after each commit"
+            depends="clean,pdepend"
+            />
+
+    <target name="build-phpcs"
+            description="Lightweight task for continuous integration, to be run after each commit"
+            depends="clean,phpcs"
+            />
+
+    <target name="build-phpmd"
+            description="Lightweight task for continuous integration, to be run after each commit"
+            depends="clean,phpmd"
+            />
+
+    <target name="clean" description="Cleanup build artifacts and prepare for build">
+        <delete dir="${project.basedir}/phpmd.xml" />
+        <delete dir="${project.basedir}/build/" />
+        <delete dir="${project.basedir}/build/api" />
+        <delete dir="${project.basedir}/build/code-browser" />
+        <delete dir="${project.basedir}/build/coverage" />
+        <delete dir="${project.basedir}/build/logs" />
+        <delete dir="${project.basedir}/build/pdepend" />
+        <delete dir="${project.basedir}/build/test-reports" />
+        <delete dir="${project.basedir}/build/html" />
+
+        <mkdir dir="${project.basedir}/build/" />
+        <mkdir dir="${project.basedir}/build/api" />
+        <mkdir dir="${project.basedir}/build/code-browser" />
+        <mkdir dir="${project.basedir}/build/coverage" />
+        <mkdir dir="${project.basedir}/build/logs" />
+        <mkdir dir="${project.basedir}/build/pdepend" />
+        <mkdir dir="${project.basedir}/build/test-reports" />
+    </target>
+
+    <target name="qa-light" description="Run lightweight analysis tools">
+        <!-- 2012-11-13 phploc:         Time: 48 seconds -->
+        <phingcall target="phploc"/>
+        <!-- 2013-07-08 doxygen:        Time: 41 seconds  -->
+        <phingcall target="doxygen"/>
+    </target>
+
+    <target name="qa-heavy" description="Run heavy analysis tools">
+        <!-- We try to to the shortest job first -->
+        <!-- 2012-11-13 phpdepend:      Time: 14:15; Memory: 545.25Mb -->
+        <phingcall target="pdepend" />
+        <!-- 2012-11-15 phpcodesniffer: Time: 30 minutes -->
+        <phingcall target="phpcs"/>
+        <!-- 2012-11-15 phpmd:          Time: more than 1 hour -->
+        <phingcall target="phpmd"/>
+
+        <!-- finish with phpcodebrowser -->
+        <phingcall target="phpcb"/>
+
+        <phingcall target="php-cpd"/>
+    </target>
+
+    <target name="phpunit"> <!-- unitaires, intÃ©grations  -->
+        <exec logoutput="true" dir="${project.basedir}" command="phpunit --configuration '${project.basedir}/utils/tests/phpunit-ci.xml' --testsuite 'MyPartnerPhpUnit'" escape="false" />
+    </target>
+
+    <target name="phploc">
+        <exec logoutput="true" dir="${project.basedir}" command="phploc --log-csv '${project.basedir}/build/logs/phploc.csv' --exclude 'build' --exclude 'lib' --exclude 'library/Zend' '${project.basedir}/'" escape="false" />
+    </target>
+
+    <target name="php-cpd">
+        <exec logoutput="true" dir="${project.basedir}" command="phpcpd --log-pmd '${project.basedir}/build/logs/pmd-cpd.xml' --exclude 'build'
+    --exclude 'library/Zend' '${project.basedir}/'" escape="false" />
+    </target>
+
+    <target name="pdepend">
+        <phpdepend>
+            <fileset dir="${project.basedir}">
+                <include name="application/**/*.php" />
+                <include name="CLI/**/*.php" />
+                <include name="library/Sydney/**/*.php" />
+                <include name="util/**/*.php" />
+                <include name="webinstances/**/*.php" />
+            </fileset>
+            <logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
+        </phpdepend>
+    </target>
+
+    <target name="phpcs">
+        <phpcodesniffer standard="Zend">
+            <fileset dir="${project.basedir}">
+                <include name="application/**/*.php" />
+                <include name="CLI/**/*.php" />
+                <include name="library/Sydney/**/*.php" />
+                <include name="util/**/*.php" />
+                <include name="webinstances/**/*.php" />
+            </fileset>
+            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+        </phpcodesniffer>
+    </target>
+
+    <target name="phpmd">
+        <phpmd>
+            <fileset dir="${project.basedir}">
+                <include name="application/**/*.php" />
+                <include name="CLI/**/*.php" />
+                <include name="library/Sydney/**/*.php" />
+                <include name="util/**/*.php" />
+                <include name="webinstances/**/*.php" />
+            </fileset>
+            <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
+        </phpmd>
+    </target>
+
+    <target name="phpcb">
+        <exec logoutput="true"
+              command="phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}' --ignore '${project.basedir}/build' --output '${project.basedir}/build/code-browser'"
+              escape="false" />
+    </target>
+
+    <target name="doxygen">
+        <exec logoutput="true"
+              command="doxygen util/tools/doxygen.conf"
+              escape="false" />
+    </target>
+</project>

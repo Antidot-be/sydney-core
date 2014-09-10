@@ -1,0 +1,59 @@
+<?php
+function bytesToHuman($v)
+{
+    return round($v / 1024 / 1024 / 1024, 2) . ' Go';
+}
+
+$m = array(
+    //'index'			=> 'Thumbnails',
+    // 'datagrid'		=> 'DataGrid',
+);
+?>
+<div id="sidebar">
+    <div class="actions clearfix">
+        <a class="bigbutton" href="/adminfiles/index/upload/"><img
+                src="<?php echo $this->cdn; ?>/sydneyassets/images/ui/bigbutton/icon_add.png"/>
+            Upload a file</a>
+    </div>
+    <hr/>
+
+    <div class="pod">
+        <h2>File storage space</h2>
+
+        <div class="fillbar">
+            <div style="width: <?php echo $this->weightPercent; ?>%;"></div>
+        </div>
+        <p>You are using <?php echo bytesToHuman($this->totalWeight); ?> of
+            your <?php echo bytesToHuman($this->totalWeightAllowed); ?>
+            limit.</p>
+    </div>
+
+    <div class="pod">
+        <h2>Recent files</h2>
+        <ul class="gallery">
+            <?php
+            foreach ($this->lastuploaded as $f):
+                $stlen = 15;
+                if (strlen($f->label) <= $stlen) {
+                    $fname = $f->label;
+                } else {
+                    $fname = substr($f->label, 0, ($stlen - 3)) . '...';
+                }
+                $dd = preg_split('/ /', $f->datecreated);
+                $d = preg_split("/-/", $dd[0]);
+                $ddate = $d[2] . '/' . $d[1] . '/' . $d[0];
+                ?>
+                <li>
+                    <img
+                        src="<?php echo '/adminfiles/file/thumb/id/' . $f->id . '/ts/3/fn/' . $f->id . '.png'; ?>"
+                        width="32" height="32" alt=""/>
+
+                    <div>
+                        <h3 style="text-decoration: none;"><?php echo $fname; ?></h3>
+                        <br><?php echo $ddate; ?>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="listfilespercat">
+    <?php
+    if (!function_exists("dateform")) {
+        function dateform($d)
+        {
+            $dd = preg_split("/ /", $d);
+
+            return $dd[0];
+        }
+    }
+
+    if (isset($this->noviewswitch) && $this->noviewswitch == 'Y') {
+        $viewmenut = false;
+    } else {
+        $viewmenut = true;
+    }
+    if (isset($this->viewl)) {
+        $vmode = $this->viewl;
+    } else {
+        $vmode = 'list';
+    }
+
+    if ($vmode == 'list') {
+        ?>
+
+        <?php if ($viewmenut) { ?>List view | <a href="thumb" id="viewthumbb">Thumbnail
+            view</a><br><?php } ?>
+        <table class="filelistcl" width="100%">
+            <tr>
+                <th></th>
+
+                <?php foreach (array(
+                                   'label' => 'Label',
+                                   'size'  => 'Size',
+                                   'user'  => 'added by',
+                                   'date'  => 'on'
+                               ) as $k => $v) {
+                    ?>
+                    <th onClick="$(this.parentNode.parentNode.parentNode.parentNode).load('<?php echo $this->ajaxurl; ?>ajsrt/<?php echo $k; ?>/sydneylayout/no');"
+                        style="cursor:pointer;<?php if ($k == $this->ajsrt) {
+                            echo 'text-decoration:underline;';
+                        } ?>"><?php echo $v; ?></th>
+                <?php } ?>
+            </tr>
+
+            <?php
+            foreach ($this->flist as $f) {
+                $fil = Sydney_Medias_Filetypesfactory::createfiletype($f['path'] . '/' . $f['filename']);
+                $finfo = $fil->getFileinfo();
+                ?>
+
+                <tr>
+                    <td><img
+                            src="/publicms/file/thumb/id/<?php echo $f['id']; ?>/ts/4"
+                            width="16" height="16"></td>
+                    <td>
+                        <a href="/publicms/file/getrfile/download/yes/id/<?php echo $f['id']; ?>"><?php echo $f['label']; ?></a>
+                        <?php
+                        if ($f['desc'] != '') {
+                            echo '<span class="fdesc">' . $f['desc'] . '</span>';
+                        }
+                        ?>
+                    </td>
+                    <td><?php echo Sydney_Medias_Utils::valHumanFilter('general.filesize', $finfo['general.filesize']); ?></td>
+                    <td><?php echo $f['fname'] . ' ' . $f['lname']; ?></td>
+                    <td><?php echo dateform($f['datecreated']); ?></td>
+                </tr>
+
+            <?php
+            } // END foreach
+            ?>
+        </table>
+    <?php } else { ?>
+        <?php if ($this->showOverlay) : ?>
+            <style>
+                .fieldValueList {
+                    text-align: left;
+                    display: none;
+                    z-index: 50;
+                    position: absolute;
+                    border: 1px solid #888;
+                    padding: 20px;
+                }
+            </style>
+            <script>
+                $(function () {
+                    $('.thumbnailfra').hover(
+                        function () {
+                            var thel = $(this);
+                            var nof = $('img', thel).offset();
+                            var wid = $('img', thel).attr('width');
+                            var hey = $('img', thel).attr('height');
+                            // $('.fieldValueList' ,thel).css({'top':nof.top+hey-10, 'left':nof.left+wid-10}).fadeIn();
+                            $('.fieldValueList', thel).fadeIn(150);
+                        }
+                        ,
+                        function () {
+                            var thel = $(this);
+                            $('.fieldValueList', thel).fadeOut(25);
+                        }
+
+                    );
+
+                });
+
+            </script>
+        <?php endif; ?>
+        <?php if ($viewmenut) { ?><a href="list" id="viewlistb">List
+            view</a> | Thumbnail view <br><?php } ?>
+        <?php
+        foreach ($this->flist as $f) {
+            $fil = Sydney_Medias_Filetypesfactory::createfiletype($f['path'] . '/' . $f['filename']);
+            $finfo = $fil->getFileinfo();
+            ?>
+            <div class="thumbnailfra">
+                <a href="/publicms/file/getrfile/id/<?php echo $f['id']; ?>"><img
+                        src="/publicms/file/thumb/id/<?php echo $f['id']; ?>/ts/1"
+                        width="110" height="110"></a><br>
+                <label><?php echo substr($f['label'], 0, 10) . '...'; ?></label>
+                <?php if ($this->showOverlay) : ?>
+                    <div class="fieldValueList">
+                        <?php
+                        if ($f['desc'] != '') {
+                            echo '<span class="fdesc">' . $f['desc'] . '</span>';
+                        }
+                        ?>
+                        <?php
+                        echo '<p>' . $f['label'] . '</p>';
+                        foreach ($finfo as $k => $v): ?>
+                            <?php if (!in_array($k, Sydney_Medias_Utils::$metaNotShow)): ?>
+                                <label><?php echo $this->translate($k); ?></label>
+                                <?php echo Sydney_Medias_Utils::valHumanFilter($k, $v); ?>
+                                <br>
+                            <?php endif; ?>
+                        <?php endforeach;
+                        ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php
+        }
+        ?>
+        <br><br><br><br><br>
+    <?php } ?>
+</div>

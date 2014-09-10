@@ -1,0 +1,28 @@
+<div id="sitemap">
+    <ul>
+        <?php foreach ($this->sitemap AS $page) : ?>
+            <?php // check if the page is present in at least one menu ?>
+            <?php if (is_array($page['menusid']) && count($page['menusid']) > 0) : ?>
+                <li>
+                    <a href="<?php echo $this->sydneyUrl($page['id'], $page['label']); ?>"><?php echo $page['label'] ?></a>
+                </li>
+                <?php displayKids($page['kids'], $this); ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php
+$charConvert = array("HTML-ENTITIES", "UTF-8");
+function displayKids($kidspages, $view)
+{
+    if (sizeof($kidspages) > 0) {
+        echo "<ul>";
+        foreach ($kidspages AS $page) {
+            echo '<li><a href="' . $view->sydneyUrl($page['id'], $page['label']) . '">' . $page['label'] . "</a></li>";
+            displayKids($page['kids'], $view);
+        }
+        echo "</ul>";
+    }
+}
+
+?>

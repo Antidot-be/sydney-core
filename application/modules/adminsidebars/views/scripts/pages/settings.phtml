@@ -1,0 +1,90 @@
+<div id="sidebar">
+
+    <div class="actions clearfix">
+        <a href="/adminpages/" class="bigbutton muted" style="font-size:90%;">
+            Back to Structure Editor</a>
+    </div>
+
+    <ul id="localnav" class="clearfix">
+        <li>
+            <a href="/adminpages/pages/edit/id/<?php echo $this->pagid; ?>">Edit</a>
+        </li>
+        <li>
+            <?= ($this->editType == 'normal') ? '<strong>' : '' ?>
+            <a href="/adminpages/index/editproperties/id/<?php echo $this->pagid; ?>">Properties</a>
+            <?= ($this->editType == 'normal') ? '</strong>' : '' ?>
+        </li>
+        <li>
+            <?= ($this->editType == 'advanced') ? '<strong>' : '' ?>
+            <a href="/adminpages/index/editadvancedproperties/id/<?php echo $this->pagid; ?>">Advanced</a>
+            <?= ($this->editType == 'advanced') ? '</strong>' : '' ?>
+        </li>
+    </ul>
+
+    <hr/>
+
+    <!-- START - Content languages -->
+    <?php if (Sydney_Tools_Localization::isMultiLanguageContentActive()) { ?>
+        <div class="pod">
+            <h2><?php echo Sydney_Tools_Localization::_('Current content language'); ?></h2>
+            <img
+                src="<?php echo $this->cdn; ?>/sydneyassets/images/lock-blank.png"
+                class="flag flag-<?= Sydney_Tools_Localization::getCurrentContentLanguage() ?>"
+                alt="<?= Sydney_Tools_Localization::getCurrentContentLanguage() ?>"/>
+        </div>
+
+        <div class="pod">
+            <h2><?php echo Sydney_Tools_Localization::_('Other languages'); ?></h2>
+            <?php
+            $contentLanguages = Sydney_Tools_Localization::getContentLanguages();
+            foreach ($contentLanguages as $language) {
+                if ($language !== Sydney_Tools_Localization::getCurrentContentLanguage()) {
+                    ?>
+                    <a href="<?= Sydney_Tools_Paths::getRootUrl() . '/' . $this->moduleName . '/index/' . $this->actionName . '/id/' . $this->pagid . '?clang=' . $language ?>"><img
+                            src="<?php echo $this->cdn; ?>/sydneyassets/images/lock-blank.png"
+                            class="flag flag-<?= $language ?>"
+                            alt="<?= $language ?>"/></a>
+                <?php
+                }
+            }
+            ?>
+        </div>
+    <?php } ?>
+    <!-- END - Content languages -->
+
+
+    <div id="sitemap" class="pod">
+        <h2>Manage</h2>
+
+        <p>
+            URL of this page: <br/>
+            <?php
+            $label = (!empty($this->node->url)) ? $this->node->url : $this->node->label;
+            $url = $this->sydneyUrl($this->node->id, $label); ?>
+            <a href="<?php echo $url; ?>"
+               target="_blank"><?php echo $url; ?></a>
+        </p>
+
+        <p>
+            <?php
+            if ($this->node->status == 'published') {
+                echo '<a id="btn_publish_' . $this->node->id . '" dbid="' . $this->node->id . '" class="button unpublish">Unpublish</a>';
+            } else {
+                echo '<a id="btn_publish_' . $this->node->id . '" dbid="' . $this->node->id . '" class="button publish">Publish</a>';
+            }
+            ?>
+        </p>
+    </div>
+
+    <div class="pod"><h2>Recent activity</h2>
+
+        <div jq-trigger="savediv deletediv unpublishpage publishpage"
+             jq-load="/adminsidebars/safactivitylog/contentpages/pagid/<?php echo $this->pagid; ?>">
+            <?php
+            echo $this->action('contentpages', 'safactivitylog', 'adminsidebars');
+            ?>
+        </div>
+    </div>
+
+
+</div>

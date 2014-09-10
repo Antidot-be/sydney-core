@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+
+div.multilinkdiv
+{
+	margin: 20px;
+}
+
+table.multilinktable  
+{
+	background: #FFF;
+	border-left: solid 1px #BBB;
+	border-top: solid 1px #BBB;
+}
+
+table.multilinktable th
+{
+	background-color: #F2F2F2;
+	color: #000;
+	text-align: center;
+	vertical-align: middle;
+	padding: 10px;
+	border-right: solid 1px #BBB;
+	border-bottom: solid 1px #BBB;
+}
+
+table.multilinktable td
+{
+	vertical-align: middle;
+	text-align: center;
+	border-bottom: 1px solid #BBB;
+	border-right: 1px solid #BBB;
+	width: 150px;
+}

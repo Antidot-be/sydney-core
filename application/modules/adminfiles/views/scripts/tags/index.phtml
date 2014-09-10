@@ -1,0 +1,122 @@
+<script>
+    $(function () {
+        /**
+         *
+         */
+        function saveorder() {
+            var stru = new ANTIDOT.NestedArray('tagsmap');
+            $.postJSON('/adminfiles/services/updatestrorder/format/json', {
+                    'jsondata': $.toJSON(stru.aStructure)
+                },
+                function (data) {
+                    $('#ajaxbox').msgbox(data.ResultSet);
+                });
+        };
+        /**
+         *
+         */
+        $('li').dblclick(function () {
+            $(this).prev().append(this);
+            if ($(this).children().length == 0) {
+                //$(this).prev().remove();
+            }
+        });
+        /**
+         *
+         */
+        $('#savebutton').click(saveorder);
+        /**
+         *
+         */
+        $('#tagsmap').sortable({
+            cursor: "move",
+            items: "li",
+            dropOnEmpty: true,
+            opacity: 0.65,
+            constrain: false,
+            snap: 4,
+            scrollSensitivity: 100,
+            scrollSpeed: 10,
+            zIndex: 150,
+            containment: "document",
+            tolerance: "intersect",
+            helper: "clone",
+            forceHelperSize: true,
+            forcePlaceholderSize: true,
+            placeholder: "sitemapPlaceholder" //,
+            //start: function(e, ui){ sortStart(e, ui) },
+            //stop: function(e, ui){ sortEnd(e, ui) }
+        });
+
+        $('#flyingeditor').hide();
+        $('.propopener').click(function (e) {
+            e.preventDefault();
+            var pos = $(this).offset();
+            $('#flyingeditor').html('Loading...').fadeIn().css('top', pos.top - 150 + 'px').load('/adminfiles/filfolders/edit/layout/out/id/' + $(this).attr('href'));
+        });
+    });
+</script>
+<style>
+    #cancelbutton {
+        color: #FFF;
+    }
+
+    #flyingeditor {
+        top: 50px;
+        left: 50px;
+        border: 10px solid #EEE;
+        background: #FFF;
+        z-index: 99;
+        position: absolute;
+        width: 480px;
+        height: 350px;
+        overflow: auto;
+        padding: 10px;
+        -moz-box-shadow: 3px 3px 15px #999, 3px 3px 15px #999;
+        -moz-border-radius: 6px;
+    }
+
+    #tagsmap li {
+        cursor: pointer;
+        list-style-position: outside;
+        list-style-type: none;
+        padding-left: 10px;
+        margin-left: 10px;
+        background: #FFF;
+        border-top: 1px dotted #555;
+    }
+</style>
+<h3>Tag manager</h3>
+<div id="flyingeditor"></div>
+<div id="savebutton" style="display: block;">
+    <input class="button bigwbutton" type="button" value="Save order"/>
+</div>
+<?php
+function listrecursor(&$el, $rootnode, $l = 0)
+{
+    if ($rootnode) {
+        print '<ul id="tagsmap" class="ui-sortable" dbid="0">';
+    } else {
+        print '<ul class="" dbid="' . $l['id'] . '">';
+    }
+    foreach ($el as $l) {
+        print '<li dborder="' . $l['pagorder'] . '" dbid="' . $l['id'] . '" id="structure_' . $l['id'] . '" class="">';
+        print ' <a href="' . $l['id'] . '" id="propopener' . $l['id'] . '" class="propopener">';
+        if ($l['isnode'] != 1) {
+            print $l['label'];
+        } else {
+            print '<b>' . $l['label'] . '</b>';
+        }
+        print '</a> ';
+
+
+        if (isset($l['children']) && count($l['children']) > 0) {
+            listrecursor($l['children'], false, $l);
+        }
+        print '</li>';
+    }
+    print '</ul>';
+}
+
+listrecursor($this->list, true);
+?>

@@ -1,0 +1,56 @@
+<?php
+$fid = 0;
+if (isset($this->id) && $this->id > 0) {
+    $fid = $this->id;
+}
+?>
+<script type="text/javascript">
+    <!--
+    $(function () {
+        $('.imageeditor').imageeditor({'filfiles_id':<?php echo $fid; ?>});
+    });
+    //-->
+</script>
+
+<div class="imageeditor yui-skin-sam">
+
+    <div class="toolbar drpshadow">
+        <div class="movebar"
+             title="<?= Sydney_Tools_Localization::_('Move bar') ?>"></div>
+        <div class="icon crop"
+             title="<?= Sydney_Tools_Localization::_('Crop') ?>"></div>
+        <div class="icon revert"
+             title="<?= Sydney_Tools_Localization::_('Revert to original') ?>"></div>
+        <div class="icon rotatel"
+             title="<?= Sydney_Tools_Localization::_('Rotate Left') ?>"></div>
+        <div class="icon rotater"
+             title="<?= Sydney_Tools_Localization::_('Rotate Right') ?>"></div>
+        <div class="icon fliph"
+             title="<?= Sydney_Tools_Localization::_('Flip Horizontal') ?>"></div>
+        <div class="icon flipv"
+             title="<?= Sydney_Tools_Localization::_('Flip Vertical') ?>"></div>
+        <div class="icon reflection"
+             title="<?= Sydney_Tools_Localization::_('Reflection effect') ?>"></div>
+        <div class="icon contrast"
+             title="<?= Sydney_Tools_Localization::_('Contrast') ?>"></div>
+        <div class="icon sharpen"
+             title="<?= Sydney_Tools_Localization::_('Sharpen') ?>"></div>
+        <div class="icon blacknwhite"
+             title="<?= Sydney_Tools_Localization::_('Black & white') ?>"></div>
+        <div class="icon zoomin"
+             title="<?= Sydney_Tools_Localization::_('Zoom/scale in 10%') ?>"></div>
+        <div class="icon zoomout"
+             title="<?= Sydney_Tools_Localization::_('Zoom/scale out 10%') ?>"></div>
+    </div>
+
+    <input type="button" class="savebutton"
+           value="<?= Sydney_Tools_Localization::_('Save image to Files') ?>"
+           style="margin: 3px; padding: 5px; font-size: 10px;"/>
+
+    <div class="stage" style="margin: 5px;"></div>
+    <div id="button1"></div>
+    <div id="results"></div>
+
+</div>
+
+

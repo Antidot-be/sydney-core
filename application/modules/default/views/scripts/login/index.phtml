@@ -1,0 +1,106 @@
+<?php
+$lostpass = false;
+$register = false;
+
+$translate = Zend_Registry::get('Zend_Translate');
+
+$linkregister = '/default/login/register/';
+$textregister = $translate->_('Not a member yet?');
+
+if (isset($this->config->login)) {
+    if (isset($this->config->login->lostpassword) && $this->config->login->lostpassword) {
+        $lostpass = true;
+    }
+    if (isset($this->config->login->register) && $this->config->login->register != '') {
+        $register = true;
+    }
+    if (isset($this->config->login->linkregister) && $this->config->login->linkregister != '') {
+        $linkregister = $this->config->login->linkregister;
+    }
+    if (isset($this->config->login->textregister) && $this->config->login->textregister != '') {
+        $textregister = $this->config->login->textregister;
+    }
+}
+
+$errors = $this->form->getDescription();
+if ($errors) {
+    ?>
+    <div id="effortErrors" class="topError" style="display: block;">
+        <ul>
+            <li><?php echo $errors; ?></li>
+        </ul>
+    </div>
+<?php
+}
+?>
+<style>
+    .errormessage {
+        border: 1px red solid;
+        color: red;
+        padding: 5px;
+        text-align: center;
+        display: none;
+    }
+
+    .errors {
+        color: red;
+        display: block;
+        float: none;
+        list-style: none outside none;
+        margin: 3px;
+        max-width: 200px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    #LoginForm label {
+        font-size: 1.4em;
+        font-weight: bold;
+        margin: 5px;
+    }
+
+    #LoginForm dl.zend_form {
+        margin: 5px;
+        padding: 10px;
+    }
+
+</style>
+<fieldset>
+    <div id="flContent">
+        <?php if (isset($this->errormessage) && $this->errormessage != '') { ?>
+            <div class="errormessage"><?php echo $this->errormessage; ?></div>
+        <?php } ?>
+
+        <?php echo $this->form; ?>
+
+        <?php
+        if (($lostpass || $register) && !$this->adminmodule) {
+            ?>
+            <ul class="ulLoginOptions">
+                <?php if ($lostpass) { ?>
+                    <li>
+                        <a href="/default/login/lostpassword/"><?= $translate->_('Lost password?'); ?></a>
+                    </li>
+                <?php
+                }
+                if ($register) {
+                    ?>
+                    <li>
+                        <a href="<?php echo $linkregister; ?>"><?= $translate->_($textregister); ?></a>
+                    </li>
+                <?php } ?>
+            </ul>
+        <?php
+        }
+        ?>
+
+    </div>
+
+
+</fieldset>
+
+<script type="text/javascript">
+    $(function () {
+        $('#username').focus();
+    });
+</script>

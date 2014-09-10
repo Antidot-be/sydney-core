@@ -1,0 +1,15 @@
+<?php
+// GDE - #52-Ajouts exports CSV - 07/08/2013
+if (is_array($this->people) && count($this->people) > 0) {
+    foreach ($this->people[0] as $colName => $colValue) {
+        echo $colName, ';';
+    }
+    echo chr(10);
+    foreach ($this->people as $result) {
+        foreach ($result as $colName => $colValue) {
+            echo utf8_decode($colValue), ';';
+        }
+        echo chr(10);
+    }
+}
+?>

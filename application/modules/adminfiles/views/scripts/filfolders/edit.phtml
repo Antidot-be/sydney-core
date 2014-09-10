@@ -1,0 +1,23 @@
+<script>
+    $(function () {
+        $('#cancelbutton').click(function () {
+            $('#flyingeditor').fadeOut();
+        });
+        // editprocess
+        $('#submitbutton').click(function (e) {
+            var dts = {'layout': 'out'};
+            $('input').each(function () {
+                var ob = $(this);
+                var key = ob.attr('name');
+                var val = ob.val();
+                if (ob.attr('type') == 'checkbox') {
+                    if (ob.attr('checked')) dts[key] = val;
+                    else dts[key] = '0';
+                } else if (key != '') dts[key] = val;
+
+            });
+            $('#flyingeditor').html('saving...').load('/adminfiles/filfolders/editprocess/', dts);
+        });
+    });
+</script>
+<?php echo $this->form; ?>

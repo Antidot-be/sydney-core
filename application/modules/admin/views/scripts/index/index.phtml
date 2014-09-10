@@ -1,0 +1,28 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$config = $registry->get('config');
+$cdn = $config->general->cdn;
+$acl = $registry->get('acl');
+if ($registry->isRegistered('userGroup')) {
+    $role = $registry->get('userGroup');
+}
+$auth = Sydney_Auth::getInstance();
+
+?>
+<div class="butpucctn">
+    <?php
+    foreach ($this->mitems as $d) :
+        if ($d->name != '' && $acl->isAllowed($role, $d->name)) {
+            ?>
+            <div class="butpuc"
+                 onClick="Javascript:document.location='/<?php echo $d->name; ?>';">
+                <div class="bpt1"><img
+                        src="<?php echo $cdn; ?>/sydneyassets/images/crystal_project/64x64/<?php echo $d->image; ?>"/>
+                </div>
+                <div class="bpt2"><?php echo $d->label; ?></div>
+            </div>
+        <?php
+        }
+    endforeach;
+    ?>
+</div>

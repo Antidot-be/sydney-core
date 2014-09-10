@@ -1,0 +1,12 @@
+<?php
+// AS - 26 Jun 2013 - Add this for PHP strict standards
+if ($this->view === null) {
+    $this->view = new stdClass();
+}
+
+if ($this->countDeletedNodes > 0) {
+    echo $this->view->sidebar = 'Contains <a href="/adminpages/recyclebin">' . $this->countDeletedNodes . ' node(s)</a> deleted';
+} else {
+    echo $this->view->sidebar = 'Empty !';
+}
+?>

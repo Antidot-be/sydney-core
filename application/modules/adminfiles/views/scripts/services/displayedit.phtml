@@ -1,0 +1,251 @@
+<?php
+$fullpath = $this->fullpath;
+$fdb = $this->file;
+
+$ftype = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
+$size = $ftype->getSize();
+$finfo = $ftype->getFileinfo();
+?>
+<script>
+    $(function () {
+        $("#fileProperties").fileproperties();
+        // folders link
+        function setLinkedToGUI(sel, eid, elabel) {
+            if (sel != null) {
+                $('#' + eid).val($.toJSON(sel));
+            }
+            else if ($('#' + eid).val() != '') {
+                sel = $.evalJSON($('#' + eid).val());
+            }
+            else {
+                sel = [];
+            }
+            var mhtml = '';
+            for (var i = 0; i < sel.length; i++) {
+                mhtml += '<span class="claellm">' + sel[i].label + '</span> ';
+            }
+            $('#' + eid + '-label').html(mhtml);
+        };
+        function onSaveFolders(sel) {
+            setLinkedToGUI(sel, 'filfolders', 'Categories');
+        };
+        $('.agdbutlinkfolders').click(function (e) {
+            e.preventDefault();
+            var sel = [];
+            if ($('#nwsfolders').val() != '') sel = $.evalJSON($('#filfolders').val());
+            $('#folderreldiv').foldermanager({
+                'title': 'Categories',
+                'cortable': 'filfolders_filfiles',
+                'labeltable': 'filfolders',
+                'datatable': 'filfiles',
+                'dialog': true,
+                'onSaveMCallback': onSaveFolders,
+                'selectedItems': sel,
+                'closeOnEscape': true,
+                'fileid': <?php echo $fdb->id; ?>
+            });
+        });
+        var sel2 = [];
+        if ($('#nwsfolders').val() != '') {
+            sel2 = $.evalJSON($('#filfolders').val());
+        }
+        setLinkedToGUI(sel2, 'filfolders', 'Categories');
+        <?php if (strtolower($finfo['general.extension']) == 'pdf') {
+            $nbpgs = 1;
+            if (isset($finfo['pdf.nbrpages'])) {$nbpgs = $finfo['pdf.nbrpages'];
+}
+        ?>
+        // ------- PDF back next preview page button  -------
+        var pdfpg = 1;
+        var pdftotalpg = <?php echo $nbpgs ?>;
+
+        function pdfInitButtons() {
+            $('a.PDFprev,a.PDFnext').click(function (e) {
+                e.preventDefault();
+                var changeimg = false;
+                var id = $(this).attr('href');
+                if ($(this).hasClass('PDFprev') && pdfpg > 1) {
+                    pdfpg--;
+                    changeimg = true;
+                }
+                if ($(this).hasClass('PDFnext') && pdfpg < pdftotalpg) {
+                    pdfpg++;
+                    changeimg = true;
+                }
+                pdfResetButtons();
+                if (changeimg) {
+                    $('.picture.norollover.imagepreviewa').empty().append('<img src="' + '/adminfiles/file/showimg/id/' + id + '/pdfpg/' + pdfpg + '/fn/' + id + '-' + pdfpg + '.png' + '"/>');
+                }
+            });
+            pdfResetButtons();
+        };
+        function pdfResetButtons() {
+            $('a.PDFprev,a.PDFnext').css({'opacity': 1});
+            if (pdfpg == pdftotalpg) $('a.PDFnext').css({'opacity': .1});
+            if (pdfpg == 1) $('a.PDFprev').css({'opacity': .1});
+            $('.pdfpagecnt').html(' ' + pdfpg + '/' + pdftotalpg + ' ');
+        };
+        pdfInitButtons();
+        <?php } ?>
+        function destroyCovertDialog() {
+            $('.dialogConvertCls').empty().dialog('destroy');
+        };
+        // ------- ZIP preview  -------
+        <?php if (strtolower($finfo['general.extension']) == 'zip') { ?>
+        $('a.zipdecompress').click(function (e) {
+            e.preventDefault();
+            var elid = $(this).attr('href');
+            var htmc = '<p><b>Archive content:</b></p><div class="zipcntnprdiv" style="text-align:left;border:1px #DDD solid;padding:5px;margin:5px;height:100px;overflow:auto;"></div>'
+                + '<p>By clicking on the "decompress" button, you will unzip every files as individual files in the File Manager. '
+                + '<br/><b>Note that:</b> If this zip file is linked to a category, all the uncompressed files will be linked to this same category.</p>';
+            $('.dialogConvertCls').dialog({
+                title: 'Unzip Archive',
+                modal: true,
+                width: 500,
+                height: 330,
+                closeOnEscape: true,
+                close: destroyCovertDialog,
+                buttons: {
+                    'Decompress': function () {
+                        $('#ajaxbox').msgbox({'message': 'Processing...', 'showtime': 0, 'modal': true});
+                        $('.zipcntnprdiv').html('Loading...').load('/adminfiles/services/unziptofiles/sydneylayout/no/id/' + elid, {}, function () {
+                            window.location.reload();
+                        });
+                    },
+                    'Cancel': destroyCovertDialog
+                }
+            }).html(htmc);
+            $('.zipcntnprdiv').html('Loading...').load('/adminfiles/file/showzipcontent/sydneylayout/no/id/' + elid);
+        });
+
+        <?php } ?>
+
+    });
+</script>
+<style>
+    #filesEdit #filesBrowse ul.filesGallery li, #filesBrowse ul.filesGallery img {
+        width: auto;
+    }
+
+    #filesEdit #filesBrowse ul.filesGallery li {
+        text-align: left;
+        float: none;
+    }
+
+    #filesEdit #filesBrowse ul.filesGallery li:hover {
+        border: 2px solid #FFF;
+    }
+</style>
+<div id="#filesEdit">
+    <div class="box">
+        <h2><?php echo $finfo['general.basename']; ?></h2>
+
+        <div class="preview">
+            <p>
+                <?php if (strtolower($finfo['general.extension']) == 'pdf') { ?>
+                    <a class="button PDFprev"
+                       href="<?php echo $fdb->id; ?>"><?php echo htmlentities("<"); ?></a>
+                    <span class="pdfpagecnt"></span>
+                    <a class="button PDFnext"
+                       href="<?php echo $fdb->id; ?>"><?php echo htmlentities(">"); ?></a>
+                <?php } ?>
+
+            <div href="/adminfiles/file/getrfile/id/<?php echo $fdb->id; ?>"
+                 target="_blank"
+                 class="picture norollover imagepreviewa" style="padding:13px;">
+                <img
+                    src="/adminfiles/file/showimg/id/<?php echo $fdb->id; ?>/pdfpg/1/fn/<?php echo $fdb->id; ?>-1.png"/>
+            </div>
+            <a target="_blank" class="button"
+               href="/adminfiles/file/getrfile/id/<?php echo $fdb->id; ?>/<?php echo $fdb->id; ?>.<?php echo $finfo['general.extension']; ?>">Download</a>
+            <?php
+            /* --- IMAGE EDITOR --- */
+            if (Sydney_Accessright::isAuthorized2module(null, 'adminimageeditor')) {
+                if (in_array(strtoupper($finfo['general.extension']), Sydney_Medias_Utils::$filters[1])) {
+                    ?>
+                    <a class="button"
+                       href="/adminimageeditor/index/index/id/<?php echo $fdb->id; ?>">Image
+                        Editor</a>
+                <?php
+                }
+            }
+
+            /* --- ZIP specific --- */
+            if (strtolower($finfo['general.extension']) == 'zip') {
+                ?>
+                <a class="button zipdecompress"
+                   href="<?php echo $fdb->id; ?>"><?= Sydney_Tools_Localization::_('Decompress') ?></a>
+            <?php
+            }
+            ?>
+            </p>
+        </div>
+    </div>
+    <div class="box">
+        <h2><?= Sydney_Tools_Localization::_('Properties') ?></h2>
+        <ul id="fileProperties" class="subBox fieldValueList">
+            <li>
+                <label><?= Sydney_Tools_Localization::_('Name') ?></label>
+
+                <p><input type="hidden" id="propfileid"
+                          value="<?php echo $fdb->id; ?>"/>
+                    <input type="text" id="filename" name="filename"
+                           value="<?php echo $fdb->label; ?>"/></p>
+            </li>
+            <li>
+                <label
+                    for="istagged"><?= Sydney_Tools_Localization::_('Categories') ?></label>
+
+                <div id="folderreldiv"></div>
+                <dt id="filfolders-label"></dt>
+                <input type="hidden" id="filfolders"
+                       value="<?php echo $this->filfolders; ?>"
+                       name="filfolders">
+                <dd class="sydney_editor_toolbar" id="linksbuttons-element">
+                    <div class="buttons">
+                        <a href="#" class="agdbutlinkfolders"
+                           title="Link to folders"
+                           id="linkfoldb"><?= Sydney_Tools_Localization::_('Folders') ?></a>
+                        &nbsp;&nbsp;&nbsp;<?= Sydney_Tools_Localization::_('Link to categories') ?>
+                    </div>
+                </dd>
+            </li>
+            <li>
+                <label
+                    for="filedescription"><?= Sydney_Tools_Localization::_('Description') ?></label>
+
+                <p><textarea id="filedescription"
+                             name="filedescription"><?php echo $fdb->desc; ?></textarea>
+                </p>
+            </li>
+            <li>
+                <p class="colspan actions"><a class="button butfpropsave"
+                                              href="save"><?= Sydney_Tools_Localization::_('Save Changes') ?></a>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <?php
+    $filetolinkcnt = $this->action('index', 'links', 'adminfiles', array('fileid' => $fdb->id));
+    if ($filetolinkcnt != '') {
+        ?>
+        <div class="box">
+            <h2><?= Sydney_Tools_Localization::_('Links from content page(s)') ?></h2>
+            <?php echo $filetolinkcnt; ?>
+        </div>
+    <?php } ?>
+    <div class="box">
+        <h2>Metadata</h2>
+        <ul id="fileProperties" class="subBox fieldValueList">
+            <?php foreach ($finfo as $k => $v): ?>
+                <?php if (!in_array($k, Sydney_Medias_Utils::$metaNotShow)): ?>
+                    <li>
+                        <label><?php echo $this->translate($k); ?></label>
+
+                        <p><?php echo Sydney_Medias_Utils::valHumanFilter($k, $v); ?></p>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

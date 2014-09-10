@@ -1,0 +1,212 @@
+<style>
+    #content .subBox {
+        padding-bottom: 1px;
+        padding-left: 96px;
+        padding-top: 1px;
+        margin: 3px;
+        width: 300px;
+        float: left;
+    }
+
+    .fieldValueList li p {
+        padding: 11px 0 11px 80px;
+    }
+
+    .fieldValueList li label {
+        width: 80px;
+    }
+
+    #content .subBox .fieldValueList {
+        height: 86px;
+        overflow: auto;
+    }
+
+    #content .subBox a.avatar {
+        display: block;
+        float: left;
+        margin-left: -80px;
+        margin-top: 15px;
+        position: relative;
+    }
+
+    #content .subBox a.avatar img {
+        border: 2px solid #CCCCCC;
+    }
+
+    .paging {
+        font-size: 11px;
+        line-height: 1.2;
+        margin: 15px 16px 19px;
+        padding-top: 4px;
+        text-align: center;
+    }
+
+    .smallchars {
+        font-size: 10px;
+    }
+
+    #peopdialog {
+        background-image: none;
+        background: #E8E8E8;
+    }
+</style>
+<?php
+if (isset($this->sydneylayout) && $this->sydneylayout == 'no') {
+    $nolayout = true;
+} else {
+    $nolayout = false;
+}
+?>
+<script>
+    $(function () {
+        var servurl = '/adminpeople/services/displaypeople';
+
+        function ajserach(topost) {
+            topost = oPaginator.refreshOpts(topost);
+            $('#ajaxbox').msgbox({'message': 'Loading...', 'showtime': 0, 'modal': true});
+            $('#peoplelisting').load(servurl, topost, function (e) {
+                $('#ajaxbox').msgbox({'message': 'Here you go...', 'showtime': 1, 'modal': false});
+                oPaginator.refreshPaginator();
+            });
+        };
+        function augmentdef(o) {
+            var d = {};
+            $('#fstatus,#fgroup,#searchinput').each(function (e) {
+                var pname = $(this).attr('name');
+                d[pname] = $(this).val();
+            });
+            return $.extend(d, o);
+        };
+        <?php if (!$nolayout) { ?>
+        // on search box
+        $('#searchinput').attr('name', 'searchstr').attr('title', 'Search on name').bind('keypress', function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                var o = {'searchstr': $(this).val()};
+                ajserach(augmentdef(o));
+            }
+            ;
+        });
+        <?php } ?>
+        // on dropdowns
+        $('#fstatus,#fgroup').change(function (e) {
+            var o = {};
+            var pname = $(this).attr('name');
+            o[pname] = $(this).val();
+            ajserach(augmentdef(o));
+        });
+
+    });
+</script>
+
+<div id="peopdialog"></div>
+<div class="sydney_editor_toolbar">
+    <form>
+        <div>
+            <label
+                for="fstatus"><?php echo Sydney_Tools_Localization::_('Status filter'); ?></label>
+            <select id="fstatus" name="fstatus" class="smallchars">
+                <option
+                    value=""><?php echo Sydney_Tools_Localization::_('All'); ?></option>
+                <option
+                    value="1"><?php echo Sydney_Tools_Localization::_('Active'); ?></option>
+                <option
+                    value="0"><?php echo Sydney_Tools_Localization::_('De-Activated'); ?></option>
+            </select>
+        </div>
+        <div>
+            <label for="fgroup">Group filter</label>
+            <select id="fgroup" name="fgroup" class="smallchars">
+                <option value="">All</option>
+                <?php foreach ($this->groups as $k => $v) : ?>
+                    <option
+                        value="<?php echo $k; ?>" <?php if (isset($this->r->fgroup) && $this->r->fgroup === (string)$k) {
+                        echo 'selected';
+                    } ?>><?php echo $v; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </form>
+</div>
+<?php
+
+$minfo = array(
+    array(Sydney_Tools_Localization::_('Email'), 'login'),
+    array(Sydney_Tools_Localization::_('Phone'), 'phone'),
+);
+
+$capsules = array(
+    '<span class="capsule">' . Sydney_Tools_Localization::_('De-activated') . '</span>',
+    ''
+);
+
+?>
+
+<ul xmlns="http://www.w3.org/1999/xhtml" class="sydney_editor_paging">
+    <ul>
+        <li><a href="#"
+               id="prevbut-header"><?= Sydney_Tools_Localization::_('Previous items') ?></a><a
+                id="prevbuto-header"><?= Sydney_Tools_Localization::_('Previous items') ?></a>
+        </li>
+        <li><a href="#"
+               id="nextbut-header"><?= Sydney_Tools_Localization::_('Next items') ?></a><a
+                id="nextbuto-header"><?= Sydney_Tools_Localization::_('Next items') ?></a>
+        </li>
+    </ul>
+
+    <div id="pagination-header">
+    </div>
+
+</ul>
+
+<ul id="peoplelisting" class="box clearfix">
+    <?php foreach ($this->people as $p) : ?>
+        <li class="subBox userid<?php echo $p['id']; ?>">
+            <a class="avatar"
+               href="/adminpeople/index/editindex/id/<?php echo $p['id']; ?>">
+                <?php
+                // Display avatar
+                if ($p['avatar'] > 0) {
+                    $avatar = '/adminfiles/file/thumb/id/' . $p['avatar'] . '/ts/1/fn/' . $p['avatar'] . '.png';
+                } else {
+                    $avatar = $this->cdnurl . '/sydneyassets/images/image64.png';
+                }
+                echo '<img width="64" height="64" src="' . $avatar . '"/>';
+                ?>
+
+            </a>
+
+            <h2>
+                <a href="/adminpeople/index/editindex/id/<?php echo $p['id']; ?>"><?php echo $p['fname'] . ' ' . $p['lname']; ?></a>
+                <?php echo $capsules[($p['active'])]; ?>
+                <span
+                    class="subheading"><?php echo ucfirst($p['usersgroups_name']); ?></span>
+            </h2>
+            <ul class="fieldValueList">
+                <?php foreach ($minfo as $m): ?>
+                    <?php
+                    $val = $p[($m[1])];
+                    if ($val != '' && $val != '0'):
+                        ?>
+                        <li><label><?php echo $m[0]; ?></label>
+
+                            <p><?php echo $val; ?></p></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+            <p class="buttons">
+                <a class="button vdetailb"
+                   href="/adminpeople/index/profile/id/<?php echo $p['id']; ?>">View
+                    details</a>
+                <a class="button muted"
+                   href="/adminpeople/index/editindex/id/<?php echo $p['id']; ?>">Edit</a>
+                <?php if ($this->users_id != $p['id']) { ?>
+                    <a class="button warning delete peodeleteb"
+                       href="/adminpeople/services/delete/id/<?php echo $p['id']; ?>/format/json">Delete</a>
+                <?php } ?>
+            </p>
+            <br><br>
+        </li>
+    <?php endforeach; ?>
+</ul>
+<?php echo $this->addiScript; ?>

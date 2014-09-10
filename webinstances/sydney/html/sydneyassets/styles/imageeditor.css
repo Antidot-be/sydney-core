@@ -1,0 +1,120 @@
+@CHARSET "UTF-8";
+.imageeditor .toolbar
+{
+
+	background: #DDD;
+	width: 79px;
+	height: 262px;
+	border-right: 2px solid #999;
+	border-bottom: 2px solid #555;
+	border-top: 2px solid #FFF;
+	border-left: 2px solid #FFF;
+	
+	position:fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 99;
+	
+}
+.imageeditor .toolbar .icon
+{
+	width: 35px;
+	height: 35px;
+	float: left;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #555;
+	border-top: 1px solid #FFF;
+	border-left: 1px solid #FFF;
+	margin: 1px;
+	cursor: pointer;
+}
+.imageeditor .toolbar .movebar
+{
+	background: #CCC;
+	width: 74px;
+	height: 20px;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #555;
+	border-top: 1px solid #FFF;
+	border-left: 1px solid #FFF;
+	margin: 1px;
+	cursor: move;
+}
+.imageeditor .toolbar .icon:hover
+{
+	background-color: #FFF;
+	border-top: 1px solid #999;
+	border-left: 1px solid #555;
+	border-right: 1px solid #FFF;
+	border-bottom: 1px solid #FFF;
+}
+.iconhover
+{
+	background-color: #FFF;
+	border: #550000 solid 1px;	
+}
+.imageeditor .stage
+{
+	background: #FFF;
+	height: 630px;	
+	border: 1px solid #999;
+	overflow: auto;
+	background-image: url('../images/imageeditor/bg.png');
+}
+.crop
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -101px -69px #EEE;
+}
+.revert
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -101px -170px #EEE;
+}
+.rotatel
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -100px -199px #EEE;
+}
+.rotater
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -65px -199px #EEE;
+}
+.fliph
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -65px -102px #EEE;
+}
+.flipv
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -99px -102px #EEE;
+}
+.reflection
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -133px -205px #EEE;
+}
+.contrast
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -133px -1px #EEE;
+}
+.sharpen
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll 3px -205px #EEE;
+}
+.blacknwhite
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -32px -137px #EEE;
+}
+.zoomin
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll 3px -236px #EEE;
+}
+.zoomout
+{
+	background: url('../images/imageeditor/imageEditor.png') no-repeat scroll -32px -237px #EEE;
+}
+
+.drpshadow {
+	-moz-box-shadow: 3px 3px 4px #000;
+	-webkit-box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px #000;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
+

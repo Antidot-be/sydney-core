@@ -1,0 +1,20 @@
+<style>
+    dl.zend dt, dd {
+        margin-top: 10px;
+    }
+</style>
+<?php
+if ($this->extended) {
+    ?>
+    <h2>Access to websites</h2>
+    <script>
+        $(function () {
+            $('#users').formvalidator({'url': '/adminpeople/services/userswebsitepermisions/format/json' });
+        });
+    </script>
+    <fieldset>
+        <?php echo $this->websiteForm; ?>
+    </fieldset>
+<?php
+}
+?>

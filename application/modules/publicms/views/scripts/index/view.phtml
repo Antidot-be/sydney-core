@@ -1,0 +1,166 @@
+<?php
+$charConvert = array("HTML-ENTITIES", "UTF-8");
+
+if ($this->inlineEditionAllowed) {
+    ?>
+    <script>
+        var pagstructureid = <?php echo $this->pagid; ?>;
+        var emodule = "<?php echo $this->emodule; ?>";
+
+
+        $(document).ready(function () {
+            html = '<div style="border:dotted 1px #888;font-size:9px;z-index:3000;position:fixed;top:0;left:0;width:100%;height:20px;background:#FFF;color:#999;"><span style="float:right;margin-right:15px;margin-top:3px;">';
+            html = html + 'You are logged as <strong><?php echo $this->auth->getIdentity(); ?></strong>';
+            html = html + ' - <a href="/admindashboard" style="color:#000;">Go to admin</a>';
+            html = html + ' - <a href="/default/login/logout" style="color:#000;">Logout</a>';
+            html = html + '</span></div>';
+            $('body').prepend(html);
+        });
+
+    </script>
+
+
+    <div class="ceUILibrary" style="display: none;">
+        <div class="addContent">
+            <p class="items">
+                <?php echo $this->EditorAddContentBar(); ?>
+            </p>
+
+            <p class="close"><a class="button" href="#">Close</a></p>
+        </div>
+        <div class="addHere">
+            <span class="ghost "></span>
+            <a class="sydney_editor_a" href="#" onclick="return false;">Add
+                here</a>
+        </div>
+        <li class="blankitem sydney_editor_li">
+            <?php echo $this->EditorActions(); ?>
+            <div class="content"></div>
+        </li>
+        <?php
+
+        ?>
+
+        <?php
+        // print the result of the helpers
+        $tyDB = new Pagdivtypes();
+        foreach ($tyDB->fetchAll('online = 1') as $e) {
+            if (($e->developeronly == 1 && $this->isDeveloper) || $e->developeronly == 0) {
+                $hlpr = $e->helperadmin;
+                // echo '<!-- Helper '.$e->label.' -->'."\n";
+                echo $this->$hlpr();
+            }
+        }
+        ?>
+    </div>
+<?php } // END inlineEditionAllowed ?>
+
+<?php
+
+// JTO - Ca ne sert à rien d'afficher cette div si le design a des zones
+if (!$this->hasZone):
+if ($this->inlineEditionAllowed) : ?>
+<div id="sydney_editor">
+    <?php endif; ?>
+    <div id="pageContent"
+         class="contentEditor" <?= ($this->inlineEditionAllowed) ? 'pagstructureid="' . $this->pagid . '"' : ''; ?>>
+        <?php
+        endif;
+
+        $heading = $this->heading;
+
+        if (isset($this->contentDivs) && is_array($this->contentDivs)) {
+            foreach ($this->contentDivs as $div) {
+                $params = null;
+                $isDeletable = true;
+                $isDraft = false;
+                $workflowEnabled = $div['workflowEnabled'];
+                $isEditable = $div['isEditable'];
+                $accessRightsEnabled = $div['accessRightsEnabled'];
+                $msgNotEditable = $div['msgNotEditable'];
+
+                if (Sydney_Auth::getInstance()->hasIdentity() && !empty($div['content_draft']) && $this->inlineEditionAllowed) {
+                    $isDraft = true;
+                    if (!empty($div['content'])) {
+                        $isDeletable = false;
+                    }
+                    if ($div['params_draft'] != '') {
+                        eval('$params =' . $div['params_draft'] . ';');
+                        if (isset($params['level'])) {
+                            $params['level'] += $heading;
+                        }
+                    }
+                    $content = $div['content_draft'];
+                    $params['addClass'] = 'draft';
+                } else {
+                    if ($div['params'] != '') {
+                        eval('$params =' . $div['params'] . ';');
+                        if (isset($params['level'])) {
+                            $params['level'] += $heading;
+                        }
+                    }
+                    $params['addClass'] = '';
+                    $content = $div['content'];
+                }
+
+                echo '<a id="' . $div['code'] . '-' . $div['pagdivs_id'] . '" href="#"></a>';
+
+                if ($div['online']) {
+                    $params['addClass'] .= ' onlinediv';
+                } else {
+                    $params['addClass'] .= ' offlinediv';
+                }
+
+                // Set pageid to params
+                $params['_pageid'] = $this->pagid;
+
+                if (Sydney_Auth::getInstance()->hasIdentity() && $this->inlineEditionAllowed) {
+                    $paramsEditorAction = array(
+                        'dbid'  => $div['pagdivs_id'],
+                        'label' => ($div['label'] ? $div['label'] : $div['code'] . '-' . $div['pagdivs_id'])
+                    );
+
+                    echo $this->{$div['helper']}(
+                        $this->EditorActions(
+                            $isDeletable,
+                            $isDraft,
+                            $div['online'],
+                            $workflowEnabled,
+                            $isEditable,
+                            $accessRightsEnabled,
+                            $msgNotEditable,
+                            $paramsEditorAction
+                        ),
+                        $content,
+                        $div['pagdivs_id'],
+                        $div['order'],
+                        array_merge($this->requestParams, $params),
+                        $this->pagid
+                    );
+                } else {
+                    if ($div['online']) {
+                        echo $this->{$div['helper']}('', $content, $div['pagdivs_id'], $div['order'], array_merge($this->requestParams, $params), $this->pagid);
+                    }
+                }
+
+            }
+        }
+        ?>
+        <?php if ($this->inlineEditionAllowed) : ?>
+            <p class="addContentStatic">
+                <?php echo $this->EditorAddContentBar(); ?>
+            </p>
+        <?php endif; ?>
+
+
+        <?php
+        // JTO - Ca ne sert à rien d'afficher cette div si le design a des zones
+        if (!$this->hasZone):
+        if ($this->inlineEditionAllowed) : ?>
+    </div>
+<?php endif; ?>
+</div>
+<?php // div fermante : <div id="pageContent" class="contentEditor">
+endif;
+?>
+

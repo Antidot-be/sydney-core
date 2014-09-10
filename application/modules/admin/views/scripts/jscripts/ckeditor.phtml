@@ -1,0 +1,210 @@
+/*
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+CKEDITOR.dialog.add( 'antidotBrowseImage', function( editor )
+{
+return {
+title : 'Browse server',
+minWidth : 850,
+minHeight : 450,
+resizable : CKEDITOR.DIALOG_RESIZE_BOTH,
+contents : [
+{
+id : 'Files',
+label : 'Files',
+title : 'Tree',
+elements :
+[
+{
+type : 'html',
+className: '...',
+style: '...',
+html: '
+<iframe id="antidotFrmBrowseImage" frameborder="no"
+        src="' + editor.config.filebrowserImageBrowseUrl + '&source=imagelink"
+        style="width:100%;height: 500px;"></iframe>'
+}
+]
+}
+],
+onOk : function () {
+var current_editor    = editor.name;
+var frmSelector        = '.cke_editor_' + current_editor + '_dialog #antidotFrmBrowseImage';
+$(frmSelector).contents().find(".itemselected").each(function(index) {
+var target_url    = $(this).attr('href');
+var id            = target_url.substr(target_url.lastIndexOf("/")+1);
+var url        = '/publicms/file/showimg/dw/400/id/'+id+'/fn/'+id+'.png';
+var fileName    = $('strong.fileName',this).html();
+
+editor.insertHtml('<img alt="'+fileName+'" src="'+url+'"/>');
+
+$(this).removeClass('itemselected');
+});
+}
+};
+} );
+CKEDITOR.dialog.add( 'antidotBrowseFile', function( editor )
+{
+return {
+title : 'Browse server',
+minWidth : 850,
+minHeight : 450,
+resizable : CKEDITOR.DIALOG_RESIZE_BOTH,
+contents : [
+{
+id : 'Files',
+label : 'Files',
+title : 'Tree',
+elements :
+[
+{
+type : 'html',
+className: '...',
+style: '...',
+html: '
+<iframe id="antidotFrmBrowseFile" frameborder="no"
+        src="/adminfiles/index/index/?embed=yes&context=ckeditor&source=filelink"
+        style="width:100%;height: 500px;"></iframe>'
+}
+]
+}
+],
+onOk : function () {
+var current_editor    = editor.name;
+var frmSelector        = '.cke_editor_' + current_editor + '_dialog #antidotFrmBrowseFile';
+var selection = $(frmSelector).contents().find(".itemselected");
+if (selection.length != 1) {
+alert("Please select only 1 file !");
+return false;
+} else {
+selection.each(function(index) {
+var target_url        = $(this).attr('href');
+var id                = target_url.substr(target_url.lastIndexOf("/")+1);
+var url            = '/FILE-'+id;
+var fileName        = $('strong.fileName',this).html();
+var current_editor    = editor.name;
+
+if(CKEDITOR.env.ie) {
+CKEDITOR.instances[current_editor].getSelection().unlock(true);
+var selected_text = CKEDITOR.instances[current_editor].getSelection().getNative().createRange().text;
+} else {
+var selected_text = CKEDITOR.instances[current_editor].getSelection().getNative();
+}
+
+var selection = selected_text;
+var range = (document.all ? selection.createRange() : selection.getRangeAt(selection.rangeCount - 1).cloneRange());
+
+if (document.all)
+{
+selected_text = range.htmlText;
+}
+else
+{
+var clonedSelection = range.cloneContents();
+var div = document.createElement('div');
+div.appendChild(clonedSelection);
+selected_text = div.innerHTML;
+}
+
+if (selected_text == "") {
+selected_text = url;
+}
+
+// So no you can use it to replace something for instance, like I want to do in a custon plugin i've made.
+CKEDITOR.instances[current_editor].insertHtml('<a href="'+url+'">' +
+    selected_text + '</a>');
+
+$(this).removeClass('itemselected');
+return;
+});
+}
+}
+};
+} );
+
+CKEDITOR.dialog.add( 'antidotBrowsePage', function( editor )
+{
+return {
+title : 'Browse server',
+minWidth : 850,
+minHeight : 450,
+resizable : CKEDITOR.DIALOG_RESIZE_BOTH,
+contents : [
+{
+id : 'Pages',
+label : 'Pages',
+title : 'Tree',
+elements :
+[
+{
+type : 'html',
+className: '...',
+style: '...',
+html: '
+<iframe id="antidotFrmBrowsePage" frameborder="no"
+        src="/adminpages/index/select/context/ckeditor-structure/?embed=yes&context=ckeditor&source=pagelink"
+        style="width:100%;height: 500px;"></iframe>'
+}
+]
+}
+],
+onOk : function () {
+var current_editor    = editor.name;
+var frmSelector        = '.cke_editor_' + current_editor + '_dialog #antidotFrmBrowsePage';
+var selected = $(frmSelector).contents().find("#tempSelection");
+if (selected.val() > 0) {
+var id = selected.val();
+var label = selected.attr('data-label');
+var anchor = $(frmSelector).contents().find("#tempSelectionObject").val();
+var url = '';
+$.ajax({
+dataType: "json",
+url: '/adminpages/services/getcleanurlpage/',
+data: {label: label, id : id},
+success: function(data){
+url = data.cleanUrl;
+
+if (anchor.length > 0) {
+url = url + '#' + anchor;
+}
+
+if(CKEDITOR.env.ie) {
+CKEDITOR.instances[current_editor].getSelection().unlock(true);
+var selected_text = CKEDITOR.instances[current_editor].getSelection().getNative().createRange().text;
+} else {
+var selected_text = CKEDITOR.instances[current_editor].getSelection().getNative();
+}
+
+var selection = selected_text;
+var range = (document.all ? selection.createRange() : selection.getRangeAt(selection.rangeCount - 1).cloneRange());
+
+if (document.all)
+{
+selected_text = range.htmlText;
+}
+else
+{
+var clonedSelection = range.cloneContents();
+var div = document.createElement('div');
+div.appendChild(clonedSelection);
+selected_text = div.innerHTML;
+}
+
+if (selected_text == "") {
+selected_text = url;
+}
+
+// So no you can use it to replace something for instance, like I want to do in a custon plugin i've made.
+CKEDITOR.instances[current_editor].insertHtml('<a href="'+url+'">' +
+    selected_text + '</a>');
+
+$(this).removeClass('itemselected');
+return;
+}
+});
+
+}
+}
+};
+} );

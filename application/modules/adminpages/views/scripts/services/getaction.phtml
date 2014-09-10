@@ -1,0 +1,98 @@
+<?php
+if ($this->page->get()->ishome == 1) {
+    $hidit = ' invisible';
+    $sHP = '<span class="capsule">Homepage</span>';
+} else {
+    $hidit = '';
+    $sHP = '';
+}
+
+if ($this->page->get()->status != 'published') {
+    $btnStatus = 'publish';
+} else {
+    $btnStatus = 'unpublish';
+}
+?>
+<div id="adminpageaction-<?php echo $this->dbid ?>"
+     style="display:none; text-align:right;"
+     class="adminpages_action_container">
+
+    <div class="actionsContainer">
+		<span class="actions">
+			<a class="button <?php echo $btnStatus ?>"
+               id="btn_publish_<?php echo $this->dbid ?>"
+               dbid="<?php echo $this->dbid ?>"><?php echo ucfirst($btnStatus) ?></a>
+			<a class="button"
+               href="/adminpages/index/create/parentid/<?php echo $this->dbid ?>">
+                <img
+                    src="<?= Sydney_Tools::getRootUrlCdn() ?>/sydneyassets/images/ui/button/icon_add.png"/>
+                Add a
+                sub-page</a>
+			<a class="button"
+               href="/adminpages/index/edit/id/<?php echo $this->dbid ?>">Properties</a>
+			<a class="button warning<?php echo $hidit ?> deletenodea"
+               dbid="<?php echo $this->dbid ?>"
+               href="#">Delete</a>
+            <?php
+            /**
+             *            <a class="button muted statsnodea" href="<?php echo $this->dbid ?>">Stats</a>
+             */
+            ?>
+			
+		</span>
+    </div>
+
+
+    <div id="adminpagestats-<?php echo $this->dbid ?>"
+         class="jquerybubblepopup jquerybubblepopup-all-black"
+         style="display:block;">
+        <table>
+            <tbody>
+            <tr>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/top-left.png&quot;);"
+                    class="jquerybubblepopup-top-left"></td>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/top-middle.png&quot;); text-align:right;"
+                    class="jquerybubblepopup-top-middle"><img
+                        class="jquerybubblepopup-tail" alt=""
+                        src="<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/tail-top.png">
+                </td>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/top-right.png&quot;);"
+                    class="jquerybubblepopup-top-right"></td>
+            </tr>
+            <tr>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/middle-left.png&quot;);"
+                    class="jquerybubblepopup-middle-left"></td>
+                <td style="color: rgb(255, 255, 255);line-height:13px;"
+                    class="jquerybubblepopup-innerHtml"><?php if ($this->page->getStats()) { ?>
+                        <b>Views:</b> <?php echo $this->page->getStats()->views ?>
+                        <br/>
+                        <b>Unique:</b> <?php echo $this->page->getStats()->unique ?>
+                        <br/><b>Time on
+                            page:</b> <?php echo $this->page->getStats()->timeonpage ?>
+                        <br/>
+                        <b>Bounces:</b> <?php echo $this->page->getStats()->bounces ?> %
+                        <br/>
+                        <b>Exits:</b> <?php echo $this->page->getStats()->exits ?> %
+                        <br/><?php } else { ?>No stats, yet
+                        <br/><?php } ?><b>Last
+                        publication:</b> <?php echo Sydney_Tools::getDateDashboard($this->page->get()->datemodified) ?>
+                    <b>by</b> <?php echo $this->page->get()->who_modified ?>
+                    <br/><b>Last update
+                        content:</b> <?php echo Sydney_Tools::getDateDashboard($this->page->get()->date_lastupdate_content) ?>
+                    <b>by</b> <?php echo $this->page->get()->who_lastupdate_content ?>
+                    <br/></td>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/middle-right.png&quot;);"
+                    class="jquerybubblepopup-middle-right"></td>
+            </tr>
+            <tr>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/bottom-left.png&quot;);"
+                    class="jquerybubblepopup-bottom-left"></td>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/bottom-middle.png&quot;); text-align: center;"
+                    class="jquerybubblepopup-bottom-middle"></td>
+                <td style="background-image: url(&quot;<?= Sydney_Tools::getRootUrlCdn() ?>/jslibs/jquery/plugins/jquerybubblepopup/jquerybubblepopup-theme/all-black/bottom-right.png&quot;);"
+                    class="jquerybubblepopup-bottom-right"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

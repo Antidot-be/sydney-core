@@ -1,0 +1,97 @@
+<?php
+
+/*
+ * @change GDE - 08/05/2014 - Content Translation
+ * Load translation
+ */
+$this->contentTranslate = new Translate_Content_Content();
+
+$div = $this->div;
+
+//var_dump($div);
+
+if (is_array($div)) {
+    $params = null;
+    $isDeletable = true;
+    $isDraft = false;
+
+    /*
+     * @change GDE - 08/05/2014 - Content Translation
+     * Get translation of content (from native table for default language and from translation table for others)
+     */
+    $div['content_draft'] = $this->contentTranslate->_($div['id'], $div['content_draft'], 'draft');
+    $div['content'] = $this->contentTranslate->_($div['id'], $div['content']);
+
+    if (!empty($div['content_draft'])) {
+        $isDraft = true;
+        if (!empty($div['content'])) {
+            $isDeletable = false;
+        }
+        if ($div['params_draft'] != '') {
+            eval('$params =' . $div['params_draft'] . ';');
+        }
+        $content = $div['content_draft'];
+        $params['addClass'] = 'draft';
+    } else {
+        if ($div['params'] != '') {
+            eval('$params =' . $div['params'] . ';');
+        }
+        $params['addClass'] = '';
+        $content = $div['content'];
+    }
+
+    if ($div['online']) {
+        $params['addClass'] .= ' onlinediv';
+    } else {
+        $params['addClass'] .= ' offlinediv';
+    }
+
+    $paramsEditorAction = array(
+        'dbid'  => $div['id'],
+        'label' => ($div['label'] ? $div['label'] : $div['code'] . '-' . $div['id'])
+    );
+    $editorAction = $this->EditorActions($isDeletable, $isDraft, $div['online'], $workflowEnabled = false, $isEditable = true, $accessRightsEnabled = false, $msgNotEditable = 'Not editable...', $paramsEditorAction);
+
+    $classPublished = 'notactive';
+    $classDraft = 'active';
+    if ($this->forcedStatus == 'published') {
+        $content = $div['content'];
+        $editorAction = $this->EditorActions(false, false, $div['online'], $workflowEnabled = false, $isEditable = true, $accessRightsEnabled = false, $msgNotEditable = 'Not editable...', $paramsEditorAction);
+        $classPublished = 'active';
+        $classDraft = 'notactive';
+        if ($div['params'] != '') {
+            eval('$params =' . $div['params'] . ';');
+        } else {
+            $params = null;
+        }
+    } else if ($this->forcedStatus == 'draft') {
+        $content = $div['content_draft'];
+        if ($div['params_draft'] != '') {
+            eval('$params =' . $div['params_draft'] . ';');
+        } else {
+            $params = null;
+        }
+    }
+
+    $tabs = '';
+    if ($isDraft) { // tab only when draft content
+        $tabs = '
+				<div class="tabs" id="tabs-' . $div['id'] . '">
+				    <ul>
+				        <li id="draft-' . $div['id'] . '" class="draft ' . $classDraft . '"><a href="' . $div['id'] . '">Draft</a></li>
+				        <li id="published-' . $div['id'] . '" class="published ' . $classPublished . '"><a href="' . $div['id'] . '">Actual content</a></li>
+				    </ul>
+				</div>';
+    }
+
+    echo $this->{$div['helper']}($tabs . $editorAction, $content, $div['id'], $div['order'], $params, $this->moduleName);
+} else {
+    echo $div;
+}
+?>
+    <script>
+        $(document).ready(function () {
+            $(this).Antidot_Contenttabs();
+        });
+    </script>
+<?php    

@@ -1,0 +1,217 @@
+<?php
+/**
+ * index_create view
+ * @package Adminpages
+ * @subpackage View
+ */
+
+$n = null;
+if ($this->parentid && !$this->node) {
+} // echo 'add under this parentid';
+else if ($this->parentid === null && !$this->node) {
+} // echo 'add at the end';
+else if ($this->node) {
+    $n = $this->node; // edit mode
+    $this->parentid = $n->parent_id;
+}
+?>
+<?php echo $this->helpBox('/adminhelp/index/index/section/pageprops'); ?>
+<script>
+    $(function () {
+        $('.uptimfield').click(function (e) {
+            e.preventDefault();
+            $('#cachetime').val($(this).attr('href'));
+        });
+
+        $('#layout').change(function () {
+            var valSelect = $(this).val();
+            $.ajax({
+                url: '/adminpages/services/getpreviewlayout/',
+                data: {layoutname: valSelect},
+                success: function (data) {
+                    if (data != null) {
+                        $('.previewLayout').html(data);
+                    }
+                }
+            });
+        });
+        $('#layout').change();
+    });
+
+</script>
+
+
+<form action="/adminpages/index/editadvancedprocess" method="post"
+      class="styled-form">
+
+    <input type="hidden" name="id" value="<?php if ($n && $n->id) {
+        echo $n->id;
+    } ?>">
+
+    <div class="form-group">
+        <label for="menus">Menu</label>
+
+        <?php foreach ($this->menusArray as $mitem): ?>
+            <div>
+                <input type="checkbox" name="menus[]"
+                       value="<?php echo $mitem[0]; ?>"<?php if ($mitem[3]) {
+                    echo "checked";
+                } ?>> <?php echo $mitem[1]; ?>
+                <span class="help-block inline"><?php echo $mitem[2]; ?></span>
+            </div>
+        <?php endforeach; ?>
+        <span
+            class="help-block"><?= Sydney_Tools_Localization::_('Choose one or several menus where this item will show up.') ?></span>
+    </div>
+
+    <div class="form-group">
+        <label
+            for="metakeywords"><?= Sydney_Tools_Localization::_('Meta-Keywords') ?></label>
+
+        <input type="text" id="metakeywords" class="form-control"
+               name="metakeywords" maxlength="255"
+               value="<?php if ($n && $n->metakeywords) {
+                   echo $n->metakeywords;
+               } ?>"/>
+        <span
+            class="help-block"><?= Sydney_Tools_Localization::_('Hidden list of keywords separated by a "," which will be indexed by external and internal search engines (255 characters max).') ?></span>
+    </div>
+
+
+    <div class="form-group">
+        <label
+            for="metadesc"><?= Sydney_Tools_Localization::_('Meta-Description') ?></label>
+
+        <textarea id="metadesc" name="metadesc" class="form-control"
+                  maxlength="255"><?php if ($n && $n->metadesc) {
+                echo $n->metadesc;
+            } ?></textarea>
+        <span
+            class="help-block"><?= Sydney_Tools_Localization::_('Hidden description which will be indexed by external and internal search engines (255 characters max).') ?></span>
+    </div>
+
+
+    <div class="form-group">
+        <label
+            for="redirecttoid"><?= Sydney_Tools_Localization::_('Auto-redirect to') ?></label>
+
+        <select id="redirecttoid" name="redirecttoid" class="form-control">
+            <?php echo $this->StructureDropdown()->setStructureArray($this->structureArray)->setSelectedId($n->redirecttoid); ?>
+        </select>
+        <span
+            class="help-block"><?= Sydney_Tools_Localization::_('If this page is an "empty node", you can chose the page from the structure to which this node will redirect.') ?></span>
+    </div>
+
+    <?php if (isset($this->layoutsopt) && is_array($this->layoutsopt) && count($this->layoutsopt) > 0) : ?>
+        <div class="form-group">
+            <label
+                for="layout"><?= Sydney_Tools_Localization::_('Layout') ?></label>
+
+            <select id="layout" name="layout" class="form-control">
+                <option
+                    value=""><?= Sydney_Tools_Localization::_('Default') ?></option>
+                <?php foreach ($this->layoutsopt as $layout) : ?>
+                    <option
+                        value="<?php echo $layout; ?>" <?php if ($layout == $n->layout) {
+                        echo "selected";
+                    } ?>><?php echo $layout; ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <div class="previewLayout"></div>
+            <span
+                class="help-block"><?= Sydney_Tools_Localization::_('You can define here some layout specification if this page needs to be different than the default page (having the default template and layout)') ?></span>
+        </div>
+    <?php else : ?>
+        <input type="hidden" id="layout" name="layout" value=""/>
+    <?php endif; ?>
+
+
+
+    <div class="form-group">
+        <label
+            for="shortdesc"><?= Sydney_Tools_Localization::_('Short description') ?></label>
+
+        <input type="text" id="shortdesc" class="form-control" name="shortdesc"
+               maxlength="255"
+               value="<?php if ($n && $n->shortdesc) {
+                   echo $n->shortdesc;
+               } ?>"/>
+        <span
+            class="help-block"><?= Sydney_Tools_Localization::_('This is a short description of the page, for example to be shown as tooltip or help on the public side. (optional)') ?></span>
+    </div>
+
+    <div class="form-group">
+        <label class="checkbox-inline" for="iscachable">
+            <input type="checkbox" id="iscachable" name="iscachable"
+                   value="1" <?php if ($n && $n->iscachable && $n->iscachable == 1) {
+                echo 'checked';
+            } ?>/>
+            <?= Sydney_Tools_Localization::_('Can be cached ?') ?>
+        </label>
+        <span
+            class="help-block"><?= Sydney_Tools_Localization::_('Caching properties are used to accelerate the page display for content which will not change often. You can chose here if this page can be "cacheable" and how long the cached page will be used.') ?></span>
+    </div>
+
+
+    <div class="form-group">
+        <label for="cachetime">Cache time</label>
+
+        Cache time (in seconds) <input type="text"
+                                       class="form-control input-inline"
+                                       id="cachetime" name="cachetime"
+                                       maxlength="10"
+                                       value="<?php if ($n && $n->cachetime) {
+                                           echo $n->cachetime;
+                                       } ?>"/>
+        <br>
+		<span class="subheading">
+		<?php
+        $dt = array(
+            array('5 mins', 60 * 5),
+            array('30 mins', 60 * 30),
+            array('1 hour', 60 * 60),
+            array('6 hour', 60 * 60 * 6),
+            array('12 hour', 60 * 60 * 12),
+            array('1 day', 60 * 60 * 24),
+            array('2 days', 60 * 60 * 24 * 2),
+            array('5 days', 60 * 60 * 24 * 5),
+            array('1 week', 60 * 60 * 24 * 7),
+            array('2 weeks', 60 * 60 * 24 * 7 * 2),
+            array('1 month', 60 * 60 * 24 * 30),
+            array('3 months', 60 * 60 * 24 * 30 * 3),
+            array('6 months', 60 * 60 * 24 * 30 * 6),
+            array('1 year', 60 * 60 * 24 * 365),
+        );
+        foreach ($dt as $el) {
+            echo '<a href="' . $el[1] . '" class="uptimfield">' . $el[0] . '</a>&nbsp;&nbsp; ';
+        }
+
+        ?>
+		</span>
+    </div>
+
+
+    <?php if (isset($n->hits) && $n->hits > 0) { ?>
+
+
+        <div class="form-group">
+            <label
+                for="hits"><?= Sydney_Tools_Localization::_('Total hits:') ?> <?php echo $n->hits; ?></label>
+
+            <span
+                class="help-block"><?= Sydney_Tools_Localization::_('This represent the approximate number of times this page was displayed.') ?></span>
+        </div>
+
+    <?php } ?>
+
+
+
+    <div class="buttonsbox">
+        <input type="submit" name="createPage"
+               value="<?= Sydney_Tools_Localization::_('Save advanced properties') ?>"/>
+        <?= Sydney_Tools_Localization::_('or') ?> <a
+            href="/adminpages"><?= Sydney_Tools_Localization::_('Cancel') ?></a>
+    </div>
+
+</form>

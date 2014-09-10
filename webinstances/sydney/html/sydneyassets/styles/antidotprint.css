@@ -1,0 +1,40 @@
+#sidebar, #sectionbar, #header, #nav, .noprint
+{
+	display: none;
+}
+#content, #main
+{
+	width:100%;
+	padding: 0px;
+	margin: 0px;
+	background:none;
+}
+html, body
+{
+	background: none;
+	max-width:none;
+	min-width:none;
+	padding:0px;
+	width:none;
+}
+table.tableDefault {
+color: black;
+}
+.printonly
+{
+	display: block;
+}
+.HIGHRISK, .MEDIUMRISK, .LOWRISK, .INFO, .NOTE { 
+	background: none;
+}
+#content > p, #content > form > p, #content > h2, #content > form > h2, #content > h3, #content > form > h3, #content > h4, #content > form > h4 
+{
+	margin: 0px;
+	padding: 0px;
+}
+.titlepgae
+{
+	text-align: center;
+	font-size: 2em;
+	padding: 1em;
+}

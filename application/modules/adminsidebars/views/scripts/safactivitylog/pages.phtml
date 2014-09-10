@@ -1,0 +1,10 @@
+<?php
+if ($this->lastEvents) {
+    foreach ($this->lastEvents as $event) {
+        echo '<div class="">';
+        echo '<strong>' . Sydney_Tools::getDateSideBar($event->timestamp) . '</strong><br />';
+        echo $event->message . ' by ' . $event->fname . ' ' . $event->lname;
+        echo '</div><br />';
+    }
+}
+?>

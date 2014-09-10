@@ -1,0 +1,142 @@
+<?php
+if (isset($this->layout()->avmodules[($this->layout()->currentModule)])) {
+    $mdn = $this->layout()->currentModule;
+}
+else {
+    $mdn = 'default';
+}
+$pprops = $this->layout()->avmodules[$mdn];
+$trans = $this->layout()->translate;
+$settingsNms = new Zend_Session_Namespace('appSettings');
+
+echo '<'.'?'.'xml version="1.0" encoding="utf-8"'.'?'.'>'."\n\n";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="utf-8" />
+		<?php echo $this->headTitle(); ?>
+		<script type="text/javascript">
+            var sydneyadmin=true;
+            var current_instance = <?php echo $this->safinstances_id; ?>;
+            var applicationLanguage	= "<?php echo $settingsNms->ApplicationLanguage; ?>";
+            var _ENV = "<?= Sydney_Tools_Sydneyglobals::getConf('general')->env ?>";
+		</script>
+		<?php echo $this->headStyle(); ?>
+		<?php echo $this->headScript(); ?>
+		<?php echo $this->headLink(); ?>
+	</head>
+<body id="<?php echo $pprops[4]; ?>">
+	<div id="modalBackground"></div>
+	<div id="header">
+		<p id="title"><?= $this->layout()->_config->general->siteTitle; ?></p>
+		<p><a class="button" href="/">Go to website</a></p>
+		<hr />
+		<div id="logged">
+			<p>You are logged as <strong><?php echo $this->layout()->auth->getIdentity(); ?></strong></p>
+			<ul>
+				<li><a href="/adminpeople/index/editindex/id/<?php echo $this->layout()->users_id; ?>/">My Profile</a></li>
+				<li><a href="/default/login/logout">Logout</a></li>
+				<li>|</li>
+				<li><a href="/admindashboard/?slang=en">EN</a></li>
+				<li><a href="/admindashboard/?slang=fr">FR</a></li>
+				<li><a href="/admindashboard/?slang=nl">NL</a></li>
+			</ul>
+		</div>
+		<ul>
+			<li><a id="helpMenu" href="#">Help</a></li>
+			<li><a href="/adminbugtrack">Bug</a></li>
+		</ul>
+	</div>
+
+	<hr />
+
+	<ul id="nav">
+		<?php
+        if ($this->layout()->auth->hasIdentity()) {
+
+            foreach($this->layout()->avmodules as $mname => $mprop){
+                $stro = array('','');
+                if( (isset($this->emodule) && 'admin'.$this->emodule == $mname ) || $this->layout()->currentModule == $mname){
+                    $stro = array('<strong>','</strong>');
+                }
+
+                if ($mprop[1] && Sydney_Accessright::isAuthorized2module(null, $mname)){
+                ?>
+                    <li>
+                        <?= $stro[0]; ?>
+                        <a href="/<?= $mname; ?>">
+                            <img src="<?= $this->cdn ?>/sydneyassets/images/icons/<?= $mprop[3];?>" class="toptabicons"/><?= $trans->_($mprop[0]); ?>
+                        </a><?= $stro[1]; ?>
+                    </li>
+                <?php
+                }
+            }
+         }
+        ?>
+	</ul>
+
+	<hr />
+
+	<div id="main" class="clearfix">
+		<div id="sectionbar" class="clearfix">
+		<?php if ($this->layout()->search): ?>
+			<div id="search">
+				<p>
+					<input id="searchinput" type="text" value="" title="Search" />
+					<input id="searchcontext" type="hidden" value="<?php echo $this->moduleName; ?>"/>
+				</p>
+			</div>
+		<?php endif; ?>
+			<span class="icon"><img src="<?= $this->cdn ?>/sydneyassets/images/icons/<?= $pprops[3]; ?>" /></span>
+
+			<ul id="breadcrumb" class="clearfix">
+				<li>
+                    <a href="/<?php echo $this->layout()->currentModule?>/">
+                        <?php echo $trans->_($pprops[2]); ?>
+                    </a>
+                    <?php if ($this->layout()->subtitle) echo ' »'; ?>
+                </li>
+				<?php if ($this->layout()->subtitle): ?>
+                    <li>
+                        <?php echo $this->layout()->subtitle; ?>
+                        <?php if ($this->layout()->subtitle2) echo ' »'; ?>
+                    </li>
+                <?php endif; ?>
+				<?php if ($this->layout()->subtitle2): ?>
+                    <li>
+                        <?php echo $this->layout()->subtitle2; ?>
+                    </li>
+                <?php endif; ?>
+			</ul>
+		</div>
+
+		<?php
+		if (isset($this->layout()->sidebaraction)) {
+            $sba = $this->layout()->sidebaraction;
+        } else {
+            $sba = array('index','index', 'adminsidebars');
+        }
+		if ($this->layout()->auth->hasIdentity()) {
+            echo $this->action($sba[0], $sba[1], $sba[2]);
+        } else {
+            echo $this->action('sidebar', 'login', 'default');
+        }
+		?>
+		<hr />
+
+		<div id="content">
+            <div id="ajaxbox"></div>
+
+            <div id="viewcontent">
+                <?php echo $this->layout()->content; ?>
+            </div>
+		</div>
+	</div>
+
+    <div class="footer_version">
+        Zend Framework <?= Zend_Version::VERSION ?> / PHP <?= PHP_VERSION ?>
+    </div>
+</body>
+</html>

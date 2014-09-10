@@ -1,0 +1,10 @@
+<br>
+<?php
+echo $this->DataTable('Filfiles', array(
+    'hidefields'   => 'keywords,filename,path,techdata,filtype_id,users_id,safinstances_id,istagged',
+    'editurl'      => '/adminfiles/services/displayedit/',
+    'editablecols' => 'label,desc',
+    'editindialog' => true
+));
+?>
+<div class="filepropdialog"></div>

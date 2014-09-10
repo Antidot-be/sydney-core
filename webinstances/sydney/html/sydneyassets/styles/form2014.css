@@ -1,0 +1,206 @@
+.styled-form * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.styled-form *:before,
+.styled-form *:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.styled-form{
+	background: white;
+	width: 80%;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin: 30px auto;
+	padding: 15px 50px;
+}
+
+.styled-form .form-group{
+	padding-bottom: 15px;
+}
+
+.styled-form .radio-inline,
+.styled-form .checkbox-inline {
+	display: inline-block;
+	padding-left: 20px;
+	margin-bottom: 0;
+	vertical-align: middle;
+	font-weight: normal;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.styled-form button,
+.styled-form input,
+.styled-form optgroup,
+.styled-form select,
+.styled-form textarea {
+	color: inherit;
+	font: inherit;
+	margin: 0;
+}
+
+.styled-form textarea.form-control {
+	height: auto;
+}
+.styled-form button {
+	overflow: visible;
+}
+.styled-form button,
+.styled-form select {
+	text-transform: none;
+}
+
+.styled-form label {
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top: 20px;
+}
+
+.styled-form input {
+	line-height: normal;
+}
+.styled-form input[type="checkbox"],
+.styled-form input[type="radio"] {
+	box-sizing: border-box;
+	padding: 0;
+}
+
+
+.styled-form input,
+.styled-form button,
+.styled-form select,
+.styled-form textarea {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.styled-form .form-control {
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555555;
+	background-color: #ffffff;
+	background-image: none;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.styled-form .form-control:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.styled-form .form-control::-moz-placeholder {
+	color: #999999;
+	opacity: 1;
+}
+.styled-form .form-control:-ms-input-placeholder {
+	color: #999999;
+}
+.styled-form .form-control::-webkit-input-placeholder {
+	color: #999999;
+}
+
+.styled-form input[type="search"] {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.styled-form input[type="radio"],
+.styled-form input[type="checkbox"] {
+	margin: 4px 0 0;
+	margin-top: 1px \9;
+	/* IE8-9 */
+	line-height: normal;
+}
+.styled-form input[type="file"] {
+	display: block;
+}
+.styled-form input[type="range"] {
+	display: block;
+	width: 100%;
+}
+.styled-form select[multiple],
+.styled-form select[size] {
+	height: auto;
+}
+.styled-form input[type="file"]:focus,
+.styled-form input[type="radio"]:focus,
+.styled-form input[type="checkbox"]:focus {
+	outline: thin dotted;
+	outline: 5px auto -webkit-focus-ring-color;
+	outline-offset: -2px;
+}
+
+.styled-form .help-block {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 7px;
+	padding: 2px 15px 3px 30px;
+	color: #737373;
+	background: url(../images/admin/icone-question.png) no-repeat top left;
+}
+.styled-form .help-block.inline{
+	display: inline;
+	background: none;
+	font-size: 11px;
+	padding: 0px;
+	color: gray;
+}
+
+.styled-form .radio input[type="radio"],
+.styled-form .radio-inline input[type="radio"],
+.styled-form .checkbox input[type="checkbox"],
+.styled-form .checkbox-inline input[type="checkbox"] {
+	float: left;
+	margin-left: -20px;
+}
+.styled-form .radio + .styled-form .radio,
+.styled-form .checkbox + .styled-form .checkbox {
+	margin-top: -5px;
+}
+
+.styled-form.form-horizontal .control-label,
+.styled-form.form-horizontal .radio,
+.styled-form.form-horizontal .checkbox,
+.styled-form.form-horizontal .radio-inline,
+.styled-form.form-horizontal .checkbox-inline {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 7px;
+}
+.styled-form.form-horizontal .radio,
+.styled-form.form-horizontal .checkbox {
+	min-height: 27px;
+}
+.styled-form.form-horizontal .form-group {
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+@media (min-width: 768px) {
+	.styled-form.form-horizontal .control-label {
+		text-align: right;
+	}
+}
+
+
+.styled-form .input-inline{
+	display: inline-block;
+	width: 350px;
+}

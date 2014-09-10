@@ -1,0 +1,126 @@
+<?php
+if (isset($this->sydneylayout) && $this->sydneylayout == 'no') {
+    $nolayout = true;
+} else {
+    $nolayout = false;
+}
+
+if (!isset($this->vmode)) {
+    $this->vmode = 'thumb';
+}
+if (isset($this->files)) {
+    $files = $this->files;
+} else {
+    $files = array();
+}
+
+if (isset($this->nbpages)) {
+    $nbpages = $this->nbpages;
+} else {
+    $nbpages = 0;
+}
+
+$minfo = array(
+    array('Email', 'email'),
+    array('Phone', 'phone'),
+);
+
+$capsules = array(
+    '<span class="capsule">De-activated</span>',
+    ''
+);
+
+
+?>
+<script>
+    var gblnumpages = <?php echo $nbpages; ?>;
+    $(function () {
+        // detail dialog
+        $('#peopdialog').dialog(
+            {
+                'autoOpen': false,
+                'height': 400,
+                'width': 665,
+                'title': 'User\'s info',
+                'buttons': {
+                    "Ok": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }
+        );
+        $('.vdetailb').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#peopdialog').dialog('open').html('Loading...').load(url + '/sydneylayout/no');
+        });
+        // delete buttons
+        $('.peodeleteb').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            if (confirm('Are you sure you want to delete this user?\nYou can not undo this action...\nAre you really sure?')) {
+                $('#ajaxbox').msgbox({'message': 'Loading...', 'showtime': 0, 'modal': true});
+                $.getJSON(url, {}, function (o, u) {
+                    if (u == 'success') {
+                        $('#ajaxbox').msgbox(o.ResultSet);
+                        if (o.ResultSet.status == 1) {
+                            $('.userid' + o.ResultSet.id).slideUp();
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+<?php if (is_array($this->people) && count($this->people) > 0) : ?>
+    <?php foreach ($this->people as $p) : ?>
+        <li class="subBox userid<?php echo $p['id']; ?>">
+            <a class="avatar"
+               href="/adminpeople/index/editindex/id/<?php echo $p['id']; ?>">
+                <?php
+                /**
+                 * Display avatar
+                 */
+                echo '<img width="64" height="64" src="' . Sydney_Tools::getUrlAvatar($p['avatar']) . '"/>';
+                // -> END avatar
+                ?>
+            </a>
+
+            <h2>
+                <a href="/adminpeople/index/editindex/id/<?php echo $p['id']; ?>"><?php echo $p['lname'] . ' ' . $p['fname']; ?></a>
+                <?php echo $capsules[($p['active'])]; ?>
+                <span
+                    class="subheading"><?php echo ucfirst($p['usersgroups_name']); ?>
+                    - <?php echo $p['login']; ?></span>
+            </h2>
+            <ul class="fieldValueList">
+                <?php foreach ($minfo as $m): ?>
+                    <?php
+                    $val = $p[($m[1])];
+                    if ($val != '' && $val != '0'):
+                        ?>
+                        <li><label><?php echo $m[0]; ?></label>
+
+                            <p><?php echo $val; ?></p></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+            <p class="buttons">
+                <a class="button vdetailb"
+                   href="/adminpeople/index/profile/id/<?php echo $p['id']; ?>"><?= Sydney_Tools_Localization::_('View details') ?></a>
+                <a class="button muted"
+                   href="/adminpeople/index/editindex/id/<?php echo $p['id']; ?>"><?= Sydney_Tools_Localization::_('Edit') ?></a>
+                <?php if ($this->users_id != $p['id']) { ?>
+                    <a class="button warning delete peodeleteb"
+                       href="/adminpeople/services/delete/id/<?php echo $p['id']; ?>/format/json"><?= Sydney_Tools_Localization::_('Delete') ?></a>
+                <?php } ?>
+            </p>
+            <br><br>
+        </li>
+    <?php endforeach; ?>
+<?php else : ?>
+    <strong><?php echo Sydney_Tools_Localization::_('No Users with those filters.'); ?></strong>
+<?php endif; ?>
+
+<div class="filepropdialog"></div>

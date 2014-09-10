@@ -1,0 +1,23 @@
+<?php
+/*
+$m = array(
+	'index'				=> 'Dashboard',
+	'sep1' => 'Data', 
+		'filfolders'			=> 'Filfolders', 
+		'nwsfolders'			=> 'Nwsfolders', 
+	'sep2' => 'Config', 
+		''	=> '', 
+
+);
+*/
+$m = array(
+    'sep1'       => 'Data',
+    'filfolders' => 'File Folders',
+    'nwsfolders' => 'News Folders',
+
+);
+
+?>
+<div id="sidebar">
+    <?php echo $this->SideTabs($m, 'index', $this->cdn, $this->moduleName, $this->controllerName, $this->actionName); ?>
+</div>

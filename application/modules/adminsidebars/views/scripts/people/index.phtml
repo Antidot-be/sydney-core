@@ -1,0 +1,18 @@
+<?php
+$m = array(
+    'index' => 'People'
+);
+?>
+<div id="sidebar">
+    <?php echo $this->SideTabs($m, null, $this->cdn, $this->moduleName, $this->controllerName, $this->actionName); ?>
+    <div class="pod">
+        <h2>Export</h2>
+
+        <p>
+            <a href="/adminpeople/services/displaypeople/format/csv/sydney_users.<?php echo date('dmYHis'); ?>.csv"
+               target="_blank"><img
+                    src="<?php echo $this->cdnurl; ?>/sydneyassets/images/fileicons/iconCSV.gif"
+                    title="Export CSV"/></a></p>
+    </div>
+</div>
+
