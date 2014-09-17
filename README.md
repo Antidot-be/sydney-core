@@ -10,8 +10,9 @@ Should you need additionnal information please visit [antidot.com](http://www.an
 
 ## Features ##
 
-  *  Page manager
+  *  Activity dashboard
   *  Structure editor
+  *  Page manager
   *  File manager
   *  User manager
   *  WYSIWYG editor
@@ -20,6 +21,22 @@ Should you need additionnal information please visit [antidot.com](http://www.an
 
 If you are developer you can easily extend it by adding your own modules, content type, ...  
 See the "How to extend" part.
+
+## Features in action ##
+
+A few Youtube videos illustrate Some key features of SydneyCMS.
+
+### SydneyCMS activity dashboard ###
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=9TB46qx_Zgw" target="_blank"><img src="http://img.youtube.com/vi/9TB46qx_Zgw/0.jpg" alt="Site structure and page edition" width="640" height="360" border="0" /></a>
+
+### Page manager and Structure editor ###
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=u4jZtt07a5A" target="_blank"><img src="http://img.youtube.com/vi/u4jZtt07a5A/0.jpg" alt="Site structure and page edition" width="640" height="360" border="10" /></a>
+
+### How to simply manage file with the File manager ###
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=tvYlyRR_r6c" target="_blank"><img src="http://img.youtube.com/vi/tvYlyRR_r6c/0.jpg" alt="How to simply manage file with Sydney CMS" width="640" height="360" border="10" /></a>
+
+### Advanced file management with the File manager ###
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=QWejMRHC6PY" target="_blank"><img src="http://img.youtube.com/vi/QWejMRHC6PY/0.jpg" alt="Advanced file management with Sydney CMS" width="640" height="360" border="10" /></a>
 
 ##License##
 
