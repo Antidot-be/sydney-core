@@ -15,7 +15,7 @@
 			var item = $(this);
 			var type = item.attr("type");
 			var editclass = item.attr("editclass");
-			item.removeClass("blankitem");
+            item.removeClass("blankitem").addClass('sydney_editor_li');
 			// Add block name
 			var friendlyName = item.getFriendlyName() ? item.getFriendlyName() : " ";
 			

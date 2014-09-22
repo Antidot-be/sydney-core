@@ -135,8 +135,8 @@ foreach ($this->contentDivs as $div) {
         <p class="close"><a class="button" href="#">Close</a></p>
     </div>
     <div class="addHere">
-        <span class="ghost"></span>
-        <a href="#" onclick="return false;">Add here</a>
+        <span class="ghost sydney_editor_span"></span>
+        <a href="#" class="sydney_editor_a" onclick="return false;">Add here</a>
     </div>
     <li class="blankitem">
         <?php echo $this->EditorActions(); ?>
@@ -198,9 +198,5 @@ foreach ($this->contentDivs as $div) {
 
 </ul>
 
-<div class="contentEditor">
-    <p class="addContentStatic">
-        <?php echo $this->EditorAddContentBar(); ?>
-    </p>
-</div>
+
 
