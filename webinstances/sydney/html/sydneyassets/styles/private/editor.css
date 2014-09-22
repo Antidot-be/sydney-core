@@ -17,14 +17,16 @@
     background: transparent;
 }
 
-#sydney_editor .tip{
+#sydney_editor .tip,
+.placeholder_zone .tip{
     margin: 0 16px;
     margin-bottom: 27px;
     padding-left: 18px;
     font-style: italic;
 }
 
-#sydney_editor .tip .arrow{
+#sydney_editor .tip .arrow,
+.placeholder_zone .tip .arrow{
     position: absolute;
     margin-left: -28px;
     margin-top: 20px;
@@ -71,18 +73,22 @@
 .placeholder_zone > .sydney_editor_li:hover .actions {
     visibility: visible;
 }
-#sydney_editor .sydney_editor_li[type=h1] .actions{ margin-top: 7px;}
+#sydney_editor .sydney_editor_li[type=h1] .actions, .placeholder_zone .sydney_editor_li[type=h1] .actions{ margin-top: 7px;}
 
-#sydney_editor .sydney_editor_li[type=h1] .move{ margin-top: 4px;}
+#sydney_editor .sydney_editor_li[type=h1] .move, .placeholder_zone .sydney_editor_li[type=h1] .move{ margin-top: 4px;}
 
 #sydney_editor .contentEditor[enabled=true] > .sydney_editor_li:hover .actions {display: block;}
-#sydney_editor .contentEditor > .sydney_editor_li.sorting .actions,
-#sydney_editor .contentEditor > .sydney_editor_li.editing .actions{display: none !important;}
 
-#sydney_editor .contentEditor > .sydney_editor_li .actions > * {
+#sydney_editor .contentEditor > .sydney_editor_li.sorting .actions,
+.placeholder_zone.contentEditor > .sydney_editor_li.sorting .actions,
+#sydney_editor .contentEditor > .sydney_editor_li.editing .actions,
+#pageEdit > .sydney_editor_li.editing .actions{
+    display: none !important;
 }
 
-#sydney_editor .contentEditor > .sydney_editor_li .actions .sydney_editor_label {
+
+#sydney_editor .contentEditor > .sydney_editor_li .actions .sydney_editor_label,
+.placeholder_zone.contentEditor > .sydney_editor_li .actions .sydney_editor_label{
     font-size: 9px;
     color: #626253;
     margin-left: 10px;
@@ -93,7 +99,8 @@
     cursor: text;
 }
 
-#sydney_editor .contentEditor > .sydney_editor_li .move {
+#sydney_editor .contentEditor > .sydney_editor_li .move,
+.contentEditor.placeholder_zone > .sydney_editor_li .move {
     display: none;
     margin-left: -36px;
     position: absolute;
@@ -102,25 +109,34 @@
     padding: 4px 7px 4px 4px;
 }
 
-#sydney_editor .contentEditor[enabled=true] > .sydney_editor_li:hover .move {display: block;}
-#sydney_editor .contentEditor > .sydney_editor_li.sorting .move{display: block !important;}
-#sydney_editor .contentEditor > .sydney_editor_li.editing .move{display: none !important;}
+#sydney_editor .contentEditor[enabled=true] > .sydney_editor_li:hover .move,
+.contentEditor.placeholder_zone[enabled=true] > .sydney_editor_li:hover .move {
+    display: block;
+}
+#sydney_editor .contentEditor > .sydney_editor_li.sorting .move,
+.contentEditor.placeholder_zone  > .sydney_editor_li.sorting .move{display: block !important;}
+#sydney_editor .contentEditor > .sydney_editor_li.editing .move,
+.contentEditor.placeholder_zone  > .sydney_editor_li.editing .move{display: none !important;}
 
-#sydney_editor .contentEditor > .sydney_editor_li .move .sydney_editor_a {
+#sydney_editor .contentEditor > .sydney_editor_li .move .sydney_editor_a,
+.contentEditor.placeholder_zone  > .sydney_editor_li .move .sydney_editor_a {
     background: white ;
     border-radius: 6px 0 0 6px;
     display: block;
     overflow: hidden;
     padding: 5px;
 }
-#sydney_editor .contentEditor > .sydney_editor_li .move .button:hover {
+#sydney_editor .contentEditor > .sydney_editor_li .move .button:hover,
+.contentEditor.placeholder_zone > .sydney_editor_li .move .button:hover{
     border: none;
 }
-#sydney_editor .contentEditor > .sydney_editor_li .move .button{
+#sydney_editor .contentEditor > .sydney_editor_li .move .button,
+.contentEditor.placeholder_zone > .sydney_editor_li .move .button{
     border: none;
 }
 
-#sydney_editor .contentEditor > .sydney_editor_li .move .sydney_editor_a .sydney_editor_span{
+#sydney_editor .contentEditor > .sydney_editor_li .move .sydney_editor_a .sydney_editor_span,
+.placeholder_zone.contentEditor > .sydney_editor_li .move .sydney_editor_a .sydney_editor_span{
     display: block;
     width: 22px;
     border-radius: 4px;
@@ -130,16 +146,8 @@
     cursor: move;
 }
 
-/*#sydney_editor .contentEditor .editing .editor .action-list .sydney_editor_h2 {*/
-    /*background-color: #edf3ff;*/
-    /*border: 1px solid black;*/
-    /*border-radius: 5px;*/
-    /*cursor: pointer;*/
-    /*padding: 4px;*/
-    /*width: 280px;*/
-/*}*/
 
-li.addContentStatic{
+p.addContentStatic{
     margin: 15px 16px;
     color: rgba(255,255,255, 0.75);
     background-color: #1455aa;
@@ -152,15 +160,18 @@ li.addContentStatic{
     border-radius: 3px;
 }
 
-#sydney_editor li.addContentStatic .sydney_editor_a{
+#sydney_editor .contentEditor p.addContentStatic .sydney_editor_a,
+#pagesEdit .contentEditor  p.addContentStatic .sydney_editor_a{
     color: white;
 }
 
-#sydney_editor li.addContentStatic .sydney_editor_a:hover{
+#sydney_editor .contentEditor p.addContentStatic .sydney_editor_a:hover,
+#pagesEdit .contentEditor  p.addContentStatic .sydney_editor_a:hover{
     color: white;
 }
 
-#sydney_editor .addContent {
+#sydney_editor .addContent ,
+#pagesEdit .addContent {
     margin: 2px 0;
     padding: 5px 16px;
     padding-left: 28px;
@@ -172,11 +183,14 @@ li.addContentStatic{
 }
 
 #sydney_editor .addContent .sydney_editor_a,
-#sydney_editor .addContentStatic .sydney_editor_a{
+#sydney_editor .addContentStatic .sydney_editor_a,
+#pagesEdit .addContentStatic .sydney_editor_a,
+#pagesEdit .addContent .sydney_editor_a{
     font-weight: bold;
 }
 
-#sydney_editor .addContent .close {
+#sydney_editor .addContent .close,
+#pagesEdit .addContent .close {
     position: absolute;
     display: block;
     left: 0;
@@ -195,7 +209,8 @@ li.addContentStatic{
 }
 
 
-#sydney_editor .addHere {
+#sydney_editor .addHere,
+.placeholder_zone .addHere {
     background: transparent;
     height: 5px;
     font-size: 11px;
@@ -203,7 +218,8 @@ li.addContentStatic{
     position:relative;
 }
 
-#sydney_editor .addHere .ghost {
+#sydney_editor .addHere .ghost,
+.placeholder_zone .addHere .ghost {
     display: block;
     position: absolute;
     width: 50px;
@@ -211,7 +227,8 @@ li.addContentStatic{
     left: 4px;
 }
 
-#sydney_editor .addHere .sydney_editor_a {
+#sydney_editor .addHere .sydney_editor_a,
+.placeholder_zone .addHere .sydney_editor_a{
     display: none;
     position: absolute;
     height: 16px;
@@ -225,7 +242,8 @@ li.addContentStatic{
     background: none repeat scroll 0 0 #999;
 }
 
-#sydney_editor .contentEditor[enabled=true] .addHere:hover {
+#sydney_editor .contentEditor[enabled=true] .addHere:hover,
+.contentEditor.placeholder_zone[enabled=true] .addHere:hover {
     display: block;
     background: #cecece; /* Old browsers */
     background: -moz-linear-gradient(left,  #999 1%, #fff9f9 95%); /* FF3.6+ */
@@ -236,11 +254,13 @@ li.addContentStatic{
     background: linear-gradient(to right,  #999 1%,#fff9f9 95%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', endColorstr='#fff9f9',GradientType=1 ); /* IE6-9 */
 }
-#sydney_editor .contentEditor[enabled=true] .addHere:hover .sydney_editor_a {
+#sydney_editor .contentEditor[enabled=true] .addHere:hover .sydney_editor_a,
+.contentEditor.placeholder_zone[enabled=true] .addHere:hover .sydney_editor_a {
     display: block;
 }
 
-#sydney_editor .addHere .sydney_editor_a:active {
+#sydney_editor .addHere .sydney_editor_a:active,
+.placeholder_zone .addHere .sydney_editor_a:active{
     background-position: left -47px;
 }
 
@@ -424,7 +444,7 @@ li.addContentStatic{
 }
 
 #sydney_editor .editor.heading .sydney_editor_p input{
-margin : 4px;
+    margin : 4px;
 }
 #sydney_editor .sydney_editor_li[editclass=heading] .editor p.radiogroup .sydney_editor_label{
     float: left;
@@ -551,7 +571,8 @@ margin : 4px;
     white-space: nowrap;
 }
 
-#sydney_editor .editor p.buttons{
+#sydney_editor .editor p.buttons,
+.placeholder_zone p.buttons{
     overflow: auto;
     margin-bottom: 15px;
     margin-left: 6px;
@@ -559,7 +580,8 @@ margin : 4px;
 
 }
 
-#sydney_editor .editor p.buttons .sydney_editor_a{
+#sydney_editor .editor p.buttons .sydney_editor_a,
+.placeholder_zone p.buttons .sydney_editor_a{
     margin-right: 3px;
 }
 
@@ -875,7 +897,7 @@ html[xmlns] .clearfix2 {
 }
 
 
-/* --------- Règles pour les news --------*/
+/* --------- RÃ¨gles pour les news --------*/
 
 
 .listviewbs,
@@ -883,7 +905,7 @@ html[xmlns] .clearfix2 {
     background-image: url(/sydneyassets/images/ui/toolbar/list.png);
 }
 
-        /* TOOLBAR*/
+/* TOOLBAR*/
 
 .sydney_editor_toolbar{
     padding: 7px 10px;
@@ -953,7 +975,7 @@ html[xmlns] .clearfix2 {
     width: 18px;
 }
 
-        /*File editor */
+/*File editor */
 .sydney_editor_toolbar form {
     margin-bottom: 15px;
 }
@@ -1026,7 +1048,7 @@ html[xmlns] .clearfix2 {
     text-decoration: none;
 }
 
-        /* Black Bubble Popup which appear on file hover */
+/* Black Bubble Popup which appear on file hover */
 
 .jquerybubblepopup {
     background-color: transparent;
@@ -1092,7 +1114,7 @@ caption, th, td {
 }
 
 
-        /* PAGINATION (PAGING) */
+/* PAGINATION (PAGING) */
 .sydney_editor_paging > #pagination > li a,
 .sydney_editor_paging > #pagination-header > li a,
 .sydney_editor_paging > #pagination-footer > li a {
@@ -1247,7 +1269,7 @@ table,
     background-color: #CCC;
 }
 
-    /* CSS rules fora News categories */
+/* CSS rules fora News categories */
 
 #sydney_editor .gentreeli {
     background: none repeat scroll 0 0 #ffffff;
