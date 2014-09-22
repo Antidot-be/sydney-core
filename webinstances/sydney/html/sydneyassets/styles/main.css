@@ -3496,3 +3496,23 @@ table.ui-table tbody tr.file_selected:hover td{
 body .footer_version{
     color: white;
 }
+
+table.adminglobal{
+    margin-top: 30px;
+    width: 100%;
+    border:1px solid #707070;
+}
+table.adminglobal th,
+table.adminglobal td{
+    padding: 10px;
+}
+
+table.adminglobal td{
+    border-top:1px solid #707070;
+    background: #F2F2F2;
+}
+
+table.adminglobal th{
+    background: white;
+    font-weight: 600;
+}

@@ -1,103 +1,25 @@
-<style>
-    th {
-        font-weight: bold;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
 
-    td {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-    .chart {
-        width: 500px;
-        height: 400px;
-    }
-
-    .chart_title {
-        display: block;
-        font-size: 1.2em;
-        font-weight: bold;
-        margin-bottom: 0.4em;
-    }
-</style>
-
-<div class="subBox yui-skin-sam">
-    <h2>Welcome to the Global Admin</h2>
-
-    <p>
-        This part of the admin is available for the "god users". You can create
-        and manage your client's
-        website here and the global properties and rights having an effect on
-        the whole system.
-    </p>
-    <?php
-    $srvi = (Sydney_Server_Tools::getDiskFreeInfo());
-    ?>
-    <h2>Disk Info</h2>
-    <table>
+<table class="adminglobal">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Domain</th>
+        <th>Label</th>
+        <th>Creation date</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <?php foreach($this->webinstances as $webinstance): ?>
         <tr>
-            <th>Filesystem</th>
-            <td><?php echo $srvi['Filesystem']; ?></td>
-        </tr>
-        <tr>
-            <th>Used</th>
-            <td><?php echo Sydney_Server_Tools::bytesToHuman($srvi['Used']); ?></td>
-        </tr>
-        <tr>
-            <th>Available</th>
-            <td><?php echo Sydney_Server_Tools::bytesToHuman($srvi['Available']); ?></td>
-        </tr>
-        <tr>
-            <th>size</th>
-            <td><?php echo Sydney_Server_Tools::bytesToHuman($srvi['size']); ?></td>
-        </tr>
-        <tr>
-            <th>Mounted</th>
-            <td><?php echo $srvi['Mounted']; ?></td>
-        </tr>
-        <tr>
-            <th>Used</th>
-            <td><?php echo round($srvi['Used'] / $srvi['size'] * 100, 2); ?>%
+            <td><?= $webinstance->id ;?></td>
+            <td><?= $webinstance->domain ;?></td>
+            <td><?= $webinstance->label ;?></td>
+            <td><?= $webinstance->creationdate ;?></td>
+            <td>
+                <a class="button" href="/adminglobal/index/editsafinstances/id/<?= $webinstance->id ?>">Edit</a>
+                <a class="button warning" href="/adminglobal/services/editsafinstances/format/json/id/<?= $webinstance->id ?>">Delete</a>
             </td>
         </tr>
-    </table>
-
-    <h2>Webinstances info</h2>
-    <script>
-        $(function () {
-            var mparams = {
-                'srvurl': '/adminglobal/services/getinstancesize/format/json',
-                'columnDefs': [
-                    {key: 'basename', sortable: true, label: 'Webinstance Dir'},
-                    {key: 'human', sortable: true, label: 'Disk Used'},
-                    {key: 'perconhd', sortable: true, label: 'Disk %'},
-                    {key: 'bytes', sortable: true, label: 'Bytes'}
-                ],
-                'fields': ['basename', 'human', 'perconhd', 'bytes'],
-                'divcontainer': 'jsondatagrid1',
-                'chart': true,
-                'chartparams': ["bytes", 'basename']
-            };
-            jsondatagrid1Obj = new ANTIDOT.datagrid(mparams);
-        });
-    </script>
-
-    <table>
-        <tr>
-            <td valign=top style="vertical-align:top;">
-                <div id="jsondatagrid1" style="vertical-align:top;"></div>
-            </td>
-            <td valign=top style="vertical-align:top;">
-                <div id="jsondatagrid1chart" class="chart"></div>
-            </td>
-        </tr>
-    </table>
-
-
-    <br><br><br><br><br>
-
-</div>
-
+    <?php endforeach ?>
+</table>
 

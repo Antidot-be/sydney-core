@@ -1,7 +1,16 @@
-<br>
-<?php
-echo $this->DataTable('Usersgroups', array(
-    'hidefields'   => 'parent_id',
-    'editablecols' => 'name,desc'
-));
-?>
+<table class="adminglobal">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Status</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <?php foreach($this->userGroups as $group): ?>
+        <tr>
+            <td><?= $group->id ;?></td>
+            <td><?= $group->name ;?></td>
+            <td><?= $group->desc ;?></td>
+        </tr>
+    <?php endforeach ?>
+</table>

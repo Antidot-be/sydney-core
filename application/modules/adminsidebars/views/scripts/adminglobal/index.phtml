@@ -1,12 +1,17 @@
 <?php
-$m = array(
-    'index'        => 'Dashboard',
-    'safinstances' => 'Webinstances',
-    'usersgroups'  => 'Groups',
-    'users'        => 'Users',
-    'safmodules'   => 'Modules'
-);
+$currentPage = $this->actionName;
 ?>
 <div id="sidebar">
-    <?php echo $this->SideTabs($m, 'index', $this->cdn, $this->moduleName, $this->controllerName, $this->actionName); ?>
+    <ul class="clearfix" id="localnav">
+        <li>
+            <?php if($currentPage == 'index'):?><strong><?php endif;?>
+                <a href="/adminglobal/index/index">Dashboard</a>
+            <?php if($currentPage == 'index'):?></strong><?php endif;?>
+        </li>
+        <li>
+            <?php if($currentPage == 'usersgroups'):?><strong><?php endif;?>
+                <a href="/adminglobal/index/usersgroups">Groups</a>
+            <?php if($currentPage == 'usersgroups'):?></strong><?php endif;?>
+        </li>
+    </ul>
 </div>

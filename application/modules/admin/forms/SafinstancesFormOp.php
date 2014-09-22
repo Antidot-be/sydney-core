@@ -49,22 +49,12 @@ class SafinstancesFormOp extends Sydney_Form
         $description = new Zend_Form_Element_Textarea('description');
         $description->setLabel('Description');
 
-        $rootpath = new Zend_Form_Element_Text('rootpath');
-        $rootpath->setLabel('Instance Directory name');
-        $rootpath->setRequired(true);
-
         $languagesId = new Zend_Form_Element_Select('languages_id');
         $options = new Languages();
         foreach ($options->fetchAlltoFlatArray() as $k => $v) {
             $languagesId->addMultiOption($k, $v['mlabel']);
         }
         $languagesId->setLabel('Main language');
-
-        $database = new Zend_Form_Element_Text('database');
-        $database->setLabel('Specific Database');
-
-        $secdomains = new Zend_Form_Element_Textarea('secdomains');
-        $secdomains->setLabel('Secondary domains (space separated)');
 
         $creationdate = new Zend_Form_Element_Text('creationdate');
         $creationdate->setLabel('Creation date');
@@ -75,13 +65,6 @@ class SafinstancesFormOp extends Sydney_Form
         $active = new Zend_Form_Element_Checkbox('active');
         $active->setLabel('Is Active?');
 
-        $safinstancesTypeId = new Zend_Form_Element_Select('safinstancestype_id');
-        $options = new Safinstancestype();
-        $safinstancesTypeId->addMultiOption('', '----------');
-        foreach ($options->fetchAlltoFlatArray() as $k => $v) {
-            $safinstancesTypeId->addMultiOption($k, $v['mlabel']);
-        }
-        $safinstancesTypeId->setLabel('Instance type');
 
         $offlinemessage = new Zend_Form_Element_Textarea('offlinemessage');
         $offlinemessage->setLabel('Offline message');
@@ -91,12 +74,8 @@ class SafinstancesFormOp extends Sydney_Form
             $this->hashb,
             $label,
             $domain,
-            $safinstancesTypeId,
             $description,
-            $rootpath,
             $languagesId,
-            $database,
-            $secdomains,
             $creationdate,
             $offlinedate,
             $active,
