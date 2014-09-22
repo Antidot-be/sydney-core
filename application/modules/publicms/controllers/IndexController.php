@@ -144,6 +144,11 @@ class Publicms_IndexController extends Sydney_Controller_Actionpublic
         $layoutObject = new Sydney_Layout_Layout();
         // On prend en compte les redirection
         $layoutName = (!empty($this->view->thisnode['redirecttoid'])) ? $this->structure->stringNodes[$this->view->thisnode['redirecttoid']]['layout'] : $this->view->thisnode['layout'];
+
+        /* If layout if empty we will take the one in the config */
+        if(!$layoutName){
+            $layoutName = $this->_config->general->layout;
+        }
         $layoutObject->setName($layoutName);
 
         if ($layoutObject->loadZones()->hasZones()) {
