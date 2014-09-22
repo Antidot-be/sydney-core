@@ -235,7 +235,11 @@
 				target.replaceWith(newItem);
 			}else{
 				var staticAddContent = $(".addContentStatic");
-				staticAddContent.before(newItem);
+                if($('.placeholder_zone').length > 0){
+                    $('#sydney_editor').find('.contentEditor').append(newItem);
+                } else {
+                    staticAddContent.before(newItem);
+                }
 			}
 			newItem.attr("editclass", options.editclass);
 			newItem.data("new", true);
