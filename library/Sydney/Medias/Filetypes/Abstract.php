@@ -40,7 +40,7 @@ abstract class Sydney_Medias_Filetypes_Abstract implements Sydney_Medias_Filetyp
     {
         // AS : 01/01/11 : quick fix for problem path in the DB vs mac sym links impossible to create in /home
         $this->fullpath = preg_replace('/\/home\/www\/sydneyFramework\/trunk\/webinstances/', '/www/sydney/webinstances', $fullpath);
-        $this->assetsPath = Sydney_Tools::getRootPath() . '/core/library/Sydney/Medias/Assets/';
+        $this->assetsPath = Sydney_Tools_Paths::getCorePath()  . '/library/Sydney/Medias/Assets/';
         $this->fdb = $fdb;
         $this->setPath($fullpath, $cachpath);
     }

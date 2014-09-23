@@ -6,6 +6,46 @@
  */
 class Sydney_Tools_Paths extends Sydney_Tools
 {
+
+    private static $corePath;
+
+    private static $webInstancePath;
+
+    /**
+     * We initialize the core path
+     * @param $path string
+     */
+    public static function setCorePath($path)
+    {
+        self::$corePath = $path;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCorePath()
+    {
+        return self::$corePath;
+    }
+
+    /**
+     *
+     * @param $path string
+     */
+    public static function setWebInstancePath($path)
+    {
+        self::$webInstancePath = $path;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public static function getWebInstancePath()
+    {
+        return self::$webInstancePath;
+    }
+
     /**
      *
      */
@@ -15,25 +55,14 @@ class Sydney_Tools_Paths extends Sydney_Tools
     }
 
     /**
-     *
-     */
-    public static function getRootPath()
-    {
-        return Zend_Registry::get("config")->general->rootPath;
-    }
-
-    /**
      * Get the jslibs directory
      * @return String the path to the directory containing the jslibs directory
-     * @change GDE - 19/08/2013 - jslibs est d�plac� dans l'instance sydney
      */
     public static function getJslibsPath()
     {
-        // On v�rifie si "jslibs" existe bien dans l'instance "com.antidot.sydney"
-        $jsLibsPath = Sydney_Tools::getRootPath() . '/core/webinstances/sydney/html/sydneyassets';
+        $jsLibsPath = self::getCorePath() . '/webinstances/sydney/html/sydneyassets';
 
         if (is_dir($jsLibsPath)) {
-            // !!! � l'origine, c'est le dossier parent qui est retourn� par  "Zend_Registry::get("config")->admin->jslibspath"
             return str_replace('/sydneyassets', '', $jsLibsPath);
         }
 
@@ -41,67 +70,52 @@ class Sydney_Tools_Paths extends Sydney_Tools
     }
 
     /**
-     *  Get the cache path for the current webinstance
-     * @return String the cache path
+     * Get the cache path for the current webinstance
+     * @return string the cache path
+     * @throws Zend_Exception
      */
-    public static function getCachePath($isCoreWebinstance = false)
+    public static function getCachePath()
     {
-        return Zend_Registry::get("config")->general->rootPath . DIRECTORY_SEPARATOR .
-        ($isCoreWebinstance ? 'core' . DIRECTORY_SEPARATOR : '')
-        . 'webinstances' . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->webinstance . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->cachepath;
+        return self::getWebInstancePath() . DIRECTORY_SEPARATOR . Zend_Registry::get("config")->general->cachepath;
     }
 
     /**
-     *  Get the log directory path for the current webinstance
-     * @return String the log path
+     * Get the log directory path for the current webinstance
+     * @return string the log path
+     * @throws Zend_Exception
      */
-    public static function getLogPath($isCoreWebinstance = false)
+    public static function getLogPath()
     {
-        return Zend_Registry::get("config")->general->rootPath . DIRECTORY_SEPARATOR .
-        ($isCoreWebinstance ? 'core' . DIRECTORY_SEPARATOR : '')
-        . 'webinstances' . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->webinstance . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->logdirpath;
+        return self::getWebInstancePath() . DIRECTORY_SEPARATOR . Zend_Registry::get("config")->general->logdirpath;
     }
 
     /**
-     *  Get the custommap path for the current webinstance
-     * @return String the custommap path
+     * Get the custommap path for the current webinstance
+     * @return string the custommap path
+     * @throws Zend_Exception
      */
-    public static function getCustomapPath($isCoreWebinstance = false)
+    public static function getCustomapPath()
     {
-        return Zend_Registry::get("config")->general->rootPath . DIRECTORY_SEPARATOR .
-        ($isCoreWebinstance ? 'core' . DIRECTORY_SEPARATOR : '')
-        . 'webinstances' . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->webinstance . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->customappath;
+        return self::getWebInstancePath() . DIRECTORY_SEPARATOR . Zend_Registry::get("config")->general->customappath;
     }
 
     /**
-     *  Get the appdata path for the current webinstance
-     * @return String the appdata path
+     * Get the appdata path for the current webinstance
+     * @return string the appdata path
+     * @throws Zend_Exception
      */
-    public static function getAppdataPath($isCoreWebinstance = false)
+    public static function getAppdataPath()
     {
-        return Zend_Registry::get("config")->general->rootPath . DIRECTORY_SEPARATOR .
-        ($isCoreWebinstance ? 'core' . DIRECTORY_SEPARATOR : '')
-        . 'webinstances' . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->webinstance . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->appdatapath;
+        return self::getWebInstancePath() . DIRECTORY_SEPARATOR . Zend_Registry::get("config")->general->appdatapath;
     }
 
     /**
-     *  Get the local path for the current webinstance
-     * @return String the local path
+     * Get the local path for the current webinstance
+     * @return string the local path
      */
-    public static function getLocalPath($isCoreWebinstance = false)
+    public static function getLocalPath()
     {
-        return Zend_Registry::get("config")->general->rootPath . DIRECTORY_SEPARATOR .
-        ($isCoreWebinstance ? 'core' . DIRECTORY_SEPARATOR : '')
-        . 'webinstances' . DIRECTORY_SEPARATOR
-        . Zend_Registry::get("config")->general->webinstance;
+        return self::getWebInstancePath();
     }
 
     /**
@@ -120,19 +134,13 @@ class Sydney_Tools_Paths extends Sydney_Tools
 
     /**
      *
-     */
-    public static function getYuiCompressorPath()
-    {
-        return Zend_Registry::get("config")->yui->compressor->path;
-    }
-
-    /**
-     *
-     * @param unknown_type $idFile
+     * @param $idFile
+     * @return string
      */
     public static function getUrlAvatar($idFile)
     {
         $avatar = '';
+        $rowFile = null;
         if ($idFile > 0) {
             $avatar = '/adminfiles/file/thumb/id/' . $idFile . '/ts/1/fn/' . $idFile . '.png';
 

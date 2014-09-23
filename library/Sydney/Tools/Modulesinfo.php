@@ -27,7 +27,7 @@ class Sydney_Tools_Modulesinfo
      */
     public function getModulesAndControllersList($introspect = false, $modulesPath = '/core/application/modules/')
     {
-        $rdir = Sydney_Tools::getRootPath() . $modulesPath;
+        $rdir = Sydney_Tools_Paths::getCorePath() . '/../' . $modulesPath;
         $dirs = array();
         // get the module directory
         if ($handle = opendir($rdir)) {

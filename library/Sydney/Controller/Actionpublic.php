@@ -86,7 +86,7 @@ abstract class Sydney_Controller_Actionpublic extends Zend_Controller_Action
     public function init()
     {
         // register general sydney helpers
-        $this->view->addHelperPath(Sydney_Tools::getRootPath() . '/core/library/Sydney/View/Helper', 'Sydney_View_Helper');
+        $this->view->addHelperPath(Sydney_Tools_Paths::getCorePath() . '/library/Sydney/View/Helper', 'Sydney_View_Helper');
         // setup the basics
         $this->_registry = Zend_Registry::getInstance();
         $this->_config = $this->_registry->get('config');
@@ -221,9 +221,7 @@ abstract class Sydney_Controller_Actionpublic extends Zend_Controller_Action
 
 
     /**
-     * G�re l'ajout de lien canonicaux
-     * @author JTO
-     * @since 20/01/2014
+     * Manage canonanical
      * @param int $currentPageId
      */
     private function _manageCanonicalLinks($currentPageId)

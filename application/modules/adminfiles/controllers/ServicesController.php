@@ -624,7 +624,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
 
     public function uploadscreenAction()
     {
-        $this->_helper->layout->setLayoutPath(Sydney_Tools::getRootPath() . '/core/webinstances/sydney/layouts');
+        $this->_helper->layout->setLayoutPath(Sydney_Tools_Paths::getCorePath() . '/webinstances/sydney/layouts');
         $this->_helper->layout->setLayout('layoutBlank');
     }
 

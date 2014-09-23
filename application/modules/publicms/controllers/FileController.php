@@ -1,5 +1,5 @@
 <?php
-include_once(Sydney_Tools::getRootPath() . '/core/application/modules/adminfiles/controllers/FileController.php');
+include_once(Sydney_Tools_Paths::getCorePath() . '/application/modules/adminfiles/controllers/FileController.php');
 
 /**
  * Controller Adminfiles Files
