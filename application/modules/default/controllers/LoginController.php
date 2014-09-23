@@ -333,7 +333,7 @@ class LoginController extends Sydney_Controller_Actionpublic
         $this->view->headLink()->appendStylesheet($this->view->cdn . '/sydneyassets/styles/antidotprint.css', 'print');
         $this->view->headLink()->appendStylesheet('/sydneyassets/jslibs/jquery/css/smoothness/jquery-ui-1.10.4.min.css');
         $this->view->headScript()->appendFile(Sydney_Tools::getRootUrlCdn() . '/sydneyassets/scripts/sydneyscripts.js', 'text/javascript');
-        $this->_helper->layout->setLayoutPath(Sydney_Tools::getRootPath() . '/core/webinstances/sydney/layouts');
+        $this->_helper->layout->setLayoutPath(Sydney_Tools_Paths::getCorePath() . '/webinstances/sydney/layouts');
         $this->_helper->layout->setLayout('login');
     }
 

@@ -6,8 +6,19 @@
 class Sydney_Bootstrapper
 {
     private $corePath;
+    private $zendPath;
+    private $webInstancePath;
+    /**
+     * @var Zend_Registry
+     */
     private $registry;
+    /**
+     * @var Zend_Controller_Front
+     */
     private $frontController;
+    /**
+     * @var Sydney_Auth
+     */
     private $auth;
     private $requestLang;
     private $modules;
@@ -24,34 +35,46 @@ class Sydney_Bootstrapper
      */
     public function __construct()
     {
-        // Common initialisation
-        $this->_setZendPath();
-        $this->_setAutoLoad();
-        $this->registry = Zend_Registry::getInstance();
-        $this->_setConfigToRegistry((getenv('APPLICATION_ENV')) ? getenv('APPLICATION_ENV') : 'general');
-        $this->_setPaths();
-        $this->frontController = Zend_Controller_Front::getInstance();
+    }
 
-        if (!Zend_Session::sessionExists()) {
-            Zend_Session::start();
-        }
-        $this->auth = Sydney_Auth::getInstance();
-        // set default timezone (could be useful)
-        date_default_timezone_set($this->config->general->defaulttimezone);
-        // set this in the registry so we can change the translations according to the page content if needed
-        $this->registry->set('bootstrapper', $this);
+
+    public function setInstancePath($path)
+    {
+        $this->webInstancePath = $path;
+    }
+
+    public function setCorePath($path)
+    {
+        $this->corePath = $path;
+    }
+
+    public function setZendPath($path)
+    {
+        $this->zendPath = $path;
     }
 
     private function _setConfigToRegistry($applicationEnv)
     {
         $configHandler = new Sydney_IniConfig($applicationEnv);
-        $configHandler->addConfigFile(realpath(__DIR__ . '/../../webinstances/sydney/config/config.default.ini'));
-        $configHandler->addConfigFile(realpath(__DIR__ . '/../../webinstances/sydney/config/parameters.default.ini'));
-        $configHandler->addConfigFile('../config/config.ini');
-        $configHandler->addConfigFile('../config/parameters.ini');
-        $configHandler->addConfigFile('../config/instance.ini.lock');
+        $configHandler->addConfigFile($this->corePath . '/webinstances/sydney/config/config.default.ini');
+        $configHandler->addConfigFile($this->corePath . '/webinstances/sydney/config/parameters.default.ini');
+        $configHandler->addConfigFile($this->webInstancePath . '/config/config.ini');
+        $configHandler->addConfigFile($this->webInstancePath . '/config/parameters.ini');
+        $configHandler->addConfigFile($this->webInstancePath . '/config/instance.ini.lock');
         $this->registry->set('config', $configHandler->getConfig());
         $this->config = $this->registry->get('config');
+    }
+
+    /**
+     * It will init the zend path
+     */
+    private function _initZendPath()
+    {
+        $path = realpath($this->corePath . '/library/');
+        if($this->zendPath) {
+            $path = $this->zendPath;
+        }
+        set_include_path($path . PATH_SEPARATOR . get_include_path());
     }
 
     /**
@@ -59,20 +82,11 @@ class Sydney_Bootstrapper
      */
     private function _setAutoLoad()
     {
-        include_once('Zend/Loader/Autoloader.php');
+        include_once('Zend/Loader/Autoloader.php'); // @TODO : remove that
         $autoloader = Zend_Loader_Autoloader::getInstance();
         $autoloader->setFallbackAutoloader(true);
     }
 
-    /**
-     *
-     */
-    private function _setZendPath()
-    {
-        set_include_path(
-            realpath(__DIR__. '/../.') . PATH_SEPARATOR . get_include_path()
-        );
-    }
 
     /**
      * Sets the main paths and include paths
@@ -80,11 +94,6 @@ class Sydney_Bootstrapper
      */
     private function _setPaths()
     {
-        $rootPath = $this->config->general->rootPath;
-        $this->corePath =  $rootPath. '/core';
-        $webinstancesPath = $rootPath . '/webinstances/';
-        $currentWebinstancePath = $this->config->general->webinstance;
-
         $includePath = get_include_path();
 
         // On va ajouter les dossiers library, models/Tables, models/Tables/Objects et modelsforms pour chaque module
@@ -111,20 +120,18 @@ class Sydney_Bootstrapper
                      '/application/models/Tables/Objects',
                      '/application/modelsforms'
                  ) as $v) {
-            if (file_exists($webinstancesPath . $currentWebinstancePath . $v)) {
-                $includePath .= PATH_SEPARATOR . $webinstancesPath . $currentWebinstancePath . $v;
+            if (file_exists($this->webInstancePath . $v)) {
+                $includePath .= PATH_SEPARATOR . $this->webInstancePath . $v;
             }
         }
         set_include_path($includePath);
+        $this->registry->set('corePath', $this->corePath);
+        $this->registry->set('instancePath', $this->webInstancePath);
+        Sydney_Tools_Paths::setCorePath($this->corePath);
+        Sydney_Tools_Paths::setWebInstancePath($this->webInstancePath);
     }
 
-    public function setInstancePath($path){
-        $this->registry->set('instancePath', $path);
-    }
 
-    public function setCorePath($path){
-        $this->registry->set('corePath', $path);
-    }
 
     /**
      * Execute all the default method.
@@ -132,6 +139,23 @@ class Sydney_Bootstrapper
      */
     public function run()
     {
+        // Common initialisation
+        $this->_initZendPath();
+        $this->_setAutoLoad();
+        $this->registry = Zend_Registry::getInstance();
+        $this->_setConfigToRegistry((getenv('APPLICATION_ENV')) ? getenv('APPLICATION_ENV') : 'general');
+        $this->_setPaths();
+        $this->frontController = Zend_Controller_Front::getInstance();
+
+        if (!Zend_Session::sessionExists()) {
+            Zend_Session::start();
+        }
+        $this->auth = Sydney_Auth::getInstance();
+        // set default timezone (could be useful)
+        date_default_timezone_set($this->config->general->defaulttimezone);
+        // set this in the registry so we can change the translations according to the page content if needed
+        $this->registry->set('bootstrapper', $this);
+
         $this->setRoutes();
         $this->setErrorMode($this->config->general->env);
         $this->setDebugMode();
@@ -143,7 +167,7 @@ class Sydney_Bootstrapper
         try {
             $this->setDatabaseConnection();
         } catch (Exception $e) {
-            header('Location: ' . Sydney_Tools_Paths::getRootUrlCdn() . '/install/db/index.php');
+            header('Location: ' . Sydney_Tools_Paths::getRootUrlCdn() . '/install/index.php');
             exit;
         }
 
@@ -152,7 +176,7 @@ class Sydney_Bootstrapper
         } catch (Exception $e) {
             echo 'ERROR initCustomModules', '<br>';
             echo $e->getMessage();
-            header('Location: ' . Sydney_Tools_Paths::getRootUrlCdn() . '/install/instance/index.php');
+            header('Location: ' . Sydney_Tools_Paths::getRootUrlCdn() . '/install/index.php');
         }
 
         try {
@@ -455,9 +479,9 @@ class Sydney_Bootstrapper
     public function initCustomModules()
     {
         if (count($this->customModules) > 0) {
-            $this->frontController->addModuleDirectory(Sydney_Tools::getCustomapPath() . '/modules');
+            $this->frontController->addModuleDirectory(Sydney_Tools_Paths::getCustomapPath() . '/modules');
             foreach ($this->customModules as $module => $role) {
-                $this->frontController->addControllerDirectory(Sydney_Tools::getCustomapPath() . '/modules/' . $module . '/controllers', $module);
+                $this->frontController->addControllerDirectory(Sydney_Tools_Paths::getCustomapPath() . '/modules/' . $module . '/controllers', $module);
             }
         }
     }

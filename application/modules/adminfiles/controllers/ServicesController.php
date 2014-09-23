@@ -186,9 +186,8 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
             $this->view->filfolders = $this->_getLinkedFolders($id, true);
             if (count($files) == 1) {
                 $this->view->file = $files->current();
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $this->view->file->type;
-                $this->view->fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $fileType . '/' . $this->view->file->filename;
+                $this->view->fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $this->view->file->filename;
             }
         }
     }
@@ -247,13 +246,13 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
          */
         // Settings
         //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        $fullpath = Sydney_Tools::getAppdataPath() . '/adminfiles/';
+        $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/';
         $uploadedFileName = $_FILES['file']['name'];
 
         // check if appdata and adminfiles exist and if not, create dir
-        if (!is_dir(Sydney_Tools::getAppdataPath())) {
-            mkdir(Sydney_Tools::getAppdataPath());
-            chmod(Sydney_Tools::getAppdataPath(), 0777);
+        if (!is_dir(Sydney_Tools_Paths::getAppdataPath())) {
+            mkdir(Sydney_Tools_Paths::getAppdataPath());
+            chmod(Sydney_Tools_Paths::getAppdataPath(), 0777);
         }
         if (!is_dir($fullpath)) {
             mkdir($fullpath);
@@ -284,6 +283,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
             mkdir($targetDir);
         }
 
+        $contentType = '';
         // Look for the content type header
         if (isset($_SERVER["HTTP_CONTENT_TYPE"])) {
             $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
@@ -352,7 +352,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
      */
     public function moveallchunksAction()
     {
-        $fullpath = Sydney_Tools::getAppdataPath() . '/adminfiles/';
+        $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/';
         $fi = new Filfiles();
         $res = $fi->moveAllChuncks($fullpath, $this->usersId, $this->safinstancesId);
         $this->view->content = implode("<br>\n", $res);
@@ -372,6 +372,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
             $where = "id = " . $id . " AND safinstances_id = '" . $this->safinstancesId . "' AND type = 'ZIP' ";
             $files = $fdb->fetchAll($where);
             $categories = $fdb->getCategoriesLabels($id);
+            $ftype = null;
             if (count($files) == 1) {
                 $fdb = $files[0];
                 $ftype = Sydney_Medias_Filetypesfactory::createfiletype($fdb->path . '/' . $fdb->filename, $fdb);
@@ -449,8 +450,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
                         $id // id
                     );
                     // */
-                    $webinstanceName = $this->_config->general->webinstance;
-                    $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $f->type . '/' . $f->filename;
+                    $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $f->type . '/' . $f->filename;
                     if (unlink($fullpath)) {
                         $this->view->ResultSet = array(
                             'status'  => 1,
@@ -624,7 +624,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
 
     public function uploadscreenAction()
     {
-        $this->_helper->layout->setLayoutPath(Sydney_Tools::getRootPath() . '/core/webinstances/sydney/layouts');
+        $this->_helper->layout->setLayoutPath(Sydney_Tools_Paths::getCorePath() . '/webinstances/sydney/layouts');
         $this->_helper->layout->setLayout('layoutBlank');
     }
 

@@ -102,8 +102,8 @@ abstract class Sydney_Controller_Action extends Sydney_Controller_Actionpublic
     public function init()
     {
         // add the general helper path for sydney
-        $this->view->addHelperPath(Zend_Registry::get("config")->general->rootPath . '/core/library/Sydney/View/Helper', 'Sydney_View_Helper');
-        $this->view->addHelperPath(Zend_Registry::get("config")->general->rootPath . '/core/application/modules/adminpages/views/helpers',
+        $this->view->addHelperPath(Sydney_Tools_Paths::getCorePath() . '/library/Sydney/View/Helper', 'Sydney_View_Helper');
+        $this->view->addHelperPath(Sydney_Tools_Paths::getCorePath() . '/application/modules/adminpages/views/helpers',
             'Adminpages_View_Helper');
         $this->getResponse()->setHeader('Accept-encoding', 'gzip,deflate');
         // setup the basics
@@ -196,7 +196,7 @@ abstract class Sydney_Controller_Action extends Sydney_Controller_Actionpublic
             // do not use the sydney layout if it is defined as it in the ini file
 
         } else {
-            $this->layout->setLayoutPath($this->_config->general->rootPath . '/core/webinstances/sydney/layouts');
+            $this->layout->setLayoutPath(Sydney_Tools_Paths::getCorePath() . '/webinstances/sydney/layouts');
             $this->layout->setLayout('layoutSydney');
         }
         $this->view->cdnurl = $this->_config->general->cdn;

@@ -70,9 +70,8 @@ class Adminfiles_FileController extends Sydney_Controller_Action
                 $file = $result[0];
 
                 //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
 
                 // defines the thumb size
@@ -128,9 +127,8 @@ class Adminfiles_FileController extends Sydney_Controller_Action
                 $file = $ro[0];
 
                 //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 if (isset($request->pdfpg) && $request->pdfpg > 1) {
                     $fileTypeInstance->pageid = intval($request->pdfpg) - 1;
@@ -164,9 +162,8 @@ class Adminfiles_FileController extends Sydney_Controller_Action
                 $file = $result[0];
 
                 //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 if (!$fileTypeInstance->showImg()) {
                     print 'Image can not be processed';
@@ -195,9 +192,8 @@ class Adminfiles_FileController extends Sydney_Controller_Action
                 $file = $files[0];
 
                 //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
 
                 ob_end_flush();
@@ -225,9 +221,8 @@ class Adminfiles_FileController extends Sydney_Controller_Action
                 $file = $files[0];
 
                 //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/var/appdata/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
 
                 $this->view->ziplist = $fileTypeInstance->getZipContent();
