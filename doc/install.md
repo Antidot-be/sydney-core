@@ -147,8 +147,6 @@ For example :
 
     general.baseUrl=http://acme.tld/
     general.cdn=http://acme.tld/
-    general.webinstance=acme
-    general.rootPath=/srv/www/sydney/
 
 
 #### Finish the install with the installer ####

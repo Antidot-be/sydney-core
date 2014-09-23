@@ -18,9 +18,9 @@ class Sydney_Tools_Minify extends Sydney_Tools
     public static function concatScripts($type, Zend_View $zview, $useConcatenation = true)
     {
         $r = '';
-        $path = Sydney_Tools::getRootPath() . '/core/webinstances/sydney/html';
+        $path = Sydney_Tools_Paths::getCorePath() . '/webinstances/sydney/html';
 
-        $path2 = self::getJslibsPath();
+        $path2 = Sydney_Tools_Paths::getJslibsPath();
 
         $arrayOrig['jsOrig'] = Zend_Registry::getInstance()->get('config')->admin->js->orig;
         $arrayOrig['cssOrig'] = Zend_Registry::getInstance()->get('config')->admin->css->orig;
@@ -37,7 +37,7 @@ class Sydney_Tools_Minify extends Sydney_Tools
                     $tcnt = file_get_contents($path2 . $file);
                     if ($type == 'css' && preg_match('#sydneyassets\/jslibs\/jquery#', $file)) {
                         $needleStr = "#url\(\"images\/([a-zA-Z0-9_-]+)\.(png|gif|jpg)\"#";
-                        $replaceStr = "url(" . Sydney_Tools::getRootUrlCdn() . "\/sydneyassets\/jslibs\/jquery\/css\/smoothness\/images\/$1.$2";
+                        $replaceStr = "url(" . Sydney_Tools_Paths::getRootUrlCdn() . "\/sydneyassets\/jslibs\/jquery\/css\/smoothness\/images\/$1.$2";
                         $tcnt = preg_replace($needleStr, $replaceStr, $tcnt);
                     }
                     if ($type == 'css' && preg_match('/skins\/sam/', $file)) {
