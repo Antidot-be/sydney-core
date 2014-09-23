@@ -8,8 +8,17 @@ class Sydney_Bootstrapper
     private $corePath;
     private $zendPath;
     private $webInstancePath;
+    /**
+     * @var Zend_Registry
+     */
     private $registry;
+    /**
+     * @var Zend_Controller_Front
+     */
     private $frontController;
+    /**
+     * @var Sydney_Auth
+     */
     private $auth;
     private $requestLang;
     private $modules;
@@ -470,9 +479,9 @@ class Sydney_Bootstrapper
     public function initCustomModules()
     {
         if (count($this->customModules) > 0) {
-            $this->frontController->addModuleDirectory(Sydney_Tools::getCustomapPath() . '/modules');
+            $this->frontController->addModuleDirectory(Sydney_Tools_Paths::getCustomapPath() . '/modules');
             foreach ($this->customModules as $module => $role) {
-                $this->frontController->addControllerDirectory(Sydney_Tools::getCustomapPath() . '/modules/' . $module . '/controllers', $module);
+                $this->frontController->addControllerDirectory(Sydney_Tools_Paths::getCustomapPath() . '/modules/' . $module . '/controllers', $module);
             }
         }
     }

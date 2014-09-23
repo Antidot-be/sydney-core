@@ -121,7 +121,7 @@ class Sydney_Log extends Zend_Log
         if ($this->debugLevel > 0) {
             $registry = Zend_Registry::getInstance();
             $config = $registry->get('config');
-            $writer = new Zend_Log_Writer_Stream($config->general->rootPath . DIRECTORY_SEPARATOR . 'webinstances' . DIRECTORY_SEPARATOR . $config->general->webinstance . DIRECTORY_SEPARATOR . $config->general->logdirpath . '/general.log.csv');
+            $writer = new Zend_Log_Writer_Stream(Sydney_Tools_Paths::getWebInstancePath() . DIRECTORY_SEPARATOR . $config->general->logdirpath . '/general.log.csv');
             $format = '"%timestamp%","%priorityName%","%priority%","%className%","%message%","%identity%","%HTTP_REFERER%","%REMOTE_ADDR%","%REQUEST_METHOD%","%REQUEST_TIME%"' . PHP_EOL;
             $formatter = new Zend_Log_Formatter_Simple($format);
             $writer->setFormatter($formatter);
