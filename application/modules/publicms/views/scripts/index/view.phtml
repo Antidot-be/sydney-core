@@ -1,5 +1,4 @@
 <?php
-$charConvert = array("HTML-ENTITIES", "UTF-8");
 
 if ($this->inlineEditionAllowed) {
     ?>
@@ -120,7 +119,10 @@ if ($this->inlineEditionAllowed) : ?>
                         'label' => ($div['label'] ? $div['label'] : $div['code'] . '-' . $div['pagdivs_id'])
                     );
 
-                    echo $this->{$div['helper']}(
+                    $contentType = $this->customHelpers->get($div['content_type_label']);
+                    $publicMethodToCall = $contentType->getPublicViewHelperMethod();
+
+                    echo $this->{$publicMethodToCall}(
                         $this->EditorActions(
                             $isDeletable,
                             $isDraft,
@@ -139,7 +141,9 @@ if ($this->inlineEditionAllowed) : ?>
                     );
                 } else {
                     if ($div['online']) {
-                        echo $this->{$div['helper']}('', $content, $div['pagdivs_id'], $div['order'], array_merge($this->requestParams, $params), $this->pagid);
+                        $contentType = $this->customHelpers->get($div['content_type_label']);
+                        $publicMethodToCall = $contentType->getPublicViewHelperMethod();
+                        echo $this->{$publicMethodToCall}('', $content, $div['pagdivs_id'], $div['order'], array_merge($this->requestParams, $params), $this->pagid);
                     }
                 }
 

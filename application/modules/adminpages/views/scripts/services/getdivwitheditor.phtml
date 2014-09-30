@@ -8,8 +8,6 @@ $this->contentTranslate = new Translate_Content_Content();
 
 $div = $this->div;
 
-//var_dump($div);
-
 if (is_array($div)) {
     $params = null;
     $isDeletable = true;
@@ -84,7 +82,10 @@ if (is_array($div)) {
 				</div>';
     }
 
-    echo $this->{$div['helper']}($tabs . $editorAction, $content, $div['id'], $div['order'], $params, $this->moduleName);
+    $contentType = $this->customHelpers->get($div['content_type_label']);
+    $privateMethodToCall = $contentType->getPrivateViewHelperMethod();
+
+    echo $this->{$privateMethodToCall}($tabs . $editorAction, $content, $div['id'], $div['order'], $params, $this->moduleName);
 } else {
     echo $div;
 }
