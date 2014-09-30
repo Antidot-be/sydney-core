@@ -1,5 +1,4 @@
 <?php
-include_once('Zend/Db/Table.php');
 
 /**
  * This class extends the Zend_Db_Table and adds interesting methods

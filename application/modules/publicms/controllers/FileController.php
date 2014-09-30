@@ -252,10 +252,8 @@ class Publicms_FileController extends Sydney_Controller_Actionpublic // Adminfil
             $result = $fileModel->fetchAll($where);
             if (count($result) == 1) {
                 $file = $result[0];
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/appdata/adminfiles/' . $fileType . '/' . $file->filename;
-                // @todo move the fullpath calculation to the filetypefactory OR Sydney_Medias_Filetypes_*
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 if (!$fileTypeInstance->showImg($dimensionWidth, $dimensionHeight)) {
 
@@ -287,9 +285,8 @@ class Publicms_FileController extends Sydney_Controller_Actionpublic // Adminfil
                 $file = $files[0];
 
                 //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/appdata/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 ob_end_clean();
                 if (isset($request->download) && $request->download == 'yes') {
@@ -334,11 +331,8 @@ class Publicms_FileController extends Sydney_Controller_Actionpublic // Adminfil
             if (count($result) == 1) {
                 $file = $result[0];
 
-                //Définition dynamique du fullpath
-                $webinstanceName = $this->_config->general->webinstance;
                 $fileType = $file->type;
-                $fullpath = __DIR__ . '/../../../../../webinstances/' . $webinstanceName . '/appdata/adminfiles/' . $fileType . '/' . $file->filename;
-                // @todo move the fullpath calculation to the filetypefactory OR Sydney_Medias_Filetypes_*
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
 
                 // defines the thumb size
