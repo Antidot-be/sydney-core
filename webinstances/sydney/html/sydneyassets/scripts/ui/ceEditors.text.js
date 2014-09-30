@@ -1,10 +1,11 @@
 if (!ceEditors) var ceEditors = {};
+
 /**
  * Class: ceEditors.text
  * Methods for wysiwyg text editor
  * @constructor
  */
-ceEditors.text = {
+ceEditors['text-block'] = {
 	/**
 	 * Method: setupEditor
 	 */
@@ -39,7 +40,7 @@ ceEditors.text = {
 										'order': dborder,
 										'content': myvalue,
 										'params': '',
-										'pagdivtypesid' : 2,
+                                        'content_type_label': $(this).data('content-type'),
 										'status' : status,
 										'pagstructureid' : pagstructureid
 									},
