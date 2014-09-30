@@ -31,10 +31,17 @@ class Sydney_Bootstrapper
     private $debugTranslationsNotFound = false;
 
     /**
+     * Will contains an array of helper that user will want to use
+     * @var array
+     */
+    private $customHelpers;
+
+    /**
      * Constructor initializing the basics
      */
     public function __construct()
     {
+        $this->customHelpers = new Sydney_View_Helper_ContentTypeCollection();
     }
 
 
@@ -48,9 +55,30 @@ class Sydney_Bootstrapper
         $this->corePath = $path;
     }
 
+    /**
+     * Register an array of default helper
+     */
+    public function registerDefaultHelpers()
+    {
+       $this->customHelpers = Sydney_View_Helper_Config::getDefault();
+    }
+
     public function setZendPath($path)
     {
         $this->zendPath = $path;
+    }
+
+    /**
+     *
+     * @param $identifier string unique identifier
+     * @param $labelHelper string Will be display in the admin
+     * @param $publicFuncToCall string Method call in the public part
+     * @param $privateFuncToCall string Method call in the admin preview
+     * @param $editorMethod string
+     */
+    public function registerContentTypeHelper($identifier, $labelHelper, $publicFuncToCall, $privateFuncToCall, $editorMethod)
+    {
+        $this->customHelpers->add($identifier, new Sydney_View_Helper_ContentType($labelHelper, $publicFuncToCall, $privateFuncToCall, $editorMethod));
     }
 
     private function _setConfigToRegistry($applicationEnv)
@@ -63,28 +91,6 @@ class Sydney_Bootstrapper
         $configHandler->addConfigFile($this->webInstancePath . '/config/instance.ini.lock');
         $this->registry->set('config', $configHandler->getConfig());
         $this->config = $this->registry->get('config');
-    }
-
-    /**
-     * It will init the zend path
-     */
-    private function _initZendPath()
-    {
-        $path = realpath($this->corePath . '/library/');
-        if($this->zendPath) {
-            $path = $this->zendPath;
-        }
-        set_include_path($path . PATH_SEPARATOR . get_include_path());
-    }
-
-    /**
-     * Register the autoload so we won't have to add the include statments
-     */
-    private function _setAutoLoad()
-    {
-        include_once('Zend/Loader/Autoloader.php'); // @TODO : remove that
-        $autoloader = Zend_Loader_Autoloader::getInstance();
-        $autoloader->setFallbackAutoloader(true);
     }
 
 
@@ -131,7 +137,10 @@ class Sydney_Bootstrapper
         Sydney_Tools_Paths::setWebInstancePath($this->webInstancePath);
     }
 
-
+    private function _setRegistredHelpersToRegistry()
+    {
+        $this->registry->set('customhelpers', $this->customHelpers);
+    }
 
     /**
      * Execute all the default method.
@@ -140,8 +149,6 @@ class Sydney_Bootstrapper
     public function run()
     {
         // Common initialisation
-        $this->_initZendPath();
-        $this->_setAutoLoad();
         $this->registry = Zend_Registry::getInstance();
         $this->_setConfigToRegistry((getenv('APPLICATION_ENV')) ? getenv('APPLICATION_ENV') : 'general');
         $this->_setPaths();
@@ -163,6 +170,7 @@ class Sydney_Bootstrapper
         $this->setLanguageSettings();
         $this->setTranslationObject();
         $this->setLocalization();
+        $this->_setRegistredHelpersToRegistry();
 
         try {
             $this->setDatabaseConnection();
