@@ -29,7 +29,10 @@ $vmode = $this->vmode;
             </tr>
             <?php
             foreach ($this->files as $f) {
-                $fil = Sydney_Medias_Filetypesfactory::createfiletype($f['path'] . '/' . $f['filename']);
+
+                $fileType = $f['type'];
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $f['filename'];
+                $fil = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 $finfo = $fil->getFileinfo();
                 ?>
                 <tr>

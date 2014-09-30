@@ -131,7 +131,9 @@ if ($pages > 1) {
             $lastDiv = false;
             $t = ($i % $paramArray['nbrCols']) + 1;
             $f = $this->flist[$i];
-            $fil = Sydney_Medias_Filetypesfactory::createfiletype($f['path'] . '/' . $f['filename']);
+            $fileType = $f['type'];
+            $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $f['filename'];
+            $fil = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
             $finfo = $fil->getFileinfo();
             ?>
 
