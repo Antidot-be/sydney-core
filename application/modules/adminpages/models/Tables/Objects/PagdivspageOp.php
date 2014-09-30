@@ -65,9 +65,8 @@ class PagdivspageOp extends Pagdivs
 
         $sql = "SELECT *, pagstructure_pagdivs.order as order_pagstructure_pagdiv
 				FROM
-					pagdivtypes, pagdivs, pagstructure_pagdivs
+					pagdivs, pagstructure_pagdivs
 				WHERE
-					pagdivtypes.id = pagdivs.pagdivtypes_id AND
 					pagdivs.id = pagstructure_pagdivs.pagdivs_id AND
 					pagstructure_pagdivs.pagstructure_id = '" . $pageStructureId . "'
 				AND pagdivs.isDeleted = 0";
