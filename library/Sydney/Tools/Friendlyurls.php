@@ -64,7 +64,7 @@ class Sydney_Tools_Friendlyurls extends Sydney_Tools
      */
     public static function setDefaultRoutes(Zend_Controller_Router_Interface $router)
     {
-        $internalUrl = 'admin|default\/';
+        $internalUrl = 'publicms|admin|default\/';
         // routeName => array( route, defaults, map, reverse )
         $routesRegex = array(
             'searchRoute'        => array(

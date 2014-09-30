@@ -114,6 +114,7 @@ class Publicms_IndexController extends Sydney_Controller_Actionpublic
             $where = 'safinstances_id = ' . $this->safinstancesId . ' AND id = ' . $currentPage;
             $this->view->nodes = $nodes->fetchAll($where);
 
+            $this->view->customHelpers = $this->_registry->get('customhelpers');
             $this->view->contentDivs = array();
             if (count($this->view->nodes) > 0) {
                 foreach ($this->view->nodes as $node) {

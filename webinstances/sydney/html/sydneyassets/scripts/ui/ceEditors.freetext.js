@@ -1,21 +1,16 @@
 if (!ceEditors) var ceEditors = {};
 /**
- * Class: ceEditors.code
- * Methods for code editor
- * This kind of editor will just highlight code
  * @constructor
  */
-ceEditors.freetext = {
-	/*
-		Method: setupEditor
-	*/
+ceEditors['plain-text-html-block'] = {
+    /*
+        Method: setupEditor
+    */
 	setupEditor : function(){
 		ceEditors.defaultedt.setupEditor.apply(this);
 		var item = $(this);
 		var editor = $(".editor", item);
-		var langg = item.attr("type");
 		// Get value
-		//var value = $.trim($(".content", item).html());
 		var value = $.trim($("#textAreaFreeText", item).val());
 		
 		$("textarea.value", editor).val(value);
@@ -27,6 +22,7 @@ ceEditors.freetext = {
 	 */
 	save : function(){
 		ceEditors.defaultedt.save.apply(this);
+
 		var item = $(this);
 		var thisp = this[0];
 		if (this[0].attributes['dbid']) var dbid = this[0].attributes['dbid'].nodeValue; else var dbid = 0;
@@ -35,10 +31,7 @@ ceEditors.freetext = {
 		var editor = $(".editor", item);
 		item.data("new", false);
 		var value = $.trim($("textarea.value", editor).val());
-		var html = value;
-				
-		//$(".content", item).html(html);
-		
+
 		item.removeEditor();
 		
 		// view draft
@@ -54,7 +47,7 @@ ceEditors.freetext = {
 										'order': dborder,
 										'content': value,
 										'params': '',
-										'pagdivtypesid' : 18,
+                                        'content_type_label': $(this).data('content-type'),
 										'status' : status,
 										'pagstructureid' : pagstructureid
 									},

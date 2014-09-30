@@ -37,9 +37,11 @@
     position: relative;
     list-style: none;
     margin: 2px 0px;
+    min-height: 50px;
     background: white;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 
 #sydney_editor .contentEditor > .sydney_editor_li.editing,

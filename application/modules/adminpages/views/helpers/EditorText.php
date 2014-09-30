@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
- * Helper showing the text HTML editor for editing page content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
+ * Helper showing the text editor for admin
  */
 class Adminpages_View_Helper_EditorText extends Zend_View_Helper_Abstract
 {
@@ -35,7 +28,7 @@ class Adminpages_View_Helper_EditorText extends Zend_View_Helper_Abstract
             $toReturn .= '<script type="text/javascript">' . $contentTemplate . '</script>';
         }
 
-        $toReturn .= $addStyleCss . '<div class="editor text sydneyeditor">
+        $toReturn .= $addStyleCss . '<div class="editor text-block sydneyeditor" data-content-type="text-block">
 					<textarea class="texteditor">
 
 					</textarea>

@@ -55,6 +55,7 @@ class Adminpages_PagesController extends Sydney_Controller_Action
 
         $this->view->emodule = $emodule;
         $this->view->pagstructure_id = $elid;
+        $this->view->customHelpers = $this->_registry->get('customhelpers');
 
         switch ($emodule) {
             case 'pages':

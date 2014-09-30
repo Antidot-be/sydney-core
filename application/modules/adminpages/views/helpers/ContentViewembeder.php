@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
- * Helper showing the text content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
+ * Helper showing the view embedder content
  */
 class Adminpages_View_Helper_ContentViewembeder extends Zend_View_Helper_Abstract
 {
@@ -67,7 +60,17 @@ class Adminpages_View_Helper_ContentViewembeder extends Zend_View_Helper_Abstrac
             }
         } // END - if content
 
-        return '<li class="' . $params['addClass'] . ' sydney_editor_li" type="" dbparams="' . $content . '" editclass="viewembeder" dbid="' . $dbId . '" dborder="' . $order . '" pagstructureid="' . $pageStructureId . '" sharedinids="' . $sharedInIds . '">' . $actionsHtml . '<div class="content">'
+        return '
+            <li
+                class="' . $params['addClass'] . ' sydney_editor_li"
+                type=""
+                dbparams="' . $content . '"
+                editclass="viewembeder"
+                dbid="' . $dbId . '"
+                dborder="' . $order . '"
+                data-content-type="view-embedder-block"
+                pagstructureid="' . $pageStructureId . '"
+                sharedinids="' . $sharedInIds . '">' . $actionsHtml . '<div class="content">'
         . $toReturn
         . '</div></li>';
     }
