@@ -55,6 +55,7 @@ class Adminpages_PagesController extends Sydney_Controller_Action
 
         $this->view->emodule = $emodule;
         $this->view->pagstructure_id = $elid;
+        $this->view->customHelpers = $this->_registry->get('customhelpers');
 
         switch ($emodule) {
             case 'pages':
@@ -78,6 +79,7 @@ class Adminpages_PagesController extends Sydney_Controller_Action
                 // Affichage d'un design spécifique
                 $layout = new Sydney_Layout_Layout();
                 /* If layout if empty we will take the one in the config */
+
                 if(!$this->view->node->layout){
                     $this->view->node->layout = $this->_config->general->layout;
                 }

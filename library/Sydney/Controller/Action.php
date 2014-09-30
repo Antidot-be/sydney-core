@@ -105,6 +105,8 @@ abstract class Sydney_Controller_Action extends Sydney_Controller_Actionpublic
         $this->view->addHelperPath(Sydney_Tools_Paths::getCorePath() . '/library/Sydney/View/Helper', 'Sydney_View_Helper');
         $this->view->addHelperPath(Sydney_Tools_Paths::getCorePath() . '/application/modules/adminpages/views/helpers',
             'Adminpages_View_Helper');
+        $this->_initWebInstanceHelpers();
+
         $this->getResponse()->setHeader('Accept-encoding', 'gzip,deflate');
         // setup the basics
         $this->_registry = Zend_Registry::getInstance();

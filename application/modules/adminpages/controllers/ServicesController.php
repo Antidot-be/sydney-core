@@ -106,6 +106,8 @@ class Adminpages_ServicesController extends Sydney_Controller_Action
         if ($divId == false) {
             $this->view->div = "not loaded!";
         } else {
+            $registry = new Zend_Registry();
+            $this->view->customHelpers = $registry->get('customhelpers');
             $div = new Pagdivspage();
             $data = $div->getDiv($divId);
             $this->view->div = $data;
@@ -140,7 +142,7 @@ class Adminpages_ServicesController extends Sydney_Controller_Action
                     $isNewRow = true;
                     $div = $divs->createRow();
                     $div->datecreated = new Zend_Db_Expr("NOW()");
-                    $div->pagdivtypes_id = $request->pagdivtypesid;
+                    $div->content_type_label = $request->content_type_label;
                     $div->save(); // Create record on database
                 }
                 if (isset($request->status)) {
