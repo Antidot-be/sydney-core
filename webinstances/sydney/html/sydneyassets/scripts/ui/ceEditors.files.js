@@ -4,7 +4,7 @@ if (!ceEditors) var ceEditors = {};
  * Methods for file editor
  * @constructor
  */
-ceEditors.files = {
+ceEditors['file-block'] = {
 	/**
 	 * Method: save
 	 */
@@ -43,7 +43,7 @@ ceEditors.files = {
 										'order': dborder,
 										'content': value,
 										'params': params,
-										'pagdivtypesid' : 5,
+                                        'content_type_label': $(this).data('content-type'),
 										'status' : status,
 										'pagstructureid' : pagstructureid
 									},

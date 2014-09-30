@@ -104,15 +104,11 @@
 	        var staticAddContent = $(".addContentStatic", o);
 			staticAddContent.find("a").click(function(e){
 				e.preventDefault();
-
-				var editclass = e.target.href.split("/").pop();
-
 				// Hide the tip
 		        $(".contentEditor .tip").hide();
-
 				// Call action
 			   	o.addItem({
-					editclass: editclass
+                    contentType: $(this).data('content-type')
 				});
 		    });
 
@@ -132,7 +128,6 @@
 			// Clear ghost margin
 			var items = o.children("li:not(.addContentStatic)");
 			if(items.length > 0){
-				items.css("margin", "0");
 				// Add "Add here"
 				// var items = o.children("li");
 				var addHere = $(".ceUILibrary .addHere").clone();
@@ -152,13 +147,10 @@
 	 */
 	$.fn.removeAddHere = function() {
 		return this.each(function(){
-			
 	        var o = $(this);
 			// Remove previous ones
 			var items = o.find("div.addHere");
 			items.remove();
-			// Add ghost margin
-			o.children("li:not(.addContentStatic)").css("margin", "2px 0");
 		});
 	};
 	/**
@@ -186,12 +178,11 @@
 			});
 			addContent.find(".items a").click(function(e){
 				e.preventDefault();
-				var editclass = e.target.href.split("/").pop();
 				var target = $(this).parents(".addContent");
 
 			   	o.addItem({
 					target: target,
-					editclass: editclass
+                    contentType: $(this).data('content-type')
 				});
 		    });
 		});
@@ -223,17 +214,19 @@
 	 */
 	$.fn.addItem = function(options) {
 		var defaults = {
-			target: null
+			contentType: null,
+            target: null
 		};
 		var options = $.extend(defaults, options);
 		return this.each(function(){
 			var o = $(this);
-			target = options.target ? $(options.target) : null;
+			target = options.target;
 		   	var newItem = $(".ceUILibrary .blankitem").clone(true);
+            newItem.data('content-type', options.contentType).data("new", true);
 
 			if(target != null){
 				target.replaceWith(newItem);
-			}else{
+			} else{
 				var staticAddContent = $(".addContentStatic");
                 if($('.placeholder_zone').length > 0){
                     $('#sydney_editor').find('.contentEditor').append(newItem);
@@ -241,9 +234,7 @@
                     staticAddContent.before(newItem);
                 }
 			}
-			newItem.attr("editclass", options.editclass);
-			newItem.data("new", true);
-			newItem.makeEditable();
+            newItem.makeEditable();
 			newItem.edit();
 			o.buildAddHere();
 		});

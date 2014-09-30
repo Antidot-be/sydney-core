@@ -4,7 +4,7 @@ if (!ceEditors) var ceEditors = {};
  * Methods for heading content edition
  * @constructor
  */
-ceEditors.heading = {
+ceEditors['heading-block'] = {
 	/**
 	 * Method: setupEditor
 	 */
@@ -69,15 +69,16 @@ ceEditors.heading = {
 		}
 		
 		// post the data to the JSON service
-		$.postJSON('/adminpages/services/savediv/format/json/emodule/'+emodule, {
-										'id': dbid,
-										'order': dborder,
-										'content': value,
-										'params': 'array( \'level\' => '+level+')',
-										'pagdivtypesid' : 1,
-										'status' : status,
-										'pagstructureid' : pagstructureid
-									},
+		$.postJSON('/adminpages/services/savediv/format/json/emodule/'+emodule,
+            {
+                'id': dbid,
+                'order': dborder,
+                'content': value,
+                'params': 'array( \'level\' => '+level+')',
+                'content_type_label': $(this).data('content-type'),
+                'status' : status,
+                'pagstructureid' : pagstructureid
+            },
 			function(data) {
 				ceEditors.defaultedt.saveorder( item, data);
 			    // update the div content

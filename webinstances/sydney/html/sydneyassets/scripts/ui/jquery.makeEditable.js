@@ -14,7 +14,6 @@
 		return this.each(function(){
 			var item = $(this);
 			var type = item.attr("type");
-			var editclass = item.attr("editclass");
             item.removeClass("blankitem").addClass('sydney_editor_li');
 			// Add block name
 			var friendlyName = item.getFriendlyName() ? item.getFriendlyName() : " ";
@@ -50,9 +49,6 @@
 					});					
 					
 				}
-				
-				
-				
 			});
 			
 			// Setup Events
@@ -67,7 +63,6 @@
 			$(".actions a[href='edit']", item).unbind('click');
 			$(".actions a[href='edit']", item).click(function(e){
 				e.preventDefault();
-				var target = $(this).parents("li");
 			   	item.edit();
 		    });
 			$(".actions a[href='delete']", item).unbind('click');
@@ -106,31 +101,12 @@
                 e.preventDefault();
                 item.toggleonline();
             });
-            $(".actions a[href='workflowstatus']", item).unbind('click');
-			$(".actions a[href='workflowstatus']", item).click(function(e){
-				e.preventDefault();
-				var target = $(this).parents("li");
-				item.changewrkstatus();
-		    });
-			$(".actions a[href='accessrightsstatus']", item).unbind('click');
-			$(".actions a[href='accessrightsstatus']", item).click(function(e){
-				e.preventDefault();
-				var target = $(this).parents("li");
-				item.changeaccessrightsstatus();
-		    });
 			// duplicate content
 			$("#duplicatediv-" + item.attr('dbid')).unbind('click');
 			$("#duplicatediv-" + item.attr('dbid')).click(function(e) {
                 e.preventDefault();
                 item.duplicate();
             });
-			// share content
-			$("#sharediv-" + item.attr('dbid')).unbind('click');
-			$("#sharediv-" + item.attr('dbid')).click(function(e) {
-				e.preventDefault();
-				item.share();
-			});
-
 		});
 	};
 	
@@ -159,15 +135,15 @@
 	 */
 	$.fn.getFriendlyName = function(){
 		o = $(this).eq(0);
-		var editclass = o.attr("editclass");
+		var contentType = o.data("content-type");
 		var type = o.attr("type");
 		var friendlyName;
 
-		if(i18n.txt.friendlyNames[editclass]){
-			if(i18n.txt.friendlyNames[editclass][type]){
-				friendlyName = i18n.txt.friendlyNames[editclass][type];
+		if(i18n.txt.friendlyNames[contentType]){
+			if(i18n.txt.friendlyNames[contentType][type]){
+				friendlyName = i18n.txt.friendlyNames[contentType][type];
 			}else{
-				friendlyName = i18n.txt.friendlyNames[editclass];
+				friendlyName = i18n.txt.friendlyNames[contentType];
 			}
 		}
 		if(typeof friendlyName != "string") friendlyName = false;
@@ -317,15 +293,8 @@
 	 * @constructor
 	 */
 	$.fn.edit = function(options) {
-		var defaults = {};
-		var options = $.extend(defaults, options);
-
 		return this.each(function(){
-			// Edit item
-			var item = $(this);
-			var type = item.attr("type");
-			var editclass = item.attr("editclass");
-			item.insertEditor();
+            $(this).insertEditor();
 		});
 	};
 	/**
@@ -334,28 +303,23 @@
 	 * @constructor
 	 */
 	$.fn.insertEditor = function(options) {
-		var defaults = {};
-		var options = $.extend(defaults, options);
 		return this.each(function(){
 			var item = $(this);
 			var type = item.attr("type");
-			// AS: added for workflow system
-			var editauthorized = true;
-			
-			if (editauthorized) {
-				item.data("originalType", type);
-				var editclass = item.attr("editclass");
-				item.addClass("editing");
-				// Hide content
-				$(".content", item).css("display", "none");
-				// Copy editor from library
-				var editor = $("." + editclass, $(".ceUILibrary")).clone(false);
-				item.append(editor);
-			   	ceEditors[editclass].setupEditor.apply(item);
-			} else {
-				alert('Sorry, you can not edit this content right now.');
-			}
-		   	
+
+            item.data("originalType", type);
+            var contentType = item.data("content-type");
+            item.addClass("editing");
+            // Hide content
+            $(".content", item).css("display", "none");
+            // Copy editor from library
+            var editor = $("." + contentType, $(".ceUILibrary")).clone(false);
+            item.append(editor);
+            if(ceEditors[contentType]){
+                ceEditors[contentType].setupEditor.apply(item);
+            } else {
+                ceEditors['generic'].setupEditor.apply(item);
+            }
 		});
 	};
 	/**
@@ -388,8 +352,13 @@
 		return this.each(function(){
 			// Edit item
 			var item = $(this);
-			var editclass = item.attr("editclass");
-			ceEditors[editclass].save.apply(item);
+			var contentType = item.data("content-type");
+            if(ceEditors[contentType]){
+                ceEditors[contentType].save.apply(item);
+            } else {
+                ceEditors['generic'].save.apply(item);
+            }
+
 			if(item){
 				item.effect("highlight", {color: "#fffbba"}, 1000);
 				item.parents(".contentEditor").buildAddHere();

@@ -4,7 +4,7 @@ if (!ceEditors) var ceEditors = {};
  * Methods for view embeder editor editor
  * @constructor
  */
-ceEditors.viewembeder = {
+ceEditors['view-embedder-block'] = {
 	/**
 	 * Method: setupEditor
 	 */
@@ -43,15 +43,16 @@ ceEditors.viewembeder = {
 		}
 		
 		// post the data to the JSON service
-		$.postJSON('/adminpages/services/savediv/format/json/emodule/'+emodule, {
-										'id': dbid,
-										'order': dborder,
-										'content': value,
-										'params': '',
-										'pagdivtypesid' : 6,
-										'status' : status,
-										'pagstructureid' : pagstructureid
-									},
+		$.postJSON('/adminpages/services/savediv/format/json/emodule/'+emodule,
+            {
+                'id': dbid,
+                'order': dborder,
+                'content': value,
+                'params': '',
+                'content_type_label': $(this).data('content-type'),
+                'status' : status,
+                'pagstructureid' : pagstructureid
+            },
 			function(data) {
 				ceEditors.defaultedt.saveorder( item, data);
 			    // update the div content
