@@ -14,21 +14,12 @@ class Pagdivs extends PagdivsOp
     protected $_name = 'pagdivs';
     protected $_dependentTables = array('PagstructurePagdivs');
     protected $_referenceMap = array(
-        'Pagdivtypes' => array(
-            'columns'       => 'pagdivtypes_id',
-            'refTableClass' => 'Pagdivtypes',
-            'refColumns'    => 'id'
-        ),
+
         'Usersgroups' => array(
             'columns'       => 'usersgroups_id',
             'refTableClass' => 'Usersgroups',
             'refColumns'    => 'id'
-        ),
-        'Wrkstatuses' => array(
-            'columns'       => 'wrkstatuses_id',
-            'refTableClass' => 'Wrkstatuses',
-            'refColumns'    => 'id'
-        ),
+        )
     );
     protected $_primary = 'id';
 
@@ -39,7 +30,7 @@ class Pagdivs extends PagdivsOp
         'params_draft', // varchar(255)
         'content', // longtext()
         'content_draft', // longtext()
-        'pagdivtypes_id', // bigint()
+        'content_type_label',
         'status', // enum('draft','revised','published','restored')()
         'datecreated', // timestamp()
         'datemodified', // timestamp()
@@ -147,15 +138,15 @@ class Pagdivs extends PagdivsOp
             'PRIMARY_POSITION' => null,
             'IDENTITY'         => false,
         ),
-        'pagdivtypes_id' => array(
+        'content_type_label'          => array(
             'SCHEMA_NAME'      => null,
             'TABLE_NAME'       => "pagdivs",
-            'COLUMN_NAME'      => "pagdivtypes_id",
-            'COLUMN_POSITION'  => 7,
-            'DATA_TYPE'        => "bigint",
+            'COLUMN_NAME'      => "content_type_label",
+            'COLUMN_POSITION'  => 2,
+            'DATA_TYPE'        => "varchar",
             'DEFAULT'          => null,
             'NULLABLE'         => true,
-            'LENGTH'           => null,
+            'LENGTH'           => "150",
             'SCALE'            => null,
             'PRECISION'        => null,
             'UNSIGNED'         => null,

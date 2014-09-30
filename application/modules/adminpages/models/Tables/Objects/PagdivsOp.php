@@ -42,9 +42,8 @@ abstract class PagdivsOp extends Sydney_Db_Table
 
     public function getDiv($divId)
     {
-        $sql = "SELECT * FROM pagdivtypes, pagdivs
+        $sql = "SELECT * FROM pagdivs
 	    WHERE
-	    pagdivtypes.id = pagdivs.pagdivtypes_id AND
 	    pagdivs.id = " . $divId;
 
         $data = $this->_db->fetchAll($sql);
