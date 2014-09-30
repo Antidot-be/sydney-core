@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing an acion and its view within this helper (with it we can embeed a view in another one)
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
  */
 class Publicms_View_Helper_ContentFile extends Zend_View_Helper_Abstract
 {
@@ -35,15 +28,6 @@ class Publicms_View_Helper_ContentFile extends Zend_View_Helper_Abstract
                 'ids'          => $content,
                 'params'       => $params
             );
-
-            /* $toret = '<li dbparams="'.$content.'" type="" editclass="files" dbid="'.$dbid.'" dborder="'.$order.'">
-            ' .$actionsHtml .'
-            <div class="content">
-                '.$this->view->action($action,$controller,$module,$params2).'
-            </div>
-            </li>';
-
-            return $toret; */
 
             return $this->view->action($action, $controller, $module, $params2);
         }

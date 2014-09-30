@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
- * Helper showing the heading content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
+ * Helper showing the file content
  */
 class Adminpages_View_Helper_ContentFile extends Zend_View_Helper_Abstract
 {
@@ -59,7 +52,16 @@ class Adminpages_View_Helper_ContentFile extends Zend_View_Helper_Abstract
         $oFile = new Filfiles();
         $params2['flist'] = $oFile->getFileInfosByIdList($ids);
 
-        $toret = '<li class="' . $params['addClass'] . ' sydney_editor_li" dbparams="' . $content . '" type="" editclass="files" dbid="' . $dbId . '" dborder="' . $order . '" pagstructureid="' . $pagstructureId . '" sharedinids="' . $sharedInIds . '">
+        $toret = '<li
+                    class="' . $params['addClass'] . ' sydney_editor_li"
+                    dbparams="' . $content . '"
+                    type=""
+                    editclass="files"
+                    dbid="' . $dbId . '"
+                    dborder="' . $order . '"
+                    data-content-type="file-block"
+                    pagstructureid="' . $pagstructureId . '"
+                    sharedinids="' . $sharedInIds . '">
 		' . $actionsHtml . '
 			<div class="content">
 				' . $this->view->partial('file/filelist.phtml', $module, $params2) . '

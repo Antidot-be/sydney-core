@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing a basic menu
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo implement content caching in this helper
  */
 class Publicms_View_Helper_MenuBasic extends Zend_View_Helper_Abstract
 {

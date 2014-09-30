@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
- * Helper showing the heading content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
+ * Helper showing the free text content
  */
 class Adminpages_View_Helper_ContentFreeText extends Zend_View_Helper_Abstract
 {
@@ -39,6 +32,7 @@ class Adminpages_View_Helper_ContentFreeText extends Zend_View_Helper_Abstract
 
         $toReturn = '<li class="' . $params['addClass'] . ' sydney_editor_li"
 						type="' . $params['language'] . '"
+                        data-content-type="plain-text-html-block"
 						editclass="freetext"
 						dbid="' . $dbId . '"
 						dborder="' . $order . '"

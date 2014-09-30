@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing the file browser inline for content editing
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
  */
 class Adminpages_View_Helper_EditorFiles extends Zend_View_Helper_Abstract
 {
@@ -57,7 +50,7 @@ class Adminpages_View_Helper_EditorFiles extends Zend_View_Helper_Abstract
             ),
         );
 
-        $toReturn = '<div class="editor files edefiles"><form><ul class="action-list sydney_editor_ul">';
+        $toReturn = '<div class="editor files edefiles file-block"><form><ul class="action-list sydney_editor_ul" data-content-type="file-block">';
         foreach ($mrt as $d) {
             $toReturn .= '<li class="sydney_editor_li" fileparams="' . $d[2] . '"><h2 class="sydney_editor_h2">' . $d[0] . '<span class="subheading sydney_editor_span">' . $d[1] . '</span></h2></li>';
         }

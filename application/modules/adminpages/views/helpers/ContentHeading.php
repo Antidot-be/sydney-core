@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing the heading content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
  */
 class Adminpages_View_Helper_ContentHeading extends Zend_View_Helper_Abstract
 {
@@ -26,7 +19,16 @@ class Adminpages_View_Helper_ContentHeading extends Zend_View_Helper_Abstract
 
         $eventsInfo = SafactivitylogOp::getAuthorNLastEditorForContent($dbId, $moduleName);
 
-        $toReturn = '<li class="' . $params['addClass'] . ' sydney_editor_li" type="h' . $params['level'] . '" editclass="heading" dbid="' . $dbId . '" dborder="' . $order . '" pagstructureid="' . $pagstructureId . '" sharedinids="' . $sharedInIds . '">
+        $toReturn = '
+        <li
+            class="' . $params['addClass'] . ' sydney_editor_li"
+            type="h' . $params['level'] . '"
+            editclass="heading"
+            dbid="' . $dbId . '"
+            dborder="' . $order . '"
+            data-content-type="heading-block"
+            pagstructureid="' . $pagstructureId . '"
+            sharedinids="' . $sharedInIds . '">
 		' . $actionsHtml . '
 		<div class="content clearfix2">
 			<h' . $params['level'] . ' class="sydney_editor_h' . $params['level'] . '">' . $content . '</h' . $params['level'] . '>
