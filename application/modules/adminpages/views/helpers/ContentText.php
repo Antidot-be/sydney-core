@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing the text content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
  */
 class Adminpages_View_Helper_ContentText extends Zend_View_Helper_Abstract
 {
@@ -25,7 +18,15 @@ class Adminpages_View_Helper_ContentText extends Zend_View_Helper_Abstract
     {
         $eventsInfo = SafactivitylogOp::getAuthorNLastEditorForContent($dbId, $moduleName);
 
-        $toReturn = '<li class="' . $params['addClass'] . ' sydney_editor_li" editclass="text" dbid="' . $dbId . '" dborder="' . $order . '" pagstructureid="' . $pagstructureId . '" sharedinids="' . $sharedInIds . '">
+        $toReturn = '
+            <li
+                class="' . $params['addClass'] . ' sydney_editor_li"
+                editclass="text"
+                dbid="' . $dbId . '"
+                data-content-type="text-block"
+                dborder="' . $order . '"
+                pagstructureid="' . $pagstructureId . '"
+                sharedinids="' . $sharedInIds . '">
 		' . $actionsHtml . '
 		<div class="content clearfix2">
 				' . $content . '

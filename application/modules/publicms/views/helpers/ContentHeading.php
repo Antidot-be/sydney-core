@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing the heading content
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
  */
 class Publicms_View_Helper_ContentHeading extends Zend_View_Helper_Abstract
 {

@@ -1,14 +1,7 @@
 <?php
-require_once('Zend/View/Helper/Abstract.php');
 
 /**
  * Helper showing the heading editor for page content editing
- *
- * @package Adminpages
- * @subpackage ViewHelper
- * @author Arnaud Selvais
- * @since 08/06/09
- * @todo Implement the translation method here
  */
 class Adminpages_View_Helper_EditorHeading extends Zend_View_Helper_Abstract
 {
@@ -18,7 +11,7 @@ class Adminpages_View_Helper_EditorHeading extends Zend_View_Helper_Abstract
      */
     public function EditorHeading()
     {
-        $toReturn = '<div class="editor heading">
+        $toReturn = '<div class="editor heading-block" data-content-type="heading-block">
 					<p class="sydney_editor_p"><input class="value" type="text" value="" /></p>
 					<p class="radiogroup sydney_editor_p">
 						<label class="sydney_editor_label"><input class="sydney_editor_input" id="f_heading" name="level" type="radio" value="1"/> ' . Sydney_Tools_Localization::_('Heading') . '</label>
