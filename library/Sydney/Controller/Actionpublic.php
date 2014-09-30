@@ -87,6 +87,7 @@ abstract class Sydney_Controller_Actionpublic extends Zend_Controller_Action
     {
         // register general sydney helpers
         $this->view->addHelperPath(Sydney_Tools_Paths::getCorePath() . '/library/Sydney/View/Helper', 'Sydney_View_Helper');
+        $this->_initWebInstanceHelpers();
         // setup the basics
         $this->_registry = Zend_Registry::getInstance();
         $this->_config = $this->_registry->get('config');
@@ -169,11 +170,6 @@ abstract class Sydney_Controller_Actionpublic extends Zend_Controller_Action
          */
         if (!is_array($this->view->structure) && $this->getRequest()->layout != 'no') {
             $this->structure = new Pagstructure();
-            // referencing the local menu helper if any or using the generic one
-            $localpath = Sydney_Tools::getLocalPath();
-            if (isset($localpath) && is_dir($localpath . '/layouts/helpers')) {
-                $this->view->addHelperPath($localpath . '/layouts/helpers', 'Menu_View_Helper');
-            }
 
             $this->view->adminmode = false;
 
@@ -219,6 +215,18 @@ abstract class Sydney_Controller_Actionpublic extends Zend_Controller_Action
         $this->_manageCanonicalLinks($pages[0]);
     }
 
+    protected function _initWebInstanceHelpers()
+    {
+        $localPath = Sydney_Tools_Paths::getLocalPath();
+        if($localPath){
+            if (is_dir($localPath . '/layouts/helpers')) {
+                $this->view->addHelperPath($localPath . '/layouts/helpers', 'Menu_View_Helper');
+            }
+            if(is_dir($localPath . '/library/helpers')){
+                $this->view->addHelperPath($localPath . '/library/helpers', 'Helper');
+            }
+        }
+    }
 
     /**
      * Manage canonanical
