@@ -49,13 +49,9 @@ $pagstructure_id = $this->pagstructure_id;
     </li>
     <?php
     // print the result of the helpers
-    $tyDB = new Pagdivtypes();
-    foreach ($tyDB->fetchAll('online = 1') as $e) {
-        if (($e->developeronly == 1 && $isDeveloper) || $e->developeronly == 0) {
-            $hlpr = $e->helperadmin;
-            // echo '<!-- Helper '.$e->label.' -->'."\n";
-            echo $this->$hlpr();
-        }
+    foreach($this->customHelpers as $identifier => $customHelper){
+        $privateMethodToCall = $customHelper->getEditorHelperMethod();
+        echo $this->{$privateMethodToCall}($identifier);
     }
     ?>
 </div>
@@ -140,7 +136,10 @@ $pagstructure_id = $this->pagstructure_id;
                 'dbid'  => $div['pagdivs_id'],
                 'label' => ($div['label'] ? $div['label'] : $div['code'] . '-' . $div['pagdivs_id'])
             );
-            echo $this->{$div['helper']}(
+            $contentType = $this->customHelpers->get($div['content_type_label']);
+            $privateMethodToCall = $contentType->getPrivateViewHelperMethod();
+
+            echo $this->{$privateMethodToCall}(
                 $tabs . $this->EditorActions(
                     $isDeletable,
                     $isDraft,
