@@ -1,7 +1,7 @@
 
 # Create your own content type #
 
-To be able to add your own content type you will need some knowledge in PHP.
+In order to add your own content type you need some knowledge in PHP.
 
 ## A basic example ##
 
@@ -10,7 +10,7 @@ A goto top helper could be usefull if you have page with a lot of content (and t
 
 ### Register our helpers ###
 
-For each content type you will add, you will need to register 3 view helpers (one for public view, one for admin view and one for the editor) in your `/webinstances/acme/html/index.php` before run the app and also a javascript file for the admin.  
+For each content type you want to add, it is needed to register 3 view helpers (one for public view, one for admin view and one for the editor) in your `/webinstances/acme/html/index.php` before running the app. It is also needed to create a javascript file for the admin.  
 
 Like :
 
@@ -18,17 +18,17 @@ Like :
     $app->registerContentTypeHelper('goto-top-block', 'Goto top', 'publicGotoTopView', 'privateGotoTopView', 'editorGotoTopView');
     $app->run();
 
-`goto-top-block` : is an unique identifier for to content type  
+`goto-top-block` : is the unique identifier for the content type you have created  
 `Goto top` : is the human readable label for the admin  
 `publicGotoTopView` : is the method that will be call in the public context (like a visitor)  
-`privateGotoTopView` : method call in the private context (when you are logged as an admin) it is just a admin preview, it will also add automatically some buttons like : re-order, edit, delete, duplicate, ...  
-`editorGotoTopView` : method call to render the editor, here the editor is not really revelant but in the next you will see that it can be more complex  
+`privateGotoTopView` : method call in the private context (when you are logged as an admin) it is just an admin preview, it will also add automatically some buttons like : re-order, edit, delete, duplicate, ...  
+`editorGotoTopView` : method call to render the editor, here the editor is not really revelant but in the next part, you will see that it can be more complex  
 
 
 ### Create the helpers ###
 
-Now we know that we need 3 helpers and thus 3 classes. You can put those 3 classes in `/webinstances/acme/library/helpers/` (create the directory if not exist).  
-Note that all of those class must begin with `Helper_`.
+Now we know that we need 3 helpers and thus 3 classes. You can put those 3 classes in `/webinstances/acme/library/helpers/` (create the directory if it do not exist).  
+Note that all of those classes must begin with `Helper_`.
 
 Let's begin with the public view.  
 First create a file `PublicGotoTopView.php` in `/webinstances/acme/library/helpers/` :
@@ -44,9 +44,9 @@ First create a file `PublicGotoTopView.php` in `/webinstances/acme/library/helpe
     }
 
 
-This file is quite simple but you don't need more thing in the public view to show.  
+This file is quite simple. There is no need of additional things to show the public view.  
 
-Now let's create the private view `PrivateGotoTopView.php` in `/webinstances/acme/library/helpers/` :
+Now, let's create the private view `PrivateGotoTopView.php` in `/webinstances/acme/library/helpers/` :
 
     <?php
 
@@ -69,7 +69,7 @@ Now let's create the private view `PrivateGotoTopView.php` in `/webinstances/acm
 
 
 Note that the `LI` tag is required for the preview like all the attributes.  
-The `data-content-type` must match with identifier you have defined before.
+The `data-content-type` must match with the identifier you have defined before.
 
 And finally the editor view `EditorGotoTopView.php` in `/webinstances/acme/library/helpers/` :  
 
@@ -95,7 +95,7 @@ And finally the editor view `EditorGotoTopView.php` in `/webinstances/acme/libra
         }
     }
 
-Each content type will need its own javascript editor file here `/assets/js/admin/ceEditor.goto-top.js`  
+Each content type needs its own javascript editor file here `/assets/js/admin/ceEditor.goto-top.js`  
 
     if (!ceEditors) var ceEditors = {};
     /**
@@ -142,4 +142,4 @@ This file will basically setup and save the content type by sending all the info
 
 
 And you are done!  
-After that you see the `Goto top` label when creating or editing a page!  
+You can now see the `Goto top` label when creating or editing a page!  
