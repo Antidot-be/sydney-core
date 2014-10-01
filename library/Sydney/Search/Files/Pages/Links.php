@@ -100,7 +100,7 @@ class Sydney_Search_Files_Pages_Links extends PagdivsCommonOp implements Sydney_
         // - /publicms/file/getrfile/id/$fileid
         // - /publicms/file/showimg/dw/400/id/$fileid/fn/$fileid.png
         $selector = $this->select()
-            ->where('pagdivtypes_id = 2')
+            ->where('content_type_label = "text-block"')
             ->where('( ( (content REGEXP "/publicms/file/getrfile/id/' . $fileid . '[^0-9]" > 0) OR content REGEXP "/publicms/file/showimg/dw/([0-9]{1,})/id/' . $fileid . '/fn" > 0)')
             ->orWhere(' (content REGEXP "/FILE-' . $fileid . '[^0-9]" > 0) ')
             ->orWhere('( (content_draft REGEXP "/publicms/file/getrfile/id/' . $fileid . '[^0-9]" > 0) OR content_draft REGEXP "/publicms/file/showimg/dw/([0-9]{1,})/id/' . $fileid . '/fn" > 0) )')
@@ -113,7 +113,7 @@ class Sydney_Search_Files_Pages_Links extends PagdivsCommonOp implements Sydney_
     {
         // search on content file(5)/image(3)/video(4)/flash(7)
         $selector = $this->select()
-            ->where('pagdivtypes_id IN (?)', array(3, 4, 5, 7))
+            ->where('content_type_label IN (?)', array('file-block'))
             ->where('( content REGEXP "(.*)(^|,)' . $fileid . '(,|$)(.*)" > 0')
             ->orWhere('content_draft REGEXP "(.*)(^|,)' . $fileid . '(,|$)(.*)" > 0 )');
 
