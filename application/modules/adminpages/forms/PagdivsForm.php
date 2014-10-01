@@ -38,15 +38,6 @@ class PagdivsForm extends Sydney_Form
         $contentDraft = new Zend_Form_Element_Text('content_draft');
         $contentDraft->setLabel('content_draft');
 
-        $pagDivTypesId = new Zend_Form_Element_Select('pagdivtypes_id');
-        $options = new Pagdivtypes();
-        $pagDivTypesId->addMultiOption('', '----------');
-        foreach ($options->fetchAlltoFlatArray() as $k => $v) {
-            $pagDivTypesId->addMultiOption($k, $v['mlabel']);
-        }
-
-        $pagDivTypesId->setLabel('pagdivtypes_id');
-
         $status = new Zend_Form_Element_Text('status');
         $status->setLabel('status');
 
@@ -85,7 +76,6 @@ class PagdivsForm extends Sydney_Form
             $paramsDraft,
             $content,
             $contentDraft,
-            $pagDivTypesId,
             $status,
             $dateCreated,
             $dateModified,
