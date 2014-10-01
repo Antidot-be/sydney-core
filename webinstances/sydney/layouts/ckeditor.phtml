@@ -218,7 +218,7 @@ echo '<'.'?'.'xml version="1.0" encoding="utf-8"'.'?'.'>'."\n\n";
 			});
 			
 
-			$('.button:contains("Save")').ajaxComplete(function(event,request, settings) {
+			$(document).ajaxComplete(function(event,request, settings) {
 				  if (!alreadyLoadedDisplayFiles && settings.url == '/adminfiles/services/displayfiles') {
 					  alreadyLoadedDisplayFiles = true;
 					  $('.button:contains("Save")').click(function () {
@@ -242,7 +242,7 @@ echo '<'.'?'.'xml version="1.0" encoding="utf-8"'.'?'.'>'."\n\n";
 			});
 
 			
-			$('.button:contains("Save")').click(function () {
+			$('.button:contains("Save")').on('click', function () {
 				if("ckeditor-structure" == "<?php echo $this->ckeditor_context; ?>") {
 					var url = '/page-'+selectedPageNode+'.html';
 					if (selectedPageNodeObject.length > 0) {
