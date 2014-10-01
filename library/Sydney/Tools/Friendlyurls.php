@@ -64,7 +64,7 @@ class Sydney_Tools_Friendlyurls extends Sydney_Tools
      */
     public static function setDefaultRoutes(Zend_Controller_Router_Interface $router)
     {
-        $internalUrl = 'publicms|admin|default\/';
+        $internalUrl = 'sydney\/|publicms|admin|default\/';
         // routeName => array( route, defaults, map, reverse )
         $routesRegex = array(
             'searchRoute'        => array(
@@ -88,13 +88,13 @@ class Sydney_Tools_Friendlyurls extends Sydney_Tools
                 '%sFILE-%s%s'
             ),
             'filedisplayedRoute' => array(
-                'S([0-9]{1,4})I([0-9]{1,10})\.(png|jpg|gif)',
+                'sydney\/img\/([0-9]{1,4})-([0-9]{1,10})\.(png|jpg|gif)',
                 array('module'     => 'publicms',
                       'controller' => 'file',
                       'action'     => 'showimg'
                 ),
                 array(1 => 'dw', 2 => 'id', 3 => 'ext'),
-                'sfls%s-%s.%s'
+                'sydney/img/%s-%s.%s'
             ),
             'pageRoute'          => array(
                 '^((?!'.$internalUrl.').*)$',

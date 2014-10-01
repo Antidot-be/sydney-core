@@ -31,13 +31,15 @@ class Sydney_Controller_Plugin_Friendlyurls extends Zend_Controller_Plugin_Abstr
         }
     }
 
+
     /**
      * Replaces the urls of images embedded in the WYSIWYG editor
-     * @param string $html
+     * @param $html
+     * @return string
      */
     protected function srImages($html)
     {
-        return preg_replace('/"\/publicms\/file\/showimg\/dw\/([0-9]{1,4})\/id\/([0-9]{1,10})\/fn\/[0-9]{0,10}\.(png|jpg|gif)"/i', '"/S$1I$2.$3"', $html);
+        return preg_replace('/"\/publicms\/file\/showimg\/dw\/([0-9]{1,4})\/id\/([0-9]{1,10})\/fn\/[0-9]{0,10}\.(png|jpg|gif)"/i', '"/sydney/img/$1-$2.$3"', $html);
     }
 
     /**
