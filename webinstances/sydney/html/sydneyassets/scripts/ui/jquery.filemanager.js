@@ -60,7 +60,8 @@
 		'nbpages':0,
 		'tags': '',
 		'q': '',
-		'folder': false
+		'folder': false,
+        'selected_files': []
 	};
 	/**
 	 * Property: sortdd
@@ -198,7 +199,16 @@
 		$.extend( opts, opt );
 		//fileArea.html("Loading ...");
 		if (opts.id > 0) {
-			fileArea.load('/adminfiles/services/displayedit/id/'+opts.id,null, function(data) {$('#ajaxbox').msgbox({'message':'Loaded','showtime':1,'modal':false});});
+			fileArea.load('/adminfiles/services/displayedit/id/'+opts.id,
+                null,
+                function(data) {
+                    $('#ajaxbox').msgbox({
+                        'message':'Loaded',
+                        'showtime':1,
+                        'modal':false
+                    });
+                }
+            );
 		} else {
 			$('#ajaxbox').msgbox( {'message': 'Loading...', 'showtime':0,'modal':false} );
 			fileArea.load('/adminfiles/services/displayfiles',
@@ -213,7 +223,8 @@
 					'embeded': opts.embeded,
 					'context': opts.context,
 					'q': opts.q,
-					'folder' : opts.folder
+					'folder' : opts.folder,
+                    'selected_files': opts.selected_files
 					}
 					, addspactions);
 			$(buttonsIds).removeClass();

@@ -16,18 +16,19 @@ if (isset($this->nbpages)) {
 <script> var gblnumpages = <?php echo $nbpages; ?>; </script>
 
 <?php if ($this->vmode == 'thumb') { ?>
-    <ul xmlns="http://www.w3.org/1999/xhtml" class="filesGallery">
+    <ul class="filesGallery">
         <?php if (count($files) <= 0) { ?>
             <li><?= Sydney_Tools_Localization::_('No file here... sorry') ?></li>
         <?php
         } else {
             foreach ($files as $f) {
-                // print '<xmp>'; print_r( $f ); print '</xmp>';
+                $isCurrent = (in_array($f['id'], $this->selected_files));
                 if ($f['filetype'] == 'file') {
                     ?>
-                    <li fileprops="<?php echo addslashes($f['filename'] . '<br>Created: ' . $f['date'] . '<br>' . $f['info']); ?>">
+                    <li class="<?= ($isCurrent)? 'file_selected' : '';?>" fileprops="<?php echo addslashes($f['filename'] . '<br>Created: ' . $f['date'] . '<br>' . $f['info']); ?>">
                         <a href="<?php echo $f['id']; ?>"
-                           class="bselect typefile">
+                           data-file-id="<?= $f['id']; ?>"
+                           class="bselect typefile <?= ($isCurrent)? 'itemselected' : '';?>">
                             <div class="icon"
                                  style="background-image: url(<?php echo $f['url']; ?>);">
                                 <img alt=""
