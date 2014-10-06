@@ -28,6 +28,7 @@ class Adminfiles_IndexController extends Sydney_Controller_Action
         $r = $this->getRequest();
         $this->layout->search = true;
         $id = (int) $r->id;
+        $selectedFiles = $r->selected_files? implode(',',$r->selected_files) : '';
 
         if (isset($r->embed) && $r->embed == 'yes') {
             if (isset($r->context)) {
@@ -91,7 +92,8 @@ class Adminfiles_IndexController extends Sydney_Controller_Action
                                                                     \'context\' : \'' . $context . '\',
                                                                     \'filter\' : \'' . $filter . '\',
                                                                     \'mode\' : \'' . $mode . '\',
-                                                                    \'id\' : \'' . $id . '\'
+                                                                    \'id\' : \'' . $id . '\',
+                                                                    \'selected_files\': \''.$selectedFiles.'\'
 								});
 							}
 						});
@@ -117,6 +119,7 @@ class Adminfiles_IndexController extends Sydney_Controller_Action
 							\'mode\' : \'' . $mode . '\',
 							\'id\' : \'' . $id . '\',
 							\'q\' : \'' . $q . '\',
+							\'selected_files\': \''.$selectedFiles.'\'
 						});
 						$(".edefiles").css("background","#DDD");
 						$(".contentEditor > li.editing").css("padding-top","5px");

@@ -144,6 +144,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
         $this->view->nbpages = $filesToReturn['nbpages'];
         $this->view->files = $filesToReturn['files'];
         $this->view->ResultSet = '';
+        $this->view->selected_files = !empty($r->selected_files)? explode(',', $r->selected_files) : array();
     }
 
     /**
