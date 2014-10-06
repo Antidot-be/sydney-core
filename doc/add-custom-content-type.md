@@ -2,6 +2,7 @@
 # Create your own content type #
 
 In order to add your own content type you need some knowledge in PHP.
+The 2 examples are available in the webinstance example.
 
 ## A basic example ##
 
@@ -79,7 +80,7 @@ And finally the editor view `EditorGotoTopView.php` in `/webinstances/acme/libra
     {
         public function EditorGotoTopView()
         {
-            $this->view->headScript()->appendFile('/assets/js/admin/ceEditor.goto-top.js');
+            $this->view->headScript()->appendFile('/assets/js/admin/ceEditors.goto-top.js');
             return '
                 <div class="editor goto-top-block" data-content-type="goto-top-block">
                     <p class="sydney_editor_p">
@@ -95,7 +96,7 @@ And finally the editor view `EditorGotoTopView.php` in `/webinstances/acme/libra
         }
     }
 
-Each content type needs its own javascript editor file here `/assets/js/admin/ceEditor.goto-top.js`  
+Each content type needs its own javascript editor file here : `/assets/js/admin/ceEditors.goto-top.js`
 
     if (!ceEditors) var ceEditors = {};
     /**
@@ -143,3 +144,209 @@ This file will basically setup and save the content type by sending all the info
 
 And you are done!  
 You can now see the `Goto top` label when creating or editing a page!  
+
+
+## A advance example : carousel content type ##
+
+The way to add this content type is exactly the same as before except that we will work with data from the DB.
+Keep in mind that the example is based on the bootstrap carousel but with this example you will be able to adapt this for other carousel.
+
+### Register the new helpers ###
+
+
+    // ...
+    $app->registerContentTypeHelper('goto-top-block', 'Goto top', 'publicGotoTopView', 'privateGotoTopView', 'editorGotoTopView');
+    $app->registerContentTypeHelper('carousel-block', 'Carousel', 'publicCarouselView', 'privateCarouselView', 'editorCarouselView');
+    $app->run();
+
+
+### Create the helpers ###
+
+
+First the public part, again this view helper if for bootstrap, you could adapt it for any kind of carousel :
+
+    <?php
+
+    class Helper_PublicCarouselView extends Zend_View_Helper_Abstract
+    {
+
+        public function publicCarouselView($actionsHtml = '', $content = '', $dbId = 0, $order = 0, $params = array(), $pagstructureId = 0)
+        {
+            $picturedIds = explode(',', $content);
+
+            $filesObject = new Filfiles();
+            $files = $filesObject->getFileInfosByIdList($picturedIds); // Retrieve all fields save in DB
+
+            $imgList = $carouselIndicator = array();
+            /* We iterate throught all the files selected */
+            foreach($files as $key => $file){
+                $activeClass = ($key == 0)? ' active' : '';
+                $carouselIndicator[] = '<li data-target="#carousel-example-generic" data-slide-to="'.$key.'"></li>';
+                $imgList[] = '
+                    <div class="item '.$activeClass.'">
+                        <img src="/publicms/file/showimg/id/' . $file['id'] . '/dw/1140" alt="" />
+                        <div class="carousel-caption"></div>
+                    </div>';
+            }
+
+            $htmlIndicatorList = implode("\n", $carouselIndicator);
+            $htmlImgList = implode("\n", $imgList);
+
+            return '
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">' . $htmlIndicatorList . '</ol>
+                  <div class="carousel-inner">' . $htmlImgList . '</div>
+
+                  <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </div>
+            ';
+        }
+    }
+
+The private part is very simple, we will just show selected images (you can customize it as you want) :
+
+    <?php
+
+    class Helper_PrivateCarouselView extends Zend_View_Helper_Abstract
+    {
+        public function privateCarouselView($actionsHtml = '', $content = '', $dbId = 0, $order = 0, $params = array(), $moduleName = 'adminpages', $pagstructureId = 0, $sharedInIds = '')
+        {
+            $picturedIds = explode(',', $content);
+
+            $filesObject = new Filfiles();
+            $files = $filesObject->getFileInfosByIdList($picturedIds);
+
+            $imgList = array();
+            /* We iterate throught all the files selected */
+            foreach($files as $key => $file){
+                $imgList[] = '<img data-file-id="' . $file['id'] . '" class="preview-image" src="/publicms/file/showimg/id/' . $file['id'] . '/dw/1140" alt="" style="width:200px" />';
+            }
+
+            $htmlImgList = implode("\n", $imgList);
+
+            return '<li class="' . $params['addClass'] . ' sydney_editor_li"
+                            data-content-type="carousel-block"
+                            dbid="' . $dbId . '"
+                            dborder="' . $order . '"
+                            pagstructureid="' . $pagstructureId . '">
+                ' . $actionsHtml . '
+                <div class="content">
+                    '.$htmlImgList.'
+                </div>
+            </li>';
+        }
+    }
+
+Nothing particular here we just retrieve selected files.
+
+And now the Editor :
+
+    <?php
+
+    class Helper_EditorCarouselView extends Zend_View_Helper_Abstract
+    {
+        public function EditorCarouselView()
+        {
+            $this->view->headScript()->appendFile('/assets/js/admin/ceEditors.carousel.js');
+            return '
+                <div class="editor files edefiles carousel-block" data-content-type="carousel-block">
+                    <p class="buttons sydney_editor_p">
+                        <a class="button sydney_editor_a" href="save">Save as actual content</a>
+                        <a class="button sydney_editor_a" href="save-draft">Save as draft</a>
+                        <a class="button muted sydney_editor_a" href="cancel">Cancel</a>
+                    </p>
+                </div>';
+        }
+    }
+
+The JS file located `in webinstances/acme/html/assets/js/ceEditors.carousel.js`:
+
+    if (!ceEditors) var ceEditors = {};
+    /**
+     * @constructor
+     */
+    ceEditors['carousel-block'] = {
+        /**
+         * Method: save
+         */
+        save : function(e){
+            ceEditors.defaultedt.save.apply(this);
+
+            var item = $(this),
+                dbid = item.attr('dbid') || 0,
+                dborder = item.attr('dborder') || 0,
+                editor = $(".editor", item),
+                elementsIds = [];
+
+            if( $("#folders-categories").length == 0 ) {
+                $('.itemselected', editor).each(function(){
+                    elementsIds.push( $(this).attr('href') );
+                });
+            }
+            item.data('new', false);
+            item.removeEditor();
+
+            $.postJSON('/adminpages/services/savediv/format/json/emodule/'+emodule, {
+                    'id': dbid,
+                    'order': dborder,
+                    'content': elementsIds.toString(),
+                    'params': '',
+                    'content_type_label': $(this).data('content-type'),
+                    'status' : status,
+                    'pagstructureid' : pagstructureid
+                },
+                function(data) {
+                    ceEditors.defaultedt.saveorder( item, data);
+                    $.get("/adminpages/services/getdivwitheditor/", {'dbid': data.ResultSet.dbid}, function(data){
+                        item.replaceWith(data);
+                        $("li[dbid="+item.attr('dbid')+"]").makeEditable();
+                    });
+                }
+            );
+        },
+        /**
+         * Method: setupEditor
+         */
+        setupEditor : function(){
+            ceEditors.defaultedt.setupEditor.apply(this);
+            var item = $(this),
+                previousElements = $('.preview-image'),
+                previousIds = [];
+
+            previousElements.each(function(){
+                previousIds.push($(this).data('file-id'));
+            });
+            $(".editor", item).load(
+                "/adminfiles/index/index/",{
+                    'embed':'yes',
+                    'context': 'pageeditor',
+                    'filter' : 1,
+                    'mode' : 'thumb',
+                    'selected_files': previousIds
+                }, function(e) {
+                    $('.buttons .button').click(function(e){
+                        e.preventDefault();
+                        var action = $(this).attr('href');
+
+                        if (action == "save") {
+                            status 	= 'published';
+                        } else if (action == "save-draft") {
+                            status 	= 'draft';
+                            action 	= "save";
+                        }
+                        item[action]();
+                    });
+                }
+            );
+
+        }
+    };
+
+There are two functions here `save` and `setupEditor` which are both automatically in the admin.
