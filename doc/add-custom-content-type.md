@@ -146,10 +146,10 @@ And you are done!
 You can now see the `Goto top` label when creating or editing a page!  
 
 
-## A advance example : carousel content type ##
+## An advanced example : carousel content type ##
 
 The way to add this content type is exactly the same as before except that we will work with data from the DB.
-Keep in mind that the example is based on the bootstrap carousel but with this example you will be able to adapt this for other carousel.
+Keep in mind that the example is based on the bootstrap carousel but you can adapt this for other carousel.
 
 ### Register the new helpers ###
 
@@ -163,7 +163,7 @@ Keep in mind that the example is based on the bootstrap carousel but with this e
 ### Create the helpers ###
 
 
-First the public part, again this view helper if for bootstrap, you could adapt it for any kind of carousel :
+First the public part, again this view helper is for bootstrap, you can adapt it for any kind of carousel :
 
     <?php
 
@@ -349,4 +349,4 @@ The JS file located `in webinstances/acme/html/assets/js/ceEditors.carousel.js`:
         }
     };
 
-There are two functions here `save` and `setupEditor` which are both automatically in the admin.
+There are two functions here `save` and `setupEditor` which are both automatically called.
