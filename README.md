@@ -27,7 +27,7 @@ See the "How to extend" part.
 A few Youtube videos illustrate Some key features of SydneyCMS.
 
 ### SydneyCMS activity dashboard ###
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=9TB46qx_Zgw" target="_blank"><img src="http://img.youtube.com/vi/9TB46qx_Zgw/0.jpg" alt="Site structure and page edition" width="640" height="360" border="0" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=9TB46qx_Zgw" target="_blank"><img src="http://img.youtube.com/vi/9TB46qx_Zgw/0.jpg" alt="Sydney Dashboard" width="640" height="360" border="0" /></a>
 
 ### Page manager and Structure editor ###
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=u4jZtt07a5A" target="_blank"><img src="http://img.youtube.com/vi/u4jZtt07a5A/0.jpg" alt="Site structure and page edition" width="640" height="360" border="10" /></a>
