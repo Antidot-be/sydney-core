@@ -236,17 +236,6 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
      */
     public function uploadfileAction()
     {
-        /**
-         * upload.php
-         *
-         * Copyright 2009, Moxiecode Systems AB
-         * Released under GPL License.
-         *
-         * License: http://www.plupload.com/license
-         * Contributing: http://www.plupload.com/contributing
-         */
-        // Settings
-        //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
         $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/';
         $uploadedFileName = $_FILES['file']['name'];
 
@@ -260,91 +249,93 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
             chmod($fullpath, 0777);
         }
 
-        $ndirn = substr($uploadedFileName, -3);
-        $ndirn = preg_replace('/\./', '', $ndirn);
-        $nnd = $fullpath . '' . strtoupper($ndirn);
-        $type = strtoupper($ndirn);
+        $explodedFilename = explode('.', $uploadedFileName);
+        $fileType = strtoupper($explodedFilename[count($explodedFilename) - 1]);
+        $nnd = $fullpath;
 
-        if (!is_dir($nnd)) {
-            mkdir($nnd);
-        }
+        $maxFileAge = 5 * 3600; // Temp file age in seconds
+        set_time_limit(5 * 60);// 5 minutes execution time
+
         $targetDir = $nnd;
-        // 5 minutes execution time
-        set_time_limit(5 * 60);
-        // Get parameters
-        $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
-        $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
-        $fileName = isset($_FILES['file']["name"]) ? $_FILES['file']["name"] : $_REQUEST["name"];
+
+        // Create target dir
+        if (!file_exists($targetDir)) {
+            @mkdir($targetDir);
+        }
+
+        // Get a file name
+        if (isset($_REQUEST["name"])) {
+            $fileName = $_REQUEST["name"];
+        } elseif (!empty($_FILES)) {
+            $fileName = $_FILES["file"]["name"];
+        } else {
+            $fileName = uniqid("file_");
+        }
 
         // Clean the fileName for security reasons
         $fileName = Sydney_Medias_Utils::sanitizeFilename($fileName);
 
-        // Create target dir
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir);
-        }
+        $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+        // Chunking might be enabled
+        $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+        $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 
-        $contentType = '';
-        // Look for the content type header
-        if (isset($_SERVER["HTTP_CONTENT_TYPE"])) {
-            $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
-        }
-        if (isset($_SERVER["CONTENT_TYPE"])) {
-            $contentType = $_SERVER["CONTENT_TYPE"];
-        }
-
-        // Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
-        if (strpos($contentType, "multipart") !== false) {
-            if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-                // Open temp file
-                $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-                if ($out) {
-                    // Read binary input stream and append it to temp file
-                    $in = fopen($_FILES['file']['tmp_name'], "rb");
-
-                    if ($in) {
-                        while ($buff = fread($in, 4096)) {
-                            fwrite($out, $buff);
-                        }
-                    } else {
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-                    }
-                    fclose($in);
-                    fclose($out);
-                    unlink($_FILES['file']['tmp_name']);
-                } else {
-                    die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+        $cleanupTargetDir = true;
+        // Remove old temp files
+        if ($cleanupTargetDir) {
+            if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
+                die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+            }
+            while (($file = readdir($dir)) !== false) {
+                $tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
+                // If temp file is current file proceed to the next
+                if ($tmpfilePath == "{$filePath}.part") {
+                    continue;
                 }
-            } else {
+                // Remove temp file if it is older than the max age and is not the current file
+                if (preg_match('/\.part$/', $file) && (filemtime($tmpfilePath) < time() - $maxFileAge)) {
+                    @unlink($tmpfilePath);
+                }
+            }
+            closedir($dir);
+        }
+
+        // Open temp file
+        if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
+            die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+        }
+        if (!empty($_FILES)) {
+            if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
                 die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
             }
+            // Read binary input stream and append it to temp file
+            if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
+                die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+            }
         } else {
-            // Open temp file
-            $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-            if ($out) {
-                // Read binary input stream and append it to temp file
-                $in = fopen("php://input", "rb");
-
-                if ($in) {
-                    while ($buff = fread($in, 4096)) {
-                        fwrite($out, $buff);
-                    }
-                } else {
-                    die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-                }
-
-                fclose($in);
-                fclose($out);
-            } else {
-                die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+            if (!$in = @fopen("php://input", "rb")) {
+                die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
             }
         }
+        while ($buff = fread($in, 4096)) {
+            fwrite($out, $buff);
+        }
+        @fclose($out);
+        @fclose($in);
+        // Check if file has been uploaded
+        if (!$chunks || $chunk == $chunks - 1) {
+            // Strip the temp .part suffix off
+            rename("{$filePath}.part", $filePath);
+        }
 
-        // Return JSON-RPC response
-        $fil = new Filfiles();
-        $fileId = $fil->registerFileToDb($targetDir, $fileName, filesize($targetDir . '/' . $fileName), $type, $this->usersId, $this->safinstancesId, $this->getRequest());
+        // Return Success JSON-RPC response
+        if (file_exists($targetDir . $fileName)) {
+            $fil = new Filfiles();
+            $fileId = $fil->registerFileToDb($targetDir, $fileName, filesize($targetDir . $fileName), $fileType, $this->usersId, $this->safinstancesId, $this->getRequest());
 
-        die('{"jsonrpc" : "2.0", "result" : null, "id" : ' . Zend_Json_Encoder::encode($fileId) . ' }');
+            die('{"jsonrpc" : "2.0", "result" : null, "id" : ' . Zend_Json_Encoder::encode($fileId) . ' }');
+        }
+
     }
 
     /**
