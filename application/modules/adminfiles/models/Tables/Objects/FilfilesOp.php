@@ -26,10 +26,10 @@ class FilfilesOp extends Sydney_Db_Table
     /**
      * Register the file and location in the DB for quick search and indexing
      *
-     * @param $path        Path to the file
-     * @param $fileName    File name on the hard disk
-     * @param $fileWeight    Weight in bytes
-     * @param $type 3 letters extension
+     * @param $path     string   Path to the file
+     * @param $fileName  string  File name on the hard disk
+     * @param $fileWeight   int  Weight in bytes
+     * @param $type string 3 letters extension
      * @param $usersId
      * @param $safinstancesId
      * @param array $params
@@ -47,14 +47,11 @@ class FilfilesOp extends Sydney_Db_Table
         }
 
         $data = array(
-            //'id'				=> '',
             'label'           => $fileName,
             'desc'            => $desc,
-            //'keywords'			=> '',
             'filename'        => $fileName,
             'type'            => $type,
             'fweight'         => $fileWeight,
-            //'techdata'			=> $params->calledBy,
             'filtype_id'      => $fileTypeId,
             'users_id'        => $usersId,
             'safinstances_id' => $safinstancesId,
