@@ -252,8 +252,7 @@ class Publicms_FileController extends Sydney_Controller_Actionpublic // Adminfil
             $result = $fileModel->fetchAll($where);
             if (count($result) == 1) {
                 $file = $result[0];
-                $fileType = $file->type;
-                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 if (!$fileTypeInstance->showImg($dimensionWidth, $dimensionHeight)) {
 
@@ -285,8 +284,7 @@ class Publicms_FileController extends Sydney_Controller_Actionpublic // Adminfil
                 $file = $files[0];
 
                 //Définition dynamique du fullpath
-                $fileType = $file->type;
-                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
                 ob_end_clean();
                 if (isset($request->download) && $request->download == 'yes') {
@@ -330,9 +328,7 @@ class Publicms_FileController extends Sydney_Controller_Actionpublic // Adminfil
             $result = $fileModel->fetchAll($where);
             if (count($result) == 1) {
                 $file = $result[0];
-
-                $fileType = $file->type;
-                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $file->filename;
+                $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $file->filename;
                 $fileTypeInstance = Sydney_Medias_Filetypesfactory::createfiletype($fullpath);
 
                 // defines the thumb size

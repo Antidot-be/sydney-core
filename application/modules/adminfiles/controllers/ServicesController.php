@@ -187,8 +187,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
             $this->view->filfolders = $this->_getLinkedFolders($id, true);
             if (count($files) == 1) {
                 $this->view->file = $files->current();
-                $fileType = $this->view->file->type;
-                $this->view->fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $fileType . '/' . $this->view->file->filename;
+                $this->view->fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $this->view->file->filename;
             }
         }
     }
@@ -237,7 +236,15 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
     public function uploadfileAction()
     {
         $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/';
-        $uploadedFileName = $_FILES['file']['name'];
+
+        // Get a file name
+        if (isset($_REQUEST["name"])) {
+            $fileName = $_REQUEST["name"];
+        } elseif (!empty($_FILES)) {
+            $fileName = $_FILES["file"]["name"];
+        } else {
+            $fileName = uniqid("file_");
+        }
 
         // check if appdata and adminfiles exist and if not, create dir
         if (!is_dir(Sydney_Tools_Paths::getAppdataPath())) {
@@ -249,7 +256,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
             chmod($fullpath, 0777);
         }
 
-        $explodedFilename = explode('.', $uploadedFileName);
+        $explodedFilename = explode('.', $fileName);
         $fileType = strtoupper($explodedFilename[count($explodedFilename) - 1]);
         $nnd = $fullpath;
 
@@ -261,15 +268,6 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
         // Create target dir
         if (!file_exists($targetDir)) {
             @mkdir($targetDir);
-        }
-
-        // Get a file name
-        if (isset($_REQUEST["name"])) {
-            $fileName = $_REQUEST["name"];
-        } elseif (!empty($_FILES)) {
-            $fileName = $_FILES["file"]["name"];
-        } else {
-            $fileName = uniqid("file_");
         }
 
         // Clean the fileName for security reasons
@@ -442,7 +440,7 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
                         $id // id
                     );
                     // */
-                    $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $f->type . '/' . $f->filename;
+                    $fullpath = Sydney_Tools_Paths::getAppdataPath() . '/adminfiles/' . $f->filename;
                     if (unlink($fullpath)) {
                         $this->view->ResultSet = array(
                             'status'  => 1,
@@ -499,10 +497,6 @@ class Adminfiles_ServicesController extends Sydney_Controller_Action
                 $rows[0]->save();
                 $message = 'File params saved';
 
-                /**
-                 * GDE : 27/08/2010
-                 * Add trace of current action
-                 */
                 Sydney_Db_Trace::add('trace.event.update_file'
                     . ' [' . $r->filename . ']', // message
                     'adminfiles', // module
